@@ -40,13 +40,21 @@
       "icons/128x128@2x.png",
       "icons/icon.icns",
       "icons/icon.ico"
-    ]
+    ],
+    "windows": {
+      "nsis": {
+        "installIcon": "icons/icon.ico",
+        "installerIcon": "icons/icon.ico"
+      }
+    }
   },
   "plugins": {
     "updater": {
-      "endpoints": [],
+      "endpoints": [
+        "https://github.com/se1dhe/cp-helper/releases/latest/download/latest.json"
+      ],
       "dialog": true,
-      "pubkey": ""
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDhFMUNEQkVFOEQ2QTVEMzQKUldRMFhXcU43dHNjanJoQUxLZVNtMUNlb3h2RlphZzVxOGlOU25PaDg3TG04QXBWM2ZOZUR3NFgK"
     }
   }
 }
