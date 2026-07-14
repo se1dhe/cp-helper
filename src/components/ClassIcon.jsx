@@ -1,7 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-// Иконки для каждого класса L2 — SVG компоненты
-// Тип: mage (синий), fighter (красный), buffer (золотой), support (зелёный)
+const CLASS_ICON_ID = {
+  'Sorcerer': 12,
+  'Spellsinger': 27,
+  'Spellhowler': 40,
+  'Necromancer': 13,
+  'Terramancer': 210,
+  'Gladiator': 2,
+  'Warlord': 3,
+  'Paladin': 5,
+  'Dark Avenger': 6,
+  'Temple Knight': 20,
+  'Treasure Hunter': 8,
+  'Hawkeye': 9,
+  'Plains Walker': 23,
+  'Silver Ranger': 24,
+  'Abyss Walker': 36,
+  'Phantom Ranger': 37,
+  'Destroyer': 46,
+  'Tyrant': 48,
+  'Bounty Hunter': 55,
+  'Warsmith': 57,
+  'Blade Dancer': 34,
+  'Sword Singer': 21,
+  'Prophet': 17,
+  'Warcryer': 52,
+  'Overlord': 51,
+  'Shillien Elder': 43,
+  'Elven Elder': 30,
+  'Bishop': 16,
+};
 
 const COLORS = {
   mage: { primary: '#60a5fa', glow: 'rgba(96,165,250,0.4)', bg: 'rgba(29,78,216,0.15)' },
@@ -11,7 +39,30 @@ const COLORS = {
 };
 
 export const ClassIcon = ({ className, type, size = 48 }) => {
+  const [useSvg, setUseSvg] = useState(false);
   const c = COLORS[type] || COLORS.mage;
+  const iconId = CLASS_ICON_ID[className];
+
+  if (iconId && !useSvg) {
+    return (
+      <div style={{
+        width: size,
+        height: size,
+        borderRadius: '12px',
+        overflow: 'hidden',
+        flexShrink: 0,
+      }}>
+        <img
+          src={`/icons/r_classes/class_icon_${iconId}.png`}
+          alt={className}
+          width={size}
+          height={size}
+          style={{ display: 'block' }}
+          onError={() => setUseSvg(true)}
+        />
+      </div>
+    );
+  }
 
   return (
     <div style={{
@@ -296,7 +347,6 @@ const ClassIconSvg = ({ className, type, color }) => {
         <path d="M12 26 L20 26" stroke={color} strokeWidth="2" strokeLinecap="round"/>
       </g>
     );
-    // DEFAULT fallback per type
     default:
       if (type === 'mage') return (
         <g>
@@ -326,7 +376,6 @@ const ClassIconSvg = ({ className, type, color }) => {
   }
 };
 
-// Exported icon function for 'unknown' class
 export const UnknownClassIcon = ({ size = 48 }) => (
   <div style={{
     width: size, height: size,
