@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { subscribeToUsers, updateUserRole, initializeRoster } from '../services/adminService';
-import { Users, ShieldAlert, Check, Shield } from 'lucide-react';
+import { Users, ShieldAlert, Shield, RotateCcw } from 'lucide-react';
+
+const ROLE_BADGE = {
+  PL: 'role-badge role-badge-pl',
+  OFFICER: 'role-badge role-badge-officer',
+  MEMBER: 'role-badge role-badge-member',
+  GUEST: 'role-badge role-badge-guest',
+};
 
 export const Admin = () => {
   const { isPL, isOfficer } = useAuth();
@@ -15,10 +22,12 @@ export const Admin = () => {
 
   if (!isPL && !isOfficer) {
     return (
-      <div className="fade-in" style={{ textAlign: 'center', marginTop: '3rem' }}>
-        <ShieldAlert size={48} color="var(--primary)" style={{ margin: '0 auto', marginBottom: '1rem' }} />
-        <h3>Доступ запрещен</h3>
-        <p style={{ color: 'var(--text-muted)' }}>Эта страница доступна только для ПЛ и Офицеров.</p>
+      <div className="access-denied">
+        <div className="access-denied-card fade-in">
+          <ShieldAlert size={48} style={{ color: 'var(--danger)', marginBottom: '1rem' }} />
+          <h2>Доступ запрещен</h2>
+          <p style={{ color: 'var(--text-secondary)' }}>Эта страница доступна только для ПЛ и Офицеров.</p>
+        </div>
       </div>
     );
   }
@@ -33,7 +42,7 @@ export const Admin = () => {
   };
 
   const handleInitRoster = async () => {
-    if(window.confirm('Это сбросит ростер до стандартного состояния (9 пустых слотов). Вы уверены?')) {
+    if (window.confirm('Это сбросит ростер до стандартного состояния (9 пустых слотов). Вы уверены?')) {
       await initializeRoster();
       alert('Ростер инициализирован!');
     }
@@ -41,62 +50,64 @@ export const Admin = () => {
 
   return (
     <div className="fade-in">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h2 className="page-title"><Shield size={22} /> Управление КП</h2>
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="page-title" style={{ marginBottom: 0 }}>
+          <Shield size={22} /> Управление КП
+        </h2>
         {isPL && (
-          <button 
-            className="auth-btn" 
-            style={{ padding: '0.5rem 1rem', width: 'auto' }}
-            onClick={handleInitRoster}
-          >
-            Сбросить Ростер
+          <button className="btn btn-danger" onClick={handleInitRoster}>
+            <RotateCcw size={15} /> Сбросить Ростер
           </button>
         )}
       </div>
 
-      <div className="glass-panel" style={{ padding: '1.5rem', marginTop: '1rem' }}>
-        <h3 className="section-header" style={{ marginTop: 0 }}><Users size={16} /> Пользователи</h3>
+      <div className="glass-panel">
+        <h3 className="section-header"><Users size={16} /> Пользователи ({users.length})</h3>
         <div style={{ overflowX: 'auto' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+          <table>
             <thead>
-              <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-                <th style={{ padding: '0.75rem' }}>Email</th>
-                <th style={{ padding: '0.75rem' }}>Имя</th>
-                <th style={{ padding: '0.75rem' }}>Роль</th>
-                <th style={{ padding: '0.75rem' }}>Действия</th>
+              <tr>
+                <th>Email</th>
+                <th>Имя</th>
+                <th>Роль</th>
+                {isPL && <th>Действия</th>}
               </tr>
             </thead>
             <tbody>
               {users.map(u => (
-                <tr key={u.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                  <td style={{ padding: '0.75rem', color: 'var(--text-primary)' }}>{u.email}</td>
-                  <td style={{ padding: '0.75rem' }}>{u.displayName || '—'}</td>
-                  <td style={{ padding: '0.75rem' }}>
-                    <span className={`task-item-tag ${u.role === 'PL' ? 'task-tag--prime' : u.role === 'OFFICER' ? 'task-tag--prime' : u.role === 'MEMBER' ? '' : 'task-tag--offprime'}`}>
-                      {u.role}
-                    </span>
+                <tr key={u.id}>
+                  <td>{u.email}</td>
+                  <td className="text-secondary">{u.displayName || '—'}</td>
+                  <td>
+                    <span className={ROLE_BADGE[u.role] || ROLE_BADGE.GUEST}>{u.role}</span>
                   </td>
-                  <td style={{ padding: '0.75rem' }}>
-                    {isPL && u.role !== 'PL' && (
-                      <select 
-                        value={u.role} 
-                        onChange={(e) => handleRoleChange(u.id, e.target.value)}
-                        style={{
-                          background: 'rgba(0,0,0,0.3)',
-                          border: '1px solid rgba(255,255,255,0.1)',
-                          color: 'var(--text-primary)',
-                          padding: '0.25rem 0.5rem',
-                          borderRadius: '4px'
-                        }}
-                      >
-                        <option value="GUEST">Guest (Ожидает)</option>
-                        <option value="MEMBER">Member (В составе)</option>
-                        <option value="OFFICER">Officer (Зам)</option>
-                      </select>
-                    )}
-                  </td>
+                  {isPL && (
+                    <td>
+                      {u.role !== 'PL' ? (
+                        <select
+                          value={u.role}
+                          onChange={(e) => handleRoleChange(u.id, e.target.value)}
+                          className="input-field"
+                          style={{ width: 'auto', padding: '0.25rem 0.5rem', fontSize: '0.8rem' }}
+                        >
+                          <option value="GUEST">Guest</option>
+                          <option value="MEMBER">Member</option>
+                          <option value="OFFICER">Officer</option>
+                        </select>
+                      ) : (
+                        <span className="text-muted" style={{ fontSize: '0.8rem' }}>—</span>
+                      )}
+                    </td>
+                  )}
                 </tr>
               ))}
+              {users.length === 0 && (
+                <tr>
+                  <td colSpan={isPL ? 4 : 3} className="text-center text-muted" style={{ padding: '2rem' }}>
+                    Нет пользователей
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

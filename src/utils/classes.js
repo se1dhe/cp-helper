@@ -11,6 +11,7 @@ export const L2_CLASSES = [
   { id: 'warlord', name: 'Warlord', type: 'fighter', abbr: 'WL', color: '#b91c1c' },
   { id: 'paladin', name: 'Paladin', type: 'fighter', abbr: 'Pal', color: '#f87171' },
   { id: 'dark_avenger', name: 'Dark Avenger', type: 'fighter', abbr: 'DA', color: '#7f1d1d' },
+  { id: 'temple_knight', name: 'Temple Knight', type: 'fighter', abbr: 'TK', color: '#fbbf24' },
   { id: 'treasure_hunter', name: 'Treasure Hunter', type: 'fighter', abbr: 'TH', color: '#fca5a5' },
   { id: 'hawkeye', name: 'Hawkeye', type: 'fighter', abbr: 'HE', color: '#f87171' },
   { id: 'plains_walker', name: 'Plains Walker', type: 'fighter', abbr: 'PW', color: '#fda4af' },

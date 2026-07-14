@@ -1,4 +1,4 @@
-import { collection, doc, getDocs, updateDoc, onSnapshot, query, orderBy } from 'firebase/firestore';
+import { collection, doc, updateDoc, onSnapshot, query, orderBy } from 'firebase/firestore';
 import { db } from '../firebase';
 
 const COLLECTION = 'roster';
