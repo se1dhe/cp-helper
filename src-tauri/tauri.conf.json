@@ -43,7 +43,6 @@
     ],
     "windows": {
       "nsis": {
-        "installIcon": "icons/icon.ico",
         "installerIcon": "icons/icon.ico"
       }
     }
