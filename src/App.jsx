@@ -7,6 +7,7 @@ import { Layout } from './components/Layout';
 import { Dashboard } from './pages/Dashboard';
 import { Treasury } from './pages/Treasury';
 import { Roster } from './pages/Roster';
+import { Admin } from './pages/Admin';
 
 function App() {
   useEffect(() => {
@@ -40,6 +41,7 @@ function App() {
             <Route index element={<Dashboard />} />
             <Route path="treasury" element={<Treasury />} />
             <Route path="roster" element={<Roster />} />
+            <Route path="admin" element={<Admin />} />
           </Route>
         </Routes>
       </HashRouter>

@@ -126,6 +126,15 @@ export const Layout = () => {
               {label}
             </NavLink>
           ))}
+          {(userRole === 'PL' || userRole === 'OFFICER') && (
+            <NavLink
+              to="/admin"
+              className={({ isActive }) => `sidebar-link${isActive ? ' active' : ''}`}
+            >
+              <ShieldAlert size={18} />
+              Управление
+            </NavLink>
+          )}
         </nav>
 
         <div className="sidebar-user">
