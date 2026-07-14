@@ -1,12 +1,7 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
-// TODO: Replace with your actual Firebase project config
-// 1. Go to Firebase Console (https://console.firebase.google.com/)
-// 2. Create a new project
-// 3. Add a Web App to the project
-// 4. Copy the config object below
 const firebaseConfig = {
   apiKey: "AIzaSyDU5KhGtNTsFliP5GX2UGo2a-zkGjnAvAw",
   authDomain: "cp-helper-78139.firebaseapp.com",
@@ -20,9 +15,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-const googleProvider = new GoogleAuthProvider();
 
-export const signInWithGoogle = () => signInWithPopup(auth, googleProvider);
+export const signInWithEmail = (email, password) => signInWithEmailAndPassword(auth, email, password);
+export const registerWithEmail = (email, password) => createUserWithEmailAndPassword(auth, email, password);
 export const logOut = () => signOut(auth);
 
 export { auth, db };
