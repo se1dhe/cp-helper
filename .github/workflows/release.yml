@@ -14,9 +14,6 @@ jobs:
       fail-fast: false
       matrix:
         platform: [macos-latest, ubuntu-22.04, windows-latest]
-permissions:
-  contents: write
-
     runs-on: ${{ matrix.platform }}
 
     steps:
@@ -26,9 +23,6 @@ permissions:
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-permissions:
-  contents: write
-
           node-version: 20
 
       - name: Install Rust stable
