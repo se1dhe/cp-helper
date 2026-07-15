@@ -936,3 +936,170 @@ tbody tr:hover { background: rgba(255,255,255,0.02); }
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }
+
+/* ===== QUESTS SECTION ===== */
+.quests-section {
+  margin-top: 2rem;
+}
+
+.quest-members {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.quest-member-block {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: all var(--transition);
+}
+.quest-member-block:hover {
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-card);
+}
+
+.quest-member-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  background: rgba(255,255,255,0.02);
+  border-bottom: 1px solid var(--border);
+}
+
+.quest-member-info {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  flex-wrap: wrap;
+}
+
+.quest-member-name {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.quest-member-class {
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.quest-member-race {
+  font-size: 0.62rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  background: rgba(167,139,250,0.12);
+  color: #c4b5fd;
+  border: 1px solid rgba(167,139,250,0.2);
+}
+
+.quest-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--border);
+}
+
+.quest-card {
+  background: var(--bg-surface);
+  transition: all var(--transition);
+}
+
+.quest-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+  font-size: 0.825rem;
+  transition: background var(--transition);
+}
+.quest-card-header:hover {
+  background: rgba(255,255,255,0.03);
+}
+
+.quest-card-name {
+  flex: 1;
+  font-weight: 600;
+}
+
+.quest-card-lvl {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--gold-light);
+  font-family: 'Rajdhani', sans-serif;
+  letter-spacing: 0.5px;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  background: rgba(245,158,11,0.1);
+  border: 1px solid rgba(245,158,11,0.15);
+  white-space: nowrap;
+}
+
+.quest-card-chevron {
+  color: var(--text-muted);
+  flex-shrink: 0;
+  transition: transform var(--transition);
+}
+
+.quest-card--expanded .quest-card-chevron {
+  transform: rotate(0deg);
+}
+
+.quest-card--expanded {
+  background: var(--bg-card);
+}
+
+.quest-card-body {
+  padding: 0.5rem 1rem 0.875rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.quest-card-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+.quest-card-row svg {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.quest-card-desc {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-top: 0.25rem;
+  padding: 0.5rem 0.625rem;
+  background: rgba(0,0,0,0.2);
+  border-radius: var(--radius-sm);
+  border-left: 2px solid var(--primary-border);
+}
+
+.quest-card-notes {
+  font-size: 0.75rem;
+  color: var(--gold-light);
+  line-height: 1.5;
+  padding: 0.5rem 0.625rem;
+  background: rgba(245,158,11,0.06);
+  border-radius: var(--radius-sm);
+  border-left: 2px solid rgba(245,158,11,0.3);
+}
+

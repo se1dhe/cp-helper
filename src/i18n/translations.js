@@ -54,6 +54,8 @@ export const RU = {
   'dashboard.occupied': 'Занято',
   'dashboard.notAssigned': 'Не назначен',
   'dashboard.lvl': 'LVL',
+  'dashboard.quests': 'Must Have Квесты',
+  'dashboard.noQuests': 'Нет мемберов для назначения квестов.',
 
   // Roster
   'roster.title': 'Ростер пати (0utLaw)',
@@ -180,6 +182,8 @@ export const UA = {
   'dashboard.occupied': 'Зайнято',
   'dashboard.notAssigned': 'Не призначено',
   'dashboard.lvl': 'LVL',
+  'dashboard.quests': 'Must Have Квести',
+  'dashboard.noQuests': 'Немає мемберів для призначення квестів.',
 
   'roster.title': 'Ростер паті (0utLaw)',
   'roster.addSlot': 'Додати слот',

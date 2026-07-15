@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Coins, Gem, Users, Swords, Target, Circle, CheckCircle2, Plus, Trash2 } from 'lucide-react';
+import { Coins, Gem, Users, Swords, Target, Circle, CheckCircle2, Plus, Trash2, ChevronDown, ChevronRight, MapPin, Medal } from 'lucide-react';
 import { subscribeToRoster } from '../services/rosterService';
 import { subscribeToTasks, addTask, toggleTask, deleteTask } from '../services/taskService';
 import { subscribeToTransactions } from '../services/treasuryService';
@@ -8,6 +8,7 @@ import { useAuth } from '../context/AuthContext';
 import { useLang } from '../context/LanguageContext';
 import { L2_CLASSES } from '../utils/classes';
 import { ClassIcon } from '../components/ClassIcon';
+import { getQuestsForClass, getRaceLabel } from '../data/quests';
 
 const getRoleBadgeClass = (role) => {
   switch (role) {
@@ -29,6 +30,7 @@ export const Dashboard = () => {
   const [newTask, setNewTask] = useState('');
   const [newTaskTag, setNewTaskTag] = useState('prime');
   const [treasury, setTreasury] = useState({ totalAdena: 0, totalMC: 0 });
+  const [expandedQuests, setExpandedQuests] = useState({});
 
   useEffect(() => {
     const unsubRoster = subscribeToRoster(setRoster);
@@ -50,6 +52,10 @@ export const Dashboard = () => {
       await addTask(newTask, newTaskTag);
       setNewTask('');
     } catch { alert(t('alert.addTaskError')); }
+  };
+
+  const toggleQuest = (questId) => {
+    setExpandedQuests(prev => ({ ...prev, [questId]: !prev[questId] }));
   };
 
   const filledSlots = roster.filter(m => m.name && m.name !== '—').length;
@@ -188,6 +194,71 @@ export const Dashboard = () => {
             </div>
           )}
         </div>
+      </div>
+
+      <div className="quests-section">
+        <h3 className="section-header"><Medal size={15} /> {t('dashboard.quests')}</h3>
+        {roster.filter(m => m.name && m.name !== '—' && m.name !== '__occupied__').length > 0 ? (
+          <div className="quest-members">
+            {roster.filter(m => m.name && m.name !== '—' && m.name !== '__occupied__').map(m => {
+              const cls = getClassDetails(m.className);
+              const quests = getQuestsForClass(m.className);
+              const raceLabel = getRaceLabel(m.className);
+              if (quests.length === 0) return null;
+              return (
+                <div key={m.id} className="quest-member-block">
+                  <div className="quest-member-header">
+                    <ClassIcon className={m.className} type={cls.type} size={28} />
+                    <div className="quest-member-info">
+                      <span className="quest-member-name">{m.name}</span>
+                      <span className="quest-member-class" style={{ color: cls.color }}>{m.className}</span>
+                      {raceLabel && <span className="quest-member-race">{raceLabel}</span>}
+                    </div>
+                  </div>
+                  <div className="quest-list">
+                    {quests.map((q, idx) => {
+                      const questId = `${m.id}-${idx}`;
+                      const isExpanded = expandedQuests[questId];
+                      return (
+                        <div key={questId} className={`quest-card ${isExpanded ? 'quest-card--expanded' : ''}`}>
+                          <button
+                            className="quest-card-header"
+                            onClick={() => toggleQuest(questId)}
+                          >
+                            <span className="quest-card-name">{q.name}</span>
+                            <span className="quest-card-lvl">LVL {q.lvl}</span>
+                            {isExpanded
+                              ? <ChevronDown size={14} className="quest-card-chevron" />
+                              : <ChevronRight size={14} className="quest-card-chevron" />
+                            }
+                          </button>
+                          {isExpanded && (
+                            <div className="quest-card-body">
+                              <div className="quest-card-row">
+                                <MapPin size={12} />
+                                <span>{q.npc}</span>
+                              </div>
+                              <div className="quest-card-row">
+                                <Medal size={12} />
+                                <span>{q.reward}</span>
+                              </div>
+                              <p className="quest-card-desc">{q.description}</p>
+                              {q.notes && <p className="quest-card-notes">{q.notes}</p>}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '2rem', fontSize: '0.85rem' }}>
+            {t('dashboard.noQuests')}
+          </div>
+        )}
       </div>
     </div>
   );
