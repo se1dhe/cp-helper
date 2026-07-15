@@ -205,9 +205,9 @@ export const Dashboard = () => {
           <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '2rem', fontSize: '0.85rem' }}>
             {t('dashboard.loading')}
           </div>
-        ) : roster.filter(m => m.name && m.name !== '—' && m.name !== '__occupied__' && getRaceForClass(questData, m.className)).length > 0 ? (
+        ) : roster.filter(m => m.name && m.name !== '—' && m.userId !== '__occupied__' && getRaceForClass(questData, m.className)).length > 0 ? (
           <div className="quest-members">
-            {roster.filter(m => m.name && m.name !== '—' && m.name !== '__occupied__' && getRaceForClass(questData, m.className)).map(m => {
+            {roster.filter(m => m.name && m.name !== '—' && m.userId !== '__occupied__' && getRaceForClass(questData, m.className)).map(m => {
               const cls = getClassDetails(m.className);
               const universalQuests = getUniversalQuests(questData);
               const raceQuests = getRaceQuestsForClass(questData, m.className);
