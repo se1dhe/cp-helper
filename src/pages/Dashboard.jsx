@@ -283,13 +283,13 @@ export const Dashboard = () => {
                   </div>
                   <div className="quest-list">
                     <div className="quest-subsection">
-                      <span className="quest-subsection-label">Общие</span>
-                    </div>
-                    {universalQuests.map(renderQuest)}
-                    <div className="quest-subsection">
                       <span className="quest-subsection-label">{raceLabel || 'Расовые'}</span>
                     </div>
                     {raceQuests.map(renderQuest)}
+                    <div className="quest-subsection">
+                      <span className="quest-subsection-label">Общие</span>
+                    </div>
+                    {universalQuests.map(renderQuest)}
                   </div>
                 </div>
               );
