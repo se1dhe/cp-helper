@@ -4,6 +4,7 @@ import { subscribeToRoster } from '../services/rosterService';
 import { subscribeToTasks, addTask, toggleTask, deleteTask } from '../services/taskService';
 import { subscribeToTransactions } from '../services/treasuryService';
 import { subscribeToUsers } from '../services/adminService';
+import { subscribeToQuestData } from '../services/questService';
 import { useAuth } from '../context/AuthContext';
 import { useLang } from '../context/LanguageContext';
 import { L2_CLASSES } from '../utils/classes';
@@ -31,6 +32,7 @@ export const Dashboard = () => {
   const [newTaskTag, setNewTaskTag] = useState('prime');
   const [treasury, setTreasury] = useState({ totalAdena: 0, totalMC: 0 });
   const [expandedQuests, setExpandedQuests] = useState({});
+  const [questData, setQuestData] = useState(null);
 
   useEffect(() => {
     const unsubRoster = subscribeToRoster(setRoster);
@@ -39,7 +41,8 @@ export const Dashboard = () => {
     const unsubTreasury = subscribeToTransactions((data) => {
       setTreasury({ totalAdena: data.totalAdena, totalMC: data.totalMC });
     });
-    return () => { unsubRoster(); unsubUsers(); unsubTasks(); unsubTreasury(); };
+    const unsubQuests = subscribeToQuestData(setQuestData);
+    return () => { unsubRoster(); unsubUsers(); unsubTasks(); unsubTreasury(); unsubQuests(); };
   }, []);
 
   const userMap = {};
@@ -198,13 +201,17 @@ export const Dashboard = () => {
 
       <div className="quests-section">
         <h3 className="section-header"><Medal size={15} /> {t('dashboard.quests')}</h3>
-        {roster.filter(m => m.name && m.name !== '—' && m.name !== '__occupied__' && getRaceForClass(m.className)).length > 0 ? (
+        {!questData ? (
+          <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '2rem', fontSize: '0.85rem' }}>
+            {t('dashboard.loading')}
+          </div>
+        ) : roster.filter(m => m.name && m.name !== '—' && m.name !== '__occupied__' && getRaceForClass(questData, m.className)).length > 0 ? (
           <div className="quest-members">
-            {roster.filter(m => m.name && m.name !== '—' && m.name !== '__occupied__' && getRaceForClass(m.className)).map(m => {
+            {roster.filter(m => m.name && m.name !== '—' && m.name !== '__occupied__' && getRaceForClass(questData, m.className)).map(m => {
               const cls = getClassDetails(m.className);
-              const universalQuests = getUniversalQuests();
-              const raceQuests = getRaceQuestsForClass(m.className);
-              const raceLabel = getRaceLabel(m.className);
+              const universalQuests = getUniversalQuests(questData);
+              const raceQuests = getRaceQuestsForClass(questData, m.className);
+              const raceLabel = getRaceLabel(questData, m.className);
               let idx = 0;
               const renderQuest = (q) => {
                 const questId = `${m.id}-${idx}`;

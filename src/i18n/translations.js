@@ -56,6 +56,7 @@ export const RU = {
   'dashboard.lvl': 'LVL',
   'dashboard.quests': 'Must Have Квесты',
   'dashboard.noQuests': 'Нет мемберов для назначения квестов.',
+  'dashboard.loading': 'Загрузка...',
 
   // Roster
   'roster.title': 'Ростер пати (0utLaw)',
@@ -184,6 +185,7 @@ export const UA = {
   'dashboard.lvl': 'LVL',
   'dashboard.quests': 'Must Have Квести',
   'dashboard.noQuests': 'Немає мемберів для призначення квестів.',
+  'dashboard.loading': 'Завантаження...',
 
   'roster.title': 'Ростер паті (0utLaw)',
   'roster.addSlot': 'Додати слот',
