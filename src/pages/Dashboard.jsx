@@ -5,6 +5,7 @@ import { subscribeToTasks, addTask, toggleTask, deleteTask } from '../services/t
 import { subscribeToTransactions } from '../services/treasuryService';
 import { subscribeToUsers } from '../services/adminService';
 import { subscribeToQuestData } from '../services/questService';
+import { subscribeToQuestLog, toggleQuestCompletion } from '../services/questLogService';
 import { useAuth } from '../context/AuthContext';
 import { useLang } from '../context/LanguageContext';
 import { L2_CLASSES } from '../utils/classes';
@@ -33,6 +34,7 @@ export const Dashboard = () => {
   const [treasury, setTreasury] = useState({ totalAdena: 0, totalMC: 0 });
   const [expandedQuests, setExpandedQuests] = useState({});
   const [questData, setQuestData] = useState(null);
+  const [questLog, setQuestLog] = useState({});
 
   useEffect(() => {
     const unsubRoster = subscribeToRoster(setRoster);
@@ -42,7 +44,8 @@ export const Dashboard = () => {
       setTreasury({ totalAdena: data.totalAdena, totalMC: data.totalMC });
     });
     const unsubQuests = subscribeToQuestData(setQuestData);
-    return () => { unsubRoster(); unsubUsers(); unsubTasks(); unsubTreasury(); unsubQuests(); };
+    const unsubLog = subscribeToQuestLog(setQuestLog);
+    return () => { unsubRoster(); unsubUsers(); unsubTasks(); unsubTreasury(); unsubQuests(); unsubLog(); };
   }, []);
 
   const userMap = {};
@@ -59,6 +62,12 @@ export const Dashboard = () => {
 
   const toggleQuest = (questId) => {
     setExpandedQuests(prev => ({ ...prev, [questId]: !prev[questId] }));
+  };
+
+  const handleToggleQuestDone = async (slotId, questName, currentDone) => {
+    try {
+      await toggleQuestCompletion(slotId, questName, !currentDone);
+    } catch { console.error('Failed to toggle quest'); }
   };
 
   const filledSlots = roster.filter(m => m.name && m.name !== '—').length;
@@ -216,9 +225,19 @@ export const Dashboard = () => {
               const renderQuest = (q) => {
                 const questId = `${m.id}-${idx}`;
                 const isExpanded = expandedQuests[questId];
+                const isDone = questLog?.[m.id]?.[q.name] === true;
                 idx++;
                 return (
-                  <div key={questId} className={`quest-card ${isExpanded ? 'quest-card--expanded' : ''}`}>
+                  <div key={questId} className={`quest-card ${isExpanded ? 'quest-card--expanded' : ''} ${isDone ? 'quest-card--done' : ''}`}>
+                    <button
+                      className="quest-card-done-btn"
+                      onClick={(e) => { e.stopPropagation(); handleToggleQuestDone(m.id, q.name, isDone); }}
+                    >
+                      {isDone
+                        ? <CheckCircle2 size={16} color="var(--success)" />
+                        : <Circle size={16} color="var(--text-muted)" />
+                      }
+                    </button>
                     <button
                       className="quest-card-header"
                       onClick={() => toggleQuest(questId)}
