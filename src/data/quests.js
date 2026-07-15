@@ -244,13 +244,15 @@ const parseSortLevel = (lvl) => {
   return match ? parseInt(match[1], 10) : 999;
 };
 
-export const getQuestsForClass = (className) => {
+const sortByLevel = (arr) =>
+  [...arr].sort((a, b) => parseSortLevel(a.lvl) - parseSortLevel(b.lvl));
+
+export const getUniversalQuests = () => sortByLevel(QUESTS.universal);
+
+export const getRaceQuestsForClass = (className) => {
   const race = getRaceForClass(className);
   if (!race) return [];
-  const raceQuests = QUESTS.race[race]?.quests || [];
-  const all = [...QUESTS.universal, ...raceQuests];
-  all.sort((a, b) => parseSortLevel(a.lvl) - parseSortLevel(b.lvl));
-  return all;
+  return sortByLevel(QUESTS.race[race]?.quests || []);
 };
 
 export const getRaceLabel = (className) => {

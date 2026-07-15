@@ -8,7 +8,7 @@ import { useAuth } from '../context/AuthContext';
 import { useLang } from '../context/LanguageContext';
 import { L2_CLASSES } from '../utils/classes';
 import { ClassIcon } from '../components/ClassIcon';
-import { getQuestsForClass, getRaceLabel, getRaceForClass } from '../data/quests';
+import { getUniversalQuests, getRaceQuestsForClass, getRaceLabel, getRaceForClass } from '../data/quests';
 
 const getRoleBadgeClass = (role) => {
   switch (role) {
@@ -202,9 +202,44 @@ export const Dashboard = () => {
           <div className="quest-members">
             {roster.filter(m => m.name && m.name !== '—' && m.name !== '__occupied__' && getRaceForClass(m.className)).map(m => {
               const cls = getClassDetails(m.className);
-              const quests = getQuestsForClass(m.className);
+              const universalQuests = getUniversalQuests();
+              const raceQuests = getRaceQuestsForClass(m.className);
               const raceLabel = getRaceLabel(m.className);
-              if (quests.length === 0) return null;
+              let idx = 0;
+              const renderQuest = (q) => {
+                const questId = `${m.id}-${idx}`;
+                const isExpanded = expandedQuests[questId];
+                idx++;
+                return (
+                  <div key={questId} className={`quest-card ${isExpanded ? 'quest-card--expanded' : ''}`}>
+                    <button
+                      className="quest-card-header"
+                      onClick={() => toggleQuest(questId)}
+                    >
+                      <span className="quest-card-name">{q.name}</span>
+                      <span className="quest-card-lvl">LVL {q.lvl}</span>
+                      {isExpanded
+                        ? <ChevronDown size={14} className="quest-card-chevron" />
+                        : <ChevronRight size={14} className="quest-card-chevron" />
+                      }
+                    </button>
+                    {isExpanded && (
+                      <div className="quest-card-body">
+                        <div className="quest-card-row">
+                          <MapPin size={12} />
+                          <span>{q.npc}</span>
+                        </div>
+                        <div className="quest-card-row">
+                          <Medal size={12} />
+                          <span>{q.reward}</span>
+                        </div>
+                        <p className="quest-card-desc">{q.description}</p>
+                        {q.notes && <p className="quest-card-notes">{q.notes}</p>}
+                      </div>
+                    )}
+                  </div>
+                );
+              };
               return (
                 <div key={m.id} className="quest-member-block">
                   <div className="quest-member-header">
@@ -216,39 +251,14 @@ export const Dashboard = () => {
                     </div>
                   </div>
                   <div className="quest-list">
-                    {quests.map((q, idx) => {
-                      const questId = `${m.id}-${idx}`;
-                      const isExpanded = expandedQuests[questId];
-                      return (
-                        <div key={questId} className={`quest-card ${isExpanded ? 'quest-card--expanded' : ''}`}>
-                          <button
-                            className="quest-card-header"
-                            onClick={() => toggleQuest(questId)}
-                          >
-                            <span className="quest-card-name">{q.name}</span>
-                            <span className="quest-card-lvl">LVL {q.lvl}</span>
-                            {isExpanded
-                              ? <ChevronDown size={14} className="quest-card-chevron" />
-                              : <ChevronRight size={14} className="quest-card-chevron" />
-                            }
-                          </button>
-                          {isExpanded && (
-                            <div className="quest-card-body">
-                              <div className="quest-card-row">
-                                <MapPin size={12} />
-                                <span>{q.npc}</span>
-                              </div>
-                              <div className="quest-card-row">
-                                <Medal size={12} />
-                                <span>{q.reward}</span>
-                              </div>
-                              <p className="quest-card-desc">{q.description}</p>
-                              {q.notes && <p className="quest-card-notes">{q.notes}</p>}
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
+                    <div className="quest-subsection">
+                      <span className="quest-subsection-label">Общие</span>
+                    </div>
+                    {universalQuests.map(renderQuest)}
+                    <div className="quest-subsection">
+                      <span className="quest-subsection-label">{raceLabel || 'Расовые'}</span>
+                    </div>
+                    {raceQuests.map(renderQuest)}
                   </div>
                 </div>
               );

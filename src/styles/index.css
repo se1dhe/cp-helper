@@ -1006,6 +1006,21 @@ tbody tr:hover { background: rgba(255,255,255,0.02); }
   background: var(--border);
 }
 
+.quest-subsection {
+  display: flex;
+  align-items: center;
+  padding: 0.4rem 1rem;
+  background: rgba(255,255,255,0.015);
+}
+
+.quest-subsection-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--text-muted);
+}
+
 .quest-card {
   background: var(--bg-surface);
   transition: all var(--transition);
