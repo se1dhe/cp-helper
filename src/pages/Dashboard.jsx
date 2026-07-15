@@ -227,26 +227,28 @@ export const Dashboard = () => {
                 idx++;
                 return (
                   <div key={questId} className={`quest-card ${isExpanded ? 'quest-card--expanded' : ''} ${isDone ? 'quest-card--done' : ''}`}>
-                    <button
-                      className="quest-card-done-btn"
-                      onClick={(e) => { e.stopPropagation(); handleToggleQuestDone(m.id, q.name, isDone); }}
-                    >
-                      {isDone
-                        ? <CheckCircle2 size={16} color="var(--success)" />
-                        : <Circle size={16} color="var(--text-muted)" />
-                      }
-                    </button>
-                    <button
-                      className="quest-card-header"
-                      onClick={() => toggleQuest(questId)}
-                    >
-                      <span className="quest-card-name">{q.name}</span>
-                      <span className="quest-card-lvl">LVL {q.lvl}</span>
-                      {isExpanded
-                        ? <ChevronDown size={14} className="quest-card-chevron" />
-                        : <ChevronRight size={14} className="quest-card-chevron" />
-                      }
-                    </button>
+                    <div className="quest-card-top">
+                      <button
+                        className="quest-card-done-btn"
+                        onClick={(e) => { e.stopPropagation(); handleToggleQuestDone(m.id, q.name, isDone); }}
+                      >
+                        {isDone
+                          ? <CheckCircle2 size={16} color="var(--success)" />
+                          : <Circle size={16} color="var(--text-muted)" />
+                        }
+                      </button>
+                      <button
+                        className="quest-card-header"
+                        onClick={() => toggleQuest(questId)}
+                      >
+                        <span className="quest-card-name">{q.name}</span>
+                        <span className="quest-card-lvl">LVL {q.lvl}</span>
+                        {isExpanded
+                          ? <ChevronDown size={14} className="quest-card-chevron" />
+                          : <ChevronRight size={14} className="quest-card-chevron" />
+                        }
+                      </button>
+                    </div>
                     {isExpanded && (
                       <div className="quest-card-body">
                         <div className="quest-card-row">
