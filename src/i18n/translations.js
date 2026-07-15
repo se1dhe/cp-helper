@@ -71,7 +71,7 @@ export const RU = {
   'members.notCompliant': 'Не выполнено',
   'members.noMembers': 'Нет активных мемберов',
   'members.noQuests': 'Нет квестов для этого класса',
-  'members.clickToSet': 'Кликните чтобы установить',
+  'members.today': 'Сегодня',
 
   // Roster
   'roster.title': 'Ростер пати (0utLaw)',
@@ -215,7 +215,7 @@ export const UA = {
   'members.notCompliant': 'Не виконано',
   'members.noMembers': 'Немає активних мемберів',
   'members.noQuests': 'Немає квестів для цього класу',
-  'members.clickToSet': 'Клікніть щоб встановити',
+  'members.today': 'Сьогодні',
 
   'roster.title': 'Ростер паті (0utLaw)',
   'roster.addSlot': 'Додати слот',

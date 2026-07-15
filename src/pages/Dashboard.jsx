@@ -32,7 +32,8 @@ export const Dashboard = () => {
   const [newTask, setNewTask] = useState('');
   const [newTaskTag, setNewTaskTag] = useState('prime');
   const [treasury, setTreasury] = useState({ totalAdena: 0, totalMC: 0 });
-  const [questsCollapsed, setQuestsCollapsed] = useState(false);
+  const [questsCollapsed, setQuestsCollapsed] = useState(() => sessionStorage.getItem('questsCollapsed') === 'true');
+  useEffect(() => { sessionStorage.setItem('questsCollapsed', questsCollapsed); }, [questsCollapsed]);
   const [expandedQuests, setExpandedQuests] = useState({});
   const [questData, setQuestData] = useState(null);
   const [questLog, setQuestLog] = useState({});

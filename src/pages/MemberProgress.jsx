@@ -6,10 +6,10 @@ import { subscribeToQuestData } from '../services/questService';
 import { subscribeToQuestLog } from '../services/questLogService';
 import { subscribeToTransactions } from '../services/treasuryService';
 import { subscribeToMinContributions, setMinContribution } from '../services/memberService';
-import { getUniversalQuests, getRaceQuestsForClass, getRaceForClass, getRaceLabel } from '../data/quests';
+import { getUniversalQuests, getRaceQuestsForClass, getRaceLabel } from '../data/quests';
 import { L2_CLASSES } from '../utils/classes';
 import { ClassIcon } from '../components/ClassIcon';
-import { UserCheck, Medal, Coins, ChevronDown, ChevronRight, CheckCircle2, Circle, ShieldAlert, X, Check } from 'lucide-react';
+import { UserCheck, Medal, Coins, ChevronDown, ChevronRight, CheckCircle2, Circle, ShieldAlert, Edit2, Check, X } from 'lucide-react';
 
 const getClassDetails = (name) => L2_CLASSES.find(c => c.name === name) || { type: 'unknown', color: '#888' };
 
@@ -20,9 +20,9 @@ export const MemberProgress = () => {
   const [questData, setQuestData] = useState(null);
   const [questLog, setQuestLog] = useState({});
   const [transactions, setTransactions] = useState([]);
-  const [minContribs, setMinContribs] = useState({});
+  const [minAdena, setMinAdena] = useState(0);
   const [expandedMembers, setExpandedMembers] = useState({});
-  const [editingMin, setEditingMin] = useState(null);
+  const [editingMin, setEditingMin] = useState(false);
   const [minInput, setMinInput] = useState('');
 
   const activeMembers = roster.filter(
@@ -37,7 +37,7 @@ export const MemberProgress = () => {
     const unsubTx = subscribeToTransactions((data) => {
       setTransactions(data.transactions || []);
     });
-    const unsubMin = subscribeToMinContributions(setMinContribs);
+    const unsubMin = subscribeToMinContributions(setMinAdena);
     return () => { unsubRoster(); unsubQuests(); unsubLog(); unsubTx(); unsubMin(); };
   }, [isPL, isOfficer]);
 
@@ -83,25 +83,49 @@ export const MemberProgress = () => {
     setExpandedMembers(prev => ({ ...prev, [slotId]: !prev[slotId] }));
   };
 
-  const startEditMin = (slotId, current) => {
-    setEditingMin(slotId);
-    setMinInput(current || '');
+  const startEditMin = () => {
+    setMinInput(String(minAdena));
+    setEditingMin(true);
   };
 
-  const saveMin = async (slotId) => {
+  const saveMin = async () => {
     if (minInput === '' || isNaN(Number(minInput))) return;
-    await setMinContribution(slotId, Number(minInput));
-    setEditingMin(null);
-  };
-
-  const cancelEditMin = () => {
-    setEditingMin(null);
-    setMinInput('');
+    await setMinContribution(Number(minInput));
+    setEditingMin(false);
   };
 
   return (
     <div className="fade-in">
       <h2 className="page-title"><UserCheck size={22} /> {t('members.title')}</h2>
+
+      <div className="members-controls">
+        <div className="members-controls-item">
+          <Coins size={15} />
+          <span>{t('members.minAdena')}:</span>
+          {editingMin ? (
+            <div className="min-edit-group">
+              <input
+                type="number"
+                className="input-field"
+                style={{ width: '110px', padding: '0.25rem 0.5rem', fontSize: '0.82rem' }}
+                value={minInput}
+                onChange={e => setMinInput(e.target.value)}
+                onKeyDown={e => { if (e.key === 'Enter') saveMin(); if (e.key === 'Escape') setEditingMin(false); }}
+                autoFocus
+              />
+              <button className="btn btn-sm" onClick={saveMin}><Check size={13} /></button>
+              <button className="btn btn-sm" onClick={() => setEditingMin(false)}><X size={13} /></button>
+            </div>
+          ) : (
+            <>
+              <span className="members-min-value">{minAdena > 0 ? minAdena.toLocaleString('ru-RU') : '—'}</span>
+              <button className="btn btn-sm" onClick={startEditMin} title={t('members.clickToSet')}>
+                <Edit2 size={12} />
+              </button>
+            </>
+          )}
+        </div>
+      </div>
 
       {activeMembers.length === 0 ? (
         <div className="glass-panel">
@@ -114,7 +138,6 @@ export const MemberProgress = () => {
               <tr>
                 <th>{t('members.member')}</th>
                 <th>{t('members.quests')}</th>
-                <th>{t('members.minAdena')}</th>
                 <th>{t('members.adena')}</th>
                 <th>{t('members.status')}</th>
               </tr>
@@ -127,7 +150,6 @@ export const MemberProgress = () => {
                 const done = progress ? progress.filter(q => q.done).length : 0;
                 const total = progress ? progress.length : 0;
                 const adenaTodayAmount = adenaToday[m.name] || 0;
-                const minAdena = minContribs?.[m.id] || 0;
                 const adenaOk = minAdena > 0 ? adenaTodayAmount >= minAdena : null;
                 const questsOk = total > 0 ? done === total : null;
                 const isExpanded = expandedMembers[m.id];
@@ -164,37 +186,8 @@ export const MemberProgress = () => {
                       </td>
                       <td>
                         <span className={`quest-count ${questsOk === true ? 'quest-count--ok' : questsOk === false ? 'quest-count--bad' : ''}`}>
-                          {total > 0 ? `${t('members.done')} ${done}/${total}` : '—'}
+                          {total > 0 ? `${done}/${total}` : '—'}
                         </span>
-                      </td>
-                      <td onClick={(e) => e.stopPropagation()}>
-                        {editingMin === m.id ? (
-                          <div className="min-edit-group">
-                            <input
-                              type="number"
-                              className="input-field"
-                              style={{ width: '90px', padding: '0.2rem 0.4rem', fontSize: '0.8rem' }}
-                              value={minInput}
-                              onChange={e => setMinInput(e.target.value)}
-                              onKeyDown={e => { if (e.key === 'Enter') saveMin(m.id); if (e.key === 'Escape') cancelEditMin(); }}
-                              autoFocus
-                            />
-                            <button className="btn btn-sm" style={{ padding: '0.2rem 0.35rem' }} onClick={() => saveMin(m.id)}>
-                              <Check size={12} />
-                            </button>
-                            <button className="btn btn-sm" style={{ padding: '0.2rem 0.35rem' }} onClick={cancelEditMin}>
-                              <X size={12} />
-                            </button>
-                          </div>
-                        ) : (
-                          <button
-                            className="min-display"
-                            onClick={() => startEditMin(m.id, minAdena)}
-                            title={t('members.clickToSet')}
-                          >
-                            {minAdena > 0 ? minAdena.toLocaleString('ru-RU') : '—'}
-                          </button>
-                        )}
                       </td>
                       <td>
                         <span className={`adena-today ${adenaOk === true ? 'adena-today--ok' : adenaOk === false ? 'adena-today--bad' : ''}`}>
@@ -207,7 +200,7 @@ export const MemberProgress = () => {
                     </tr>
                     {isExpanded && (
                       <tr className="member-detail-row">
-                        <td colSpan={5}>
+                        <td colSpan={4}>
                           <div className="member-detail">
                             <div className="member-detail-section">
                               <h4><Medal size={13} /> {t('members.quests')}</h4>
@@ -232,13 +225,15 @@ export const MemberProgress = () => {
                               <h4><Coins size={13} /> {t('members.adena')}</h4>
                               <div className="adena-detail-info">
                                 <div className="adena-detail-row">
-                                  <span className="adena-detail-label">{t('members.minAdena')}:</span>
-                                  <span className="adena-detail-value">{minAdena > 0 ? minAdena.toLocaleString('ru-RU') : '—'}</span>
-                                </div>
-                                <div className="adena-detail-row">
-                                  <span className="adena-detail-label">{t('members.adena')}:</span>
+                                  <span className="adena-detail-label">{t('members.today')}:</span>
                                   <span className="adena-detail-value">{adenaTodayAmount.toLocaleString('ru-RU')}</span>
                                 </div>
+                                {minAdena > 0 && (
+                                  <div className="adena-detail-row">
+                                    <span className="adena-detail-label">{t('members.minAdena')}:</span>
+                                    <span className="adena-detail-value">{minAdena.toLocaleString('ru-RU')}</span>
+                                  </div>
+                                )}
                                 {minAdena > 0 && (
                                   <div className="adena-detail-row">
                                     <span className="adena-detail-label">{t('members.status')}:</span>

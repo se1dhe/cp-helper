@@ -1160,6 +1160,33 @@ tbody tr:hover { background: rgba(255,255,255,0.02); }
 }
 
 /* ===== MEMBERS REPORT PAGE ===== */
+.members-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.members-controls-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+.members-controls-item svg {
+  color: var(--primary);
+}
+.members-min-value {
+  font-weight: 700;
+  color: var(--text-primary);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.95rem;
+}
+
 .members-report table {
   width: 100%;
   border-collapse: collapse;
@@ -1229,24 +1256,6 @@ tbody tr:hover { background: rgba(255,255,255,0.02); }
 }
 .quest-count--bad {
   color: var(--danger);
-}
-
-.min-display {
-  background: none;
-  border: 1px dashed var(--border);
-  color: var(--text-secondary);
-  cursor: pointer;
-  padding: 0.2rem 0.5rem;
-  border-radius: var(--radius-sm);
-  font-size: 0.8rem;
-  font-family: inherit;
-  transition: all var(--transition);
-  min-width: 70px;
-  text-align: center;
-}
-.min-display:hover {
-  border-color: var(--primary);
-  color: var(--text-primary);
 }
 
 .min-edit-group {

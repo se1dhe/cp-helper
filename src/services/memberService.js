@@ -6,14 +6,14 @@ const DOC_PATH = 'config/minContributions';
 export const subscribeToMinContributions = (callback) => {
   return onSnapshot(doc(db, DOC_PATH), (snapshot) => {
     if (snapshot.exists()) {
-      callback(snapshot.data());
+      callback(snapshot.data().amount || 0);
     } else {
-      callback({});
+      callback(0);
     }
   });
 };
 
-export const setMinContribution = async (slotId, amount) => {
+export const setMinContribution = async (amount) => {
   const ref = doc(db, DOC_PATH);
-  await setDoc(ref, { [slotId]: Number(amount) }, { merge: true });
+  await setDoc(ref, { amount: Number(amount) }, { merge: true });
 };
