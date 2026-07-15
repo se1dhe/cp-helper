@@ -50,6 +50,8 @@ export const RU = {
   'dashboard.offprime': 'Оффпрайм',
   'dashboard.noTasks': 'Нет активных задач{extra}.',
   'dashboard.noTasksExtra': '. Добавьте первую задачу выше',
+  'dashboard.vacant': 'Вакантно',
+  'dashboard.occupied': 'Занято',
   'dashboard.notAssigned': 'Не назначен',
   'dashboard.lvl': 'LVL',
 
@@ -174,6 +176,8 @@ export const UA = {
   'dashboard.offprime': 'Офпрайм',
   'dashboard.noTasks': 'Немає активних завдань{extra}.',
   'dashboard.noTasksExtra': '. Додайте перше завдання вище',
+  'dashboard.vacant': 'Вакантно',
+  'dashboard.occupied': 'Зайнято',
   'dashboard.notAssigned': 'Не призначено',
   'dashboard.lvl': 'LVL',
 

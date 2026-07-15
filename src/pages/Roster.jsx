@@ -134,7 +134,7 @@ export const Roster = () => {
                 value={editForm.userId || ''}
                 onChange={handleUserChange}
               >
-                <option value="">{t('roster.notAssigned')}</option>
+                <option value="">{t('roster.vacant')}</option>
                 <option value={OCCUPIED_MARKER}>{t('roster.occupied')}</option>
                 <option disabled>──────────</option>
                 {users

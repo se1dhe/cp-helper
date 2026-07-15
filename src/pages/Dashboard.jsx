@@ -58,13 +58,15 @@ export const Dashboard = () => {
 
   const renderMemberCard = (m) => {
     const cls = getClassDetails(m.className);
-    const slotUser = m.userId ? userMap[m.userId] : null;
+    const slotUser = m.userId && m.userId !== '__occupied__' ? userMap[m.userId] : null;
     const slotRole = slotUser?.role;
+    const isVacant = !m.userId || m.userId === '' || m.userId === '—';
+    const isOccupiedNoUser = m.userId === '__occupied__';
     return (
       <div key={m.id} className={`member-card member-card--${cls.type}`} style={m.position > 9 ? { borderStyle: 'dashed' } : {}}>
         <ClassIcon className={m.className} type={cls.type} size={44} />
         <div className="member-card-info">
-          <h4>{m.name === '—' || !m.name ? t('dashboard.notAssigned') : m.name}</h4>
+          <h4>{isVacant ? t('dashboard.vacant') : isOccupiedNoUser ? t('dashboard.occupied') : m.name}</h4>
           <div className="member-card-class" style={{ color: cls.color }}>{m.className}</div>
           <div className="member-card-lvl">{t('dashboard.lvl')} {m.lvl}</div>
         </div>
