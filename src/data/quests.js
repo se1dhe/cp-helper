@@ -239,11 +239,18 @@ export const getRaceForClass = (className) => {
   return CLASS_TO_RACE[className] || null;
 };
 
+const parseSortLevel = (lvl) => {
+  const match = lvl.match(/^(\d+)/);
+  return match ? parseInt(match[1], 10) : 999;
+};
+
 export const getQuestsForClass = (className) => {
   const race = getRaceForClass(className);
   if (!race) return [];
   const raceQuests = QUESTS.race[race]?.quests || [];
-  return [...QUESTS.universal, ...raceQuests];
+  const all = [...QUESTS.universal, ...raceQuests];
+  all.sort((a, b) => parseSortLevel(a.lvl) - parseSortLevel(b.lvl));
+  return all;
 };
 
 export const getRaceLabel = (className) => {

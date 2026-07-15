@@ -8,7 +8,7 @@ import { useAuth } from '../context/AuthContext';
 import { useLang } from '../context/LanguageContext';
 import { L2_CLASSES } from '../utils/classes';
 import { ClassIcon } from '../components/ClassIcon';
-import { getQuestsForClass, getRaceLabel } from '../data/quests';
+import { getQuestsForClass, getRaceLabel, getRaceForClass } from '../data/quests';
 
 const getRoleBadgeClass = (role) => {
   switch (role) {
@@ -198,9 +198,9 @@ export const Dashboard = () => {
 
       <div className="quests-section">
         <h3 className="section-header"><Medal size={15} /> {t('dashboard.quests')}</h3>
-        {roster.filter(m => m.name && m.name !== '—' && m.name !== '__occupied__').length > 0 ? (
+        {roster.filter(m => m.name && m.name !== '—' && m.name !== '__occupied__' && getRaceForClass(m.className)).length > 0 ? (
           <div className="quest-members">
-            {roster.filter(m => m.name && m.name !== '—' && m.name !== '__occupied__').map(m => {
+            {roster.filter(m => m.name && m.name !== '—' && m.name !== '__occupied__' && getRaceForClass(m.className)).map(m => {
               const cls = getClassDetails(m.className);
               const quests = getQuestsForClass(m.className);
               const raceLabel = getRaceLabel(m.className);
