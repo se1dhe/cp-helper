@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Shield, Edit2, Check, X, Plus, Trash2, Users } from 'lucide-react';
 import { subscribeToRoster, updateRosterSlot, addRosterSlot, deleteRosterSlot } from '../services/rosterService';
-import { subscribeToUsers, updateUserClass } from '../services/adminService';
+import { subscribeToUsers, updateUserClass, clearUserClass } from '../services/adminService';
 import { useAuth } from '../context/AuthContext';
 import { useLang } from '../context/LanguageContext';
 import { L2_CLASSES } from '../utils/classes';
@@ -54,10 +54,20 @@ export const Roster = () => {
   const handleSave = async (slotId) => {
     setSaving(true);
     try {
+      const prevSlot = roster.find(s => s.id === slotId);
+      const prevUserId = prevSlot?.userId;
+      const newUserId = editForm.userId;
+
       await updateRosterSlot(slotId, editForm);
-      if (editForm.userId && editForm.userId !== OCCUPIED_MARKER && editForm.className) {
-        await updateUserClass(editForm.userId, editForm.className);
+
+      if (newUserId && newUserId !== OCCUPIED_MARKER && editForm.className) {
+        await updateUserClass(newUserId, editForm.className);
       }
+
+      if (prevUserId && prevUserId !== OCCUPIED_MARKER && prevUserId !== newUserId) {
+        await clearUserClass(prevUserId);
+      }
+
       setEditingId(null);
     } catch { alert(t('roster.error')); }
     finally { setSaving(false); }

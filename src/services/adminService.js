@@ -25,6 +25,11 @@ export const updateUserClass = async (userId, className) => {
   await updateDoc(userRef, { className });
 };
 
+export const clearUserClass = async (userId) => {
+  const userRef = doc(db, "users", userId);
+  await updateDoc(userRef, { className: '' });
+};
+
 // Сброс ростера до стандартного состояния (вызывается ПЛом)
 export const initializeRoster = async () => {
   const existing = await getDocs(collection(db, 'roster'));
