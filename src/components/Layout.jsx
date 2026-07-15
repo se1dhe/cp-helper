@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Outlet, NavLink } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useLang } from '../context/LanguageContext';
 import { signInWithEmail, registerWithEmail, logOut } from '../firebase';
-import { LayoutDashboard, Users, Wallet, LogIn, LogOut, ShieldAlert, UserPlus } from 'lucide-react';
-
-const navItems = [
-  { to: '/', icon: LayoutDashboard, label: 'Дашборд', end: true },
-  { to: '/roster', icon: Users, label: 'Ростер' },
-  { to: '/treasury', icon: Wallet, label: 'Казна' },
-];
+import { updateUserNickname } from '../services/adminService';
+import { subscribeToRoster, updateRosterNameByUserId } from '../services/rosterService';
+import { LayoutDashboard, Users, Wallet, LogIn, LogOut, ShieldAlert, UserPlus, Check, X, Languages } from 'lucide-react';
+import { L2_CLASSES } from '../utils/classes';
+import { ClassIcon } from './ClassIcon';
 
 const getRoleBadgeClass = (role) => {
   switch (role) {
@@ -19,13 +18,36 @@ const getRoleBadgeClass = (role) => {
   }
 };
 
+const getClassDetails = (name) => L2_CLASSES.find(c => c.name === name) || null;
+
 export const Layout = () => {
-  const { currentUser, userRole, isGuest } = useAuth();
+  const { currentUser, userRole, userNickname, userClass, isGuest, refreshUserDoc } = useAuth();
+  const { t, toggleLang, langLabel } = useLang();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [nickname, setNickname] = useState('');
   const [isRegistering, setIsRegistering] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [editingNickname, setEditingNickname] = useState(false);
+  const [nicknameInput, setNicknameInput] = useState('');
+  const [savingNickname, setSavingNickname] = useState(false);
+  const [roster, setRoster] = useState([]);
+
+  const navItems = [
+    { to: '/', icon: LayoutDashboard, label: t('nav.dashboard'), end: true },
+    { to: '/roster', icon: Users, label: t('nav.roster') },
+    { to: '/treasury', icon: Wallet, label: t('nav.treasury') },
+  ];
+
+  useEffect(() => {
+    const unsub = subscribeToRoster(setRoster);
+    return () => unsub();
+  }, []);
+
+  const mySlot = roster.find(s => s.userId === currentUser?.uid || s.name === userNickname);
+  const effectiveClass = userClass || mySlot?.className || '';
+  const classDetails = getClassDetails(effectiveClass);
 
   const handleAuth = async (e) => {
     e.preventDefault();
@@ -33,15 +55,43 @@ export const Layout = () => {
     setLoading(true);
     try {
       if (isRegistering) {
+        sessionStorage.setItem('pendingNickname', nickname);
         await registerWithEmail(email, password);
       } else {
         await signInWithEmail(email, password);
       }
     } catch (err) {
-      setError(err.message?.replace('Firebase:', '').trim() || 'Ошибка авторизации');
+      setError(err.message?.replace('Firebase:', '').trim() || t('auth.error'));
     } finally {
       setLoading(false);
     }
+  };
+
+  const startEditNickname = () => {
+    setNicknameInput(userNickname || currentUser.email);
+    setEditingNickname(true);
+  };
+
+  const handleSaveNickname = async () => {
+    if (!nicknameInput.trim() || nicknameInput.trim() === userNickname) {
+      setEditingNickname(false);
+      return;
+    }
+    setSavingNickname(true);
+    try {
+      await updateUserNickname(currentUser.uid, nicknameInput.trim());
+      await updateRosterNameByUserId(currentUser.uid, nicknameInput.trim());
+      await refreshUserDoc(currentUser.uid);
+      setEditingNickname(false);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setSavingNickname(false);
+    }
+  };
+
+  const handleCancelNickname = () => {
+    setEditingNickname(false);
   };
 
   if (!currentUser) {
@@ -60,38 +110,52 @@ export const Layout = () => {
             {error && <div className="login-form-error">{error}</div>}
 
             <div className="input-group">
-              <label>Email</label>
+              <label>{t('auth.email')}</label>
               <input
                 type="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 className="input-field"
-                placeholder="your@email.com"
+                placeholder={t('auth.emailPlaceholder')}
                 required
                 autoComplete="email"
               />
             </div>
 
+            {isRegistering && (
+              <div className="input-group">
+                <label>{t('auth.nickname')}</label>
+                <input
+                  type="text"
+                  value={nickname}
+                  onChange={e => setNickname(e.target.value)}
+                  className="input-field"
+                  placeholder={t('auth.nicknamePlaceholder')}
+                  required
+                />
+              </div>
+            )}
+
             <div className="input-group">
-              <label>Пароль</label>
+              <label>{t('auth.password')}</label>
               <input
                 type="password"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 className="input-field"
-                placeholder="••••••••"
+                placeholder={t('auth.passwordPlaceholder')}
                 required
-                autoComplete="current-password"
+                autoComplete={isRegistering ? 'new-password' : 'current-password'}
               />
             </div>
 
             <button type="submit" className="auth-btn" disabled={loading}>
               {loading ? (
-                <span style={{ opacity: 0.7 }}>Загрузка...</span>
+                <span style={{ opacity: 0.7 }}>{t('auth.loading')}</span>
               ) : isRegistering ? (
-                <><UserPlus size={18} /> Зарегистрироваться</>
+                <><UserPlus size={18} /> {t('auth.register')}</>
               ) : (
-                <><LogIn size={18} /> Войти</>
+                <><LogIn size={18} /> {t('auth.login')}</>
               )}
             </button>
           </form>
@@ -100,7 +164,7 @@ export const Layout = () => {
             onClick={() => { setIsRegistering(!isRegistering); setError(''); }}
             className="login-switch-btn"
           >
-            {isRegistering ? 'Уже есть аккаунт? Войти' : 'Нет аккаунта? Зарегистрироваться'}
+            {isRegistering ? t('auth.switchToLogin') : t('auth.switchToRegister')}
           </button>
         </div>
       </div>
@@ -112,11 +176,11 @@ export const Layout = () => {
       <div className="access-denied">
         <div className="access-denied-card fade-in">
           <ShieldAlert size={48} style={{ color: 'var(--danger)', marginBottom: '1rem' }} />
-          <h2>Ожидание одобрения</h2>
-          <p>Вы авторизованы как <strong style={{ color: 'var(--text-primary)' }}>{currentUser.email}</strong></p>
-          <p style={{ marginTop: '0.5rem' }}>Обратитесь к ПЛ для выдачи роли <strong style={{ color: 'var(--gold)' }}>MEMBER</strong> или выше.</p>
+          <h2>{t('guest.title')}</h2>
+          <p>{t('guest.message')} <strong style={{ color: 'var(--text-primary)' }}>{userNickname || currentUser.email}</strong></p>
+          <p style={{ marginTop: '0.5rem' }}>{t('guest.contact', { role: t('role.member') })}</p>
           <button onClick={logOut} className="btn btn-danger" style={{ marginTop: '2rem' }}>
-            <LogOut size={16} /> Выйти
+            <LogOut size={16} /> {t('guest.logout')}
           </button>
         </div>
       </div>
@@ -159,24 +223,64 @@ export const Layout = () => {
                 className={({ isActive }) => `sidebar-link${isActive ? ' active' : ''}`}
               >
                 <ShieldAlert size={17} />
-                Управление
+                {t('nav.admin')}
               </NavLink>
             </>
           )}
+
+          <div className="sidebar-sep" />
+
+          <button onClick={toggleLang} className="sidebar-link" style={{ width: '100%', background: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 'inherit', textAlign: 'left' }}>
+            <Languages size={17} />
+            {langLabel}
+          </button>
         </nav>
 
         <div className="sidebar-user">
-          <div className="sidebar-user-info">
-            <div className="sidebar-user-avatar">
-              {currentUser.email?.[0]?.toUpperCase() || '?'}
+          <div className="sidebar-user-top">
+            <div className="sidebar-user-icon">
+              {classDetails ? (
+                <ClassIcon className={effectiveClass} type={classDetails.type} size={38} />
+              ) : (
+                <div className="sidebar-user-avatar">
+                  {(userNickname || currentUser.email)?.[0]?.toUpperCase() || '?'}
+                </div>
+              )}
             </div>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div className="sidebar-user-name">{currentUser.email}</div>
-              <span className={getRoleBadgeClass(userRole)}>{userRole}</span>
+            <div className="sidebar-user-meta">
+              {editingNickname ? (
+                <div className="sidebar-edit-name">
+                  <input
+                    type="text"
+                    className="input-field"
+                    value={nicknameInput}
+                    onChange={e => setNicknameInput(e.target.value)}
+                    onKeyDown={e => { if (e.key === 'Enter') handleSaveNickname(); if (e.key === 'Escape') handleCancelNickname(); }}
+                    autoFocus
+                    style={{ padding: '0.2rem 0.35rem', fontSize: '0.78rem', width: '100px' }}
+                  />
+                  <button className="btn btn-sm" onClick={handleSaveNickname} disabled={savingNickname} style={{ padding: '0.15rem 0.25rem' }}>
+                    <Check size={11} />
+                  </button>
+                  <button className="btn btn-sm" onClick={handleCancelNickname} style={{ padding: '0.15rem 0.25rem' }}>
+                    <X size={11} />
+                  </button>
+                </div>
+              ) : (
+                <div
+                  className="sidebar-user-name"
+                  style={{ color: classDetails?.color || undefined }}
+                  onClick={startEditNickname}
+                  title={t('sidebar.editNickname')}
+                >
+                  {userNickname || currentUser.email}
+                </div>
+              )}
+              <span className={getRoleBadgeClass(userRole)}>{t(`role.${userRole.toLowerCase()}`)}</span>
             </div>
           </div>
           <button onClick={logOut} className="btn btn-sm btn-block">
-            <LogOut size={13} /> Выйти
+            <LogOut size={13} /> {t('sidebar.logout')}
           </button>
         </div>
       </aside>

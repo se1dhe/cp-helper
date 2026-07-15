@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { onAuthStateChanged } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { onAuthStateChanged, updateProfile } from "firebase/auth";
+import { doc, getDoc, setDoc, updateDoc, onSnapshot } from "firebase/firestore";
 import { auth, db } from "../firebase";
 
 const AuthContext = createContext();
@@ -9,27 +9,57 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
-  const [userRole, setUserRole] = useState("GUEST"); // PL, OFFICER, MEMBER, GUEST
+  const [userRole, setUserRole] = useState("GUEST");
+  const [userNickname, setUserNickname] = useState('');
+  const [userClass, setUserClass] = useState('');
   const [loading, setLoading] = useState(true);
+
+  const refreshUserDoc = async (uid) => {
+    const userRef = doc(db, "users", uid);
+    const userSnap = await getDoc(userRef);
+    if (userSnap.exists()) {
+      const data = userSnap.data();
+      setUserRole(data.role || "GUEST");
+      setUserClass(data.className || '');
+      setUserNickname(data.nickname || data.displayName || userSnap.data().email);
+    }
+  };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        // Fetch user role from Firestore
         const userRef = doc(db, "users", user.uid);
         const userSnap = await getDoc(userRef);
         
         if (userSnap.exists()) {
-          setUserRole(userSnap.data().role || "GUEST");
+          const data = userSnap.data();
+          setUserRole(data.role || "GUEST");
+          setUserClass(data.className || '');
+          const nickname = data.nickname || data.displayName || user.displayName || user.email;
+          setUserNickname(nickname);
+          const isEmailFallback = data.nickname && data.nickname === user.email;
+          if ((!data.nickname || isEmailFallback) && (data.displayName || user.displayName)) {
+            const newNickname = data.displayName || user.displayName;
+            await updateDoc(userRef, { nickname: newNickname });
+            setUserNickname(newNickname);
+          }
         } else {
-          // Если юзера нет в базе, создаем его с ролью GUEST (без прав просмотра)
+          const pendingNickname = sessionStorage.getItem('pendingNickname') || '';
+          sessionStorage.removeItem('pendingNickname');
+          const fallbackName = pendingNickname || user.email?.split('@')[0] || user.email;
+          if (!user.displayName) {
+            await updateProfile(user, { displayName: fallbackName });
+          }
           await setDoc(userRef, {
             email: user.email,
-            displayName: user.displayName,
+            displayName: fallbackName,
+            nickname: fallbackName,
             role: "GUEST",
             createdAt: new Date()
           });
           setUserRole("GUEST");
+          setUserNickname(fallbackName);
+          setUserClass('');
         }
         setCurrentUser(user);
       } else {
@@ -45,9 +75,12 @@ export const AuthProvider = ({ children }) => {
   const value = {
     currentUser,
     userRole,
+    userNickname,
+    userClass,
     isPL: userRole === "PL",
     isOfficer: userRole === "OFFICER" || userRole === "PL",
     isGuest: userRole === "GUEST",
+    refreshUserDoc,
   };
 
   return (

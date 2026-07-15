@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Shield, Edit2, Check, X } from 'lucide-react';
-import { subscribeToRoster, updateRosterSlot } from '../services/rosterService';
-import { subscribeToUsers } from '../services/adminService';
+import { Shield, Edit2, Check, X, Plus, Trash2, Users } from 'lucide-react';
+import { subscribeToRoster, updateRosterSlot, addRosterSlot, deleteRosterSlot } from '../services/rosterService';
+import { subscribeToUsers, updateUserClass } from '../services/adminService';
 import { useAuth } from '../context/AuthContext';
+import { useLang } from '../context/LanguageContext';
 import { L2_CLASSES } from '../utils/classes';
 import { ClassIcon } from '../components/ClassIcon';
 
@@ -10,6 +11,7 @@ const getClassDetails = (name) => L2_CLASSES.find(c => c.name === name) || { typ
 
 export const Roster = () => {
   const { isPL } = useAuth();
+  const { t } = useLang();
   const [roster, setRoster] = useState([]);
   const [users, setUsers] = useState([]);
   const [editingId, setEditingId] = useState(null);
@@ -33,9 +35,31 @@ export const Roster = () => {
     setSaving(true);
     try {
       await updateRosterSlot(slotId, editForm);
+      if (editForm.userId && editForm.className) {
+        await updateUserClass(editForm.userId, editForm.className);
+      }
       setEditingId(null);
-    } catch { alert('Ошибка при сохранении'); }
+    } catch { alert(t('roster.error')); }
     finally { setSaving(false); }
+  };
+
+  const handleAddSlot = async () => {
+    try {
+      await addRosterSlot(roster);
+    } catch (e) {
+      console.error(e);
+      alert(t('roster.addError'));
+    }
+  };
+
+  const handleDeleteSlot = async (slotId) => {
+    if (!window.confirm(t('roster.deleteConfirm'))) return;
+    try {
+      await deleteRosterSlot(slotId);
+    } catch (e) {
+      console.error(e);
+      alert(t('roster.deleteError'));
+    }
   };
 
   const handleClassChange = (e) => {
@@ -43,150 +67,174 @@ export const Roster = () => {
     if (cls) setEditForm(prev => ({ ...prev, className: cls.name, type: cls.type }));
   };
 
-  // Group classes by type for the select
   const classesByType = {
-    'Маги': L2_CLASSES.filter(c => c.type === 'mage'),
-    'Бойцы': L2_CLASSES.filter(c => c.type === 'fighter'),
-    'Баферы': L2_CLASSES.filter(c => c.type === 'buffer'),
-    'Хилеры': L2_CLASSES.filter(c => c.type === 'support'),
+    [t('roster.mages')]: L2_CLASSES.filter(c => c.type === 'mage'),
+    [t('roster.fighters')]: L2_CLASSES.filter(c => c.type === 'fighter'),
+    [t('roster.buffers')]: L2_CLASSES.filter(c => c.type === 'buffer'),
+    [t('roster.supports')]: L2_CLASSES.filter(c => c.type === 'support'),
+  };
+
+  const mainSlots = roster.filter(s => s.position <= 9);
+  const extraSlots = roster.filter(s => s.position > 9);
+
+  const renderSlot = (m, isExtra) => {
+    const isEditing = editingId === m.id;
+    const cls = getClassDetails(m.className);
+    const isEmpty = !m.name || m.name === '—';
+
+    return (
+      <div
+        key={m.id}
+        className={`roster-card roster-card--${cls.type}${isExtra ? ' roster-card--extra' : ''}`}
+        style={{ opacity: isEmpty ? 0.75 : 1 }}
+      >
+        {isExtra && <div className="roster-card-extra-badge">10-я</div>}
+
+        {isPL && !isEditing && (
+          <div style={{ position: 'absolute', top: '0.75rem', right: '0.75rem', display: 'flex', gap: '0.3rem' }}>
+            <button onClick={() => handleEdit(m)} className="roster-card-btn" title={t('roster.edit')}>
+              <Edit2 size={12} />
+            </button>
+            <button onClick={() => handleDeleteSlot(m.id)} className="roster-card-btn roster-card-btn--danger" title={t('roster.delete')}>
+              <Trash2 size={12} />
+            </button>
+          </div>
+        )}
+
+        <div className="roster-slot-top">
+          <ClassIcon className={m.className} type={cls.type} size={52} />
+
+          <div className="roster-slot-info">
+            {isEditing ? (
+              <select
+                className="input-field"
+                style={{ padding: '0.3rem 0.5rem', marginBottom: '0.35rem', fontSize: '0.78rem' }}
+                value={editForm.userId || ''}
+                onChange={e => {
+                  const user = users.find(u => u.id === e.target.value);
+                  if (user) {
+                    setEditForm(prev => ({
+                      ...prev,
+                      userId: user.id,
+                      name: user.nickname || user.displayName || user.email,
+                    }));
+                  } else {
+                    setEditForm(prev => ({ ...prev, userId: '', name: '—' }));
+                  }
+                }}
+              >
+                <option value="">{t('roster.notAssigned')}</option>
+                {users
+                  .filter(u => u.role !== 'GUEST')
+                  .map(u => (
+                    <option key={u.id} value={u.id}>
+                      {u.nickname || u.displayName || u.email}
+                    </option>
+                  ))
+                }
+              </select>
+            ) : (
+              <div className="roster-slot-name">
+                {isEmpty ? (
+                  <span style={{ color: 'var(--text-muted)', fontStyle: 'italic', fontWeight: 400 }}>{t('roster.vacant')}</span>
+                ) : (
+                  <>{m.name} <span className="occupied-badge">{t('roster.occupied')}</span></>
+                )}
+              </div>
+            )}
+
+            {isEditing ? (
+              <select
+                className="input-field"
+                style={{ padding: '0.3rem 0.5rem', fontSize: '0.78rem' }}
+                value={editForm.className}
+                onChange={handleClassChange}
+              >
+                {Object.entries(classesByType).map(([group, classes]) => (
+                  <optgroup label={group} key={group}>
+                    {classes.map(c => (
+                      <option key={c.name} value={c.name}>{c.name}</option>
+                    ))}
+                  </optgroup>
+                ))}
+              </select>
+            ) : (
+              <div className="roster-slot-class" style={{ color: cls.color }}>{m.className}</div>
+            )}
+          </div>
+        </div>
+
+        <div className="roster-slot-stats">
+          <div className="roster-stat-box">
+            <div className="roster-stat-label">{t('roster.level')}</div>
+            {isEditing ? (
+              <input
+                type="number"
+                min="1" max="85"
+                className="input-field"
+                style={{ padding: '0.15rem', width: '4rem', textAlign: 'center', margin: '0 auto', display: 'block', fontSize: '1rem' }}
+                value={editForm.lvl}
+                onChange={e => setEditForm(prev => ({ ...prev, lvl: Number(e.target.value) }))}
+              />
+            ) : (
+              <div className="roster-stat-value">{m.lvl}</div>
+            )}
+          </div>
+          <div className="roster-stat-box">
+            <div className="roster-stat-label">{t('roster.role')}</div>
+            <div className="roster-stat-value" style={{
+              fontSize: '0.9rem',
+              fontFamily: 'Inter',
+              color: cls.color,
+              marginTop: '0.2rem',
+            }}>
+              {cls.type === 'mage' ? t('roster.dd') : cls.type === 'fighter' ? t('roster.dd') : cls.type === 'support' ? t('roster.heal') : t('roster.buff')}
+            </div>
+          </div>
+        </div>
+
+        {isEditing && (
+          <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.875rem', justifyContent: 'flex-end' }}>
+            <button onClick={handleCancel} className="btn btn-sm">
+              <X size={13} /> {t('roster.cancel')}
+            </button>
+            <button
+              onClick={() => handleSave(m.id)}
+              className="btn btn-primary btn-sm"
+              disabled={saving}
+            >
+              <Check size={13} /> {saving ? t('roster.saving') : t('roster.save')}
+            </button>
+          </div>
+        )}
+      </div>
+    );
   };
 
   return (
     <div className="fade-in">
-      <h2 className="page-title"><Shield size={22} /> Ростер пати (0utLaw)</h2>
-
-      <div className="members-grid">
-        {roster.map((m) => {
-          const isEditing = editingId === m.id;
-          const cls = getClassDetails(m.className);
-          const isEmpty = !m.name || m.name === '—';
-
-          return (
-            <div
-              key={m.id}
-              className={`roster-card roster-card--${cls.type}`}
-              style={{ opacity: isEmpty ? 0.75 : 1 }}
-            >
-              {/* Edit button */}
-              {isPL && !isEditing && (
-                <button
-                  onClick={() => handleEdit(m)}
-                  style={{
-                    position: 'absolute', top: '0.875rem', right: '0.875rem',
-                    background: 'rgba(255,255,255,0.05)',
-                    border: '1px solid var(--border)',
-                    borderRadius: '7px',
-                    color: 'var(--text-muted)',
-                    cursor: 'pointer',
-                    padding: '0.3rem 0.4rem',
-                    display: 'flex',
-                    transition: 'all 0.2s',
-                  }}
-                  onMouseEnter={e => { e.currentTarget.style.color = 'var(--text-primary)'; e.currentTarget.style.borderColor = 'var(--border-hover)'; }}
-                  onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.borderColor = 'var(--border)'; }}
-                >
-                  <Edit2 size={13} />
-                </button>
-              )}
-
-              {/* Header */}
-              <div className="roster-slot-top">
-                <ClassIcon className={m.className} type={cls.type} size={52} />
-
-                <div className="roster-slot-info">
-                  {isEditing ? (
-                    <select
-                      className="input-field"
-                      style={{ padding: '0.3rem 0.5rem', marginBottom: '0.35rem', fontSize: '0.78rem' }}
-                      value={editForm.name || '—'}
-                      onChange={e => setEditForm(prev => ({ ...prev, name: e.target.value }))}
-                    >
-                      <option value="—">— Не назначен —</option>
-                      {users
-                        .filter(u => u.role !== 'GUEST')
-                        .map(u => (
-                          <option key={u.id} value={u.displayName || u.email}>
-                            {u.displayName || u.email} [{u.role}]
-                          </option>
-                        ))
-                      }
-                    </select>
-                  ) : (
-                    <div className="roster-slot-name">
-                      {isEmpty ? <span style={{ color: 'var(--text-muted)', fontStyle: 'italic', fontWeight: 400 }}>Вакантно</span> : m.name}
-                    </div>
-                  )}
-
-                  {isEditing ? (
-                    <select
-                      className="input-field"
-                      style={{ padding: '0.3rem 0.5rem', fontSize: '0.78rem' }}
-                      value={editForm.className}
-                      onChange={handleClassChange}
-                    >
-                      {Object.entries(classesByType).map(([group, classes]) => (
-                        <optgroup label={group} key={group}>
-                          {classes.map(c => (
-                            <option key={c.name} value={c.name}>{c.name}</option>
-                          ))}
-                        </optgroup>
-                      ))}
-                    </select>
-                  ) : (
-                    <div className="roster-slot-class" style={{ color: cls.color }}>{m.className}</div>
-                  )}
-                </div>
-              </div>
-
-              {/* Stats */}
-              <div className="roster-slot-stats">
-                <div className="roster-stat-box">
-                  <div className="roster-stat-label">Уровень</div>
-                  {isEditing ? (
-                    <input
-                      type="number"
-                      min="1" max="85"
-                      className="input-field"
-                      style={{ padding: '0.15rem', width: '4rem', textAlign: 'center', margin: '0 auto', display: 'block', fontSize: '1rem' }}
-                      value={editForm.lvl}
-                      onChange={e => setEditForm(prev => ({ ...prev, lvl: Number(e.target.value) }))}
-                    />
-                  ) : (
-                    <div className="roster-stat-value">{m.lvl}</div>
-                  )}
-                </div>
-                <div className="roster-stat-box">
-                  <div className="roster-stat-label">Роль</div>
-                  <div className="roster-stat-value" style={{
-                    fontSize: '0.9rem',
-                    fontFamily: 'Inter',
-                    color: cls.color,
-                    marginTop: '0.2rem',
-                  }}>
-                    {cls.type === 'mage' ? 'ДД' : cls.type === 'fighter' ? 'ДД' : cls.type === 'support' ? 'Хил' : 'Баф'}
-                  </div>
-                </div>
-              </div>
-
-              {/* Edit actions */}
-              {isEditing && (
-                <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.875rem', justifyContent: 'flex-end' }}>
-                  <button onClick={handleCancel} className="btn btn-sm">
-                    <X size={13} /> Отмена
-                  </button>
-                  <button
-                    onClick={() => handleSave(m.id)}
-                    className="btn btn-primary btn-sm"
-                    disabled={saving}
-                  >
-                    <Check size={13} /> {saving ? '...' : 'Сохранить'}
-                  </button>
-                </div>
-              )}
-            </div>
-          );
-        })}
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="page-title" style={{ marginBottom: 0 }}><Shield size={22} /> {t('roster.title')}</h2>
+        {isPL && (
+          <button className="btn btn-primary btn-sm" onClick={handleAddSlot}>
+            <Plus size={15} /> {t('roster.addSlot')}
+          </button>
+        )}
       </div>
+
+      <h3 className="section-header"><Users size={15} /> {t('roster.mainSquad')}</h3>
+      <div className="members-grid mb-4">
+        {mainSlots.map(m => renderSlot(m, false))}
+      </div>
+
+      {extraSlots.length > 0 && (
+        <>
+          <h3 className="section-header" style={{ marginTop: '1.5rem' }}><Users size={15} /> {t('roster.extraSlots')}</h3>
+          <div className="members-grid">
+            {extraSlots.map(m => renderSlot(m, true))}
+          </div>
+        </>
+      )}
     </div>
   );
 };
