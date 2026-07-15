@@ -65,9 +65,7 @@ export const Dashboard = () => {
   };
 
   const handleToggleQuestDone = async (slotId, questName, currentDone) => {
-    try {
-      await toggleQuestCompletion(slotId, questName, !currentDone);
-    } catch { console.error('Failed to toggle quest'); }
+    await toggleQuestCompletion(slotId, questName, !currentDone);
   };
 
   const filledSlots = roster.filter(m => m.name && m.name !== '—').length;

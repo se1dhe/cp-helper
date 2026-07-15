@@ -16,5 +16,9 @@ export const subscribeToQuestLog = (callback) => {
 export const toggleQuestCompletion = async (slotId, questName, done) => {
   const ref = doc(db, DOC_PATH);
   const update = { [`${slotId}.${questName}`]: done };
-  await setDoc(ref, update, { merge: true });
+  try {
+    await updateDoc(ref, update);
+  } catch {
+    await setDoc(ref, update, { merge: true });
+  }
 };
