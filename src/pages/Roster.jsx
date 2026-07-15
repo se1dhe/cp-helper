@@ -25,17 +25,37 @@ export const Roster = () => {
     return () => { unsubRoster(); if (unsubUsers) unsubUsers(); };
   }, [isPL]);
 
+  const OCCUPIED_MARKER = '__occupied__';
+
   const handleEdit = (slot) => {
     setEditingId(slot.id);
     setEditForm({ ...slot });
   };
   const handleCancel = () => setEditingId(null);
 
+  const handleUserChange = (e) => {
+    const val = e.target.value;
+    if (val === OCCUPIED_MARKER) {
+      setEditForm(prev => ({ ...prev, userId: OCCUPIED_MARKER, name: t('roster.occupied') }));
+    } else if (val === '') {
+      setEditForm(prev => ({ ...prev, userId: '', name: '—' }));
+    } else {
+      const user = users.find(u => u.id === val);
+      if (user) {
+        setEditForm(prev => ({
+          ...prev,
+          userId: user.id,
+          name: user.nickname || user.displayName || user.email,
+        }));
+      }
+    }
+  };
+
   const handleSave = async (slotId) => {
     setSaving(true);
     try {
       await updateRosterSlot(slotId, editForm);
-      if (editForm.userId && editForm.className) {
+      if (editForm.userId && editForm.userId !== OCCUPIED_MARKER && editForm.className) {
         await updateUserClass(editForm.userId, editForm.className);
       }
       setEditingId(null);
@@ -80,7 +100,9 @@ export const Roster = () => {
   const renderSlot = (m, isExtra) => {
     const isEditing = editingId === m.id;
     const cls = getClassDetails(m.className);
-    const isEmpty = !m.name || m.name === '—';
+    const isVacant = !m.userId || m.userId === '' || m.userId === '—';
+    const isOccupiedNoUser = m.userId === OCCUPIED_MARKER;
+    const isEmpty = isVacant;
 
     return (
       <div
@@ -110,20 +132,11 @@ export const Roster = () => {
                 className="input-field"
                 style={{ padding: '0.3rem 0.5rem', marginBottom: '0.35rem', fontSize: '0.78rem' }}
                 value={editForm.userId || ''}
-                onChange={e => {
-                  const user = users.find(u => u.id === e.target.value);
-                  if (user) {
-                    setEditForm(prev => ({
-                      ...prev,
-                      userId: user.id,
-                      name: user.nickname || user.displayName || user.email,
-                    }));
-                  } else {
-                    setEditForm(prev => ({ ...prev, userId: '', name: '—' }));
-                  }
-                }}
+                onChange={handleUserChange}
               >
                 <option value="">{t('roster.notAssigned')}</option>
+                <option value={OCCUPIED_MARKER}>{t('roster.occupied')}</option>
+                <option disabled>──────────</option>
                 {users
                   .filter(u => u.role !== 'GUEST')
                   .map(u => (
@@ -135,8 +148,10 @@ export const Roster = () => {
               </select>
             ) : (
               <div className="roster-slot-name">
-                {isEmpty ? (
+                {isVacant ? (
                   <span style={{ color: 'var(--text-muted)', fontStyle: 'italic', fontWeight: 400 }}>{t('roster.vacant')}</span>
+                ) : isOccupiedNoUser ? (
+                  <span className="occupied-label">{t('roster.occupied')}</span>
                 ) : (
                   <>{m.name} <span className="occupied-badge">{t('roster.occupied')}</span></>
                 )}
