@@ -5,7 +5,7 @@ import { useLang } from '../context/LanguageContext';
 import { signInWithEmail, registerWithEmail, logOut } from '../firebase';
 import { updateUserNickname } from '../services/adminService';
 import { subscribeToRoster, updateRosterNameByUserId } from '../services/rosterService';
-import { LayoutDashboard, Users, Wallet, LogIn, LogOut, ShieldAlert, UserPlus, Check, X, Languages } from 'lucide-react';
+import { LayoutDashboard, Users, Wallet, LogIn, LogOut, ShieldAlert, UserPlus, Check, X, Languages, UserCheck } from 'lucide-react';
 import { L2_CLASSES } from '../utils/classes';
 import { ClassIcon } from './ClassIcon';
 
@@ -218,6 +218,13 @@ export const Layout = () => {
           {(userRole === 'PL' || userRole === 'OFFICER') && (
             <>
               <div className="sidebar-sep" />
+              <NavLink
+                to="/members"
+                className={({ isActive }) => `sidebar-link${isActive ? ' active' : ''}`}
+              >
+                <UserCheck size={17} />
+                {t('nav.members')}
+              </NavLink>
               <NavLink
                 to="/admin"
                 className={({ isActive }) => `sidebar-link${isActive ? ' active' : ''}`}

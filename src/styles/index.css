@@ -755,6 +755,16 @@ tbody tr:hover { background: rgba(255,255,255,0.02); }
   letter-spacing: 1px;
 }
 .section-header svg { color: var(--primary); }
+.section-header--clickable {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0;
+  width: 100%;
+  transition: opacity var(--transition);
+}
+.section-header--clickable:hover { opacity: 0.8; }
 
 /* ===== ROSTER PAGE SPECIFICS ===== */
 .roster-card {
@@ -1147,5 +1157,218 @@ tbody tr:hover { background: rgba(255,255,255,0.02); }
   background: rgba(245,158,11,0.06);
   border-radius: var(--radius-sm);
   border-left: 2px solid rgba(245,158,11,0.3);
+}
+
+/* ===== MEMBERS REPORT PAGE ===== */
+.members-report table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.members-report th {
+  text-align: left;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+}
+.members-report td {
+  padding: 0.625rem 1rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.825rem;
+}
+
+.member-row {
+  cursor: pointer;
+  transition: background var(--transition);
+}
+.member-row:hover {
+  background: rgba(255,255,255,0.02);
+}
+.member-row td:first-child {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.member-expand-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  padding: 2px;
+  flex-shrink: 0;
+}
+.member-expand-btn:hover {
+  color: var(--text-primary);
+}
+
+.member-cell-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+.member-cell-name {
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+.member-cell-class {
+  font-size: 0.7rem;
+  opacity: 0.8;
+}
+
+.quest-count {
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+.quest-count--ok {
+  color: var(--success);
+}
+.quest-count--bad {
+  color: var(--danger);
+}
+
+.min-display {
+  background: none;
+  border: 1px dashed var(--border);
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-family: inherit;
+  transition: all var(--transition);
+  min-width: 70px;
+  text-align: center;
+}
+.min-display:hover {
+  border-color: var(--primary);
+  color: var(--text-primary);
+}
+
+.min-edit-group {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.adena-today {
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+.adena-today--ok {
+  color: var(--success);
+}
+.adena-today--bad {
+  color: var(--danger);
+}
+
+.status-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.status-good {
+  background: rgba(16,185,129,0.15);
+  color: var(--success);
+}
+.status-bad {
+  background: rgba(239,68,68,0.15);
+  color: var(--danger);
+}
+.status-none {
+  background: rgba(255,255,255,0.05);
+  color: var(--text-muted);
+}
+
+.member-detail-row td {
+  padding: 0;
+  background: rgba(0,0,0,0.15);
+}
+.member-detail {
+  display: flex;
+  gap: 1.5rem;
+  padding: 1rem 1.5rem 1rem 3rem;
+}
+.member-detail-section {
+  flex: 1;
+  min-width: 0;
+}
+.member-detail-section h4 {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.625rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.quest-detail-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.quest-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.78rem;
+  transition: background var(--transition);
+}
+.quest-detail-item:hover {
+  background: rgba(255,255,255,0.03);
+}
+.quest-detail-item--done .quest-detail-name {
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+.quest-detail-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.quest-detail-lvl {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--gold-light);
+  font-family: 'Rajdhani', sans-serif;
+  letter-spacing: 0.5px;
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+  background: rgba(245,158,11,0.1);
+  border: 1px solid rgba(245,158,11,0.15);
+  white-space: nowrap;
+}
+
+.adena-detail-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.adena-detail-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+}
+.adena-detail-label {
+  color: var(--text-muted);
+  min-width: 70px;
+}
+.adena-detail-value {
+  font-weight: 600;
 }
 

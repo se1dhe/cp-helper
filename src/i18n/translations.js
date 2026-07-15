@@ -3,6 +3,7 @@ export const RU = {
   'nav.dashboard': 'Дашборд',
   'nav.roster': 'Ростер',
   'nav.treasury': 'Казна',
+  'nav.members': 'Мемберы',
   'nav.admin': 'Управление',
 
   // Auth
@@ -57,6 +58,20 @@ export const RU = {
   'dashboard.quests': 'Must Have Квесты',
   'dashboard.noQuests': 'Нет мемберов для назначения квестов.',
   'dashboard.loading': 'Загрузка...',
+
+  // Members
+  'members.title': 'Мемберы',
+  'members.member': 'Мембер',
+  'members.quests': 'Квесты',
+  'members.minAdena': 'Мин. адена',
+  'members.adena': 'Адена сегодня',
+  'members.status': 'Статус',
+  'members.done': 'Сделано',
+  'members.compliant': 'Выполнено',
+  'members.notCompliant': 'Не выполнено',
+  'members.noMembers': 'Нет активных мемберов',
+  'members.noQuests': 'Нет квестов для этого класса',
+  'members.clickToSet': 'Кликните чтобы установить',
 
   // Roster
   'roster.title': 'Ростер пати (0utLaw)',
@@ -137,6 +152,7 @@ export const UA = {
   'nav.dashboard': 'Дашборд',
   'nav.roster': 'Ростер',
   'nav.treasury': 'Скарбниця',
+  'nav.members': 'Мембери',
   'nav.admin': 'Керування',
 
   'auth.email': 'Емейл',
@@ -186,6 +202,20 @@ export const UA = {
   'dashboard.quests': 'Must Have Квести',
   'dashboard.noQuests': 'Немає мемберів для призначення квестів.',
   'dashboard.loading': 'Завантаження...',
+
+  // Members
+  'members.title': 'Мембери',
+  'members.member': 'Мембер',
+  'members.quests': 'Квести',
+  'members.minAdena': 'Мін. адена',
+  'members.adena': 'Адена сьогодні',
+  'members.status': 'Статус',
+  'members.done': 'Зроблено',
+  'members.compliant': 'Виконано',
+  'members.notCompliant': 'Не виконано',
+  'members.noMembers': 'Немає активних мемберів',
+  'members.noQuests': 'Немає квестів для цього класу',
+  'members.clickToSet': 'Клікніть щоб встановити',
 
   'roster.title': 'Ростер паті (0utLaw)',
   'roster.addSlot': 'Додати слот',

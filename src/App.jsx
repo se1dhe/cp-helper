@@ -9,6 +9,7 @@ import { Dashboard } from './pages/Dashboard';
 import { Treasury } from './pages/Treasury';
 import { Roster } from './pages/Roster';
 import { Admin } from './pages/Admin';
+import { MemberProgress } from './pages/MemberProgress';
 
 function App() {
   useEffect(() => {
@@ -42,6 +43,7 @@ function App() {
               <Route path="treasury" element={<Treasury />} />
               <Route path="roster" element={<Roster />} />
               <Route path="admin" element={<Admin />} />
+              <Route path="members" element={<MemberProgress />} />
             </Route>
           </Routes>
         </HashRouter>

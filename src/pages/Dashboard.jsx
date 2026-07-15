@@ -32,6 +32,7 @@ export const Dashboard = () => {
   const [newTask, setNewTask] = useState('');
   const [newTaskTag, setNewTaskTag] = useState('prime');
   const [treasury, setTreasury] = useState({ totalAdena: 0, totalMC: 0 });
+  const [questsCollapsed, setQuestsCollapsed] = useState(false);
   const [expandedQuests, setExpandedQuests] = useState({});
   const [questData, setQuestData] = useState(null);
   const [questLog, setQuestLog] = useState({});
@@ -207,8 +208,11 @@ export const Dashboard = () => {
       </div>
 
       <div className="quests-section">
-        <h3 className="section-header"><Medal size={15} /> {t('dashboard.quests')}</h3>
-        {!questData ? (
+        <button className="section-header section-header--clickable" onClick={() => setQuestsCollapsed(prev => !prev)}>
+          <Medal size={15} /> {t('dashboard.quests')}
+          {questsCollapsed ? <ChevronRight size={14} /> : <ChevronDown size={14} />}
+        </button>
+        {!questsCollapsed && (!questData ? (
           <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '2rem', fontSize: '0.85rem' }}>
             {t('dashboard.loading')}
           </div>
@@ -294,7 +298,7 @@ export const Dashboard = () => {
           <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '2rem', fontSize: '0.85rem' }}>
             {t('dashboard.noQuests')}
           </div>
-        )}
+        ))}
       </div>
     </div>
   );
