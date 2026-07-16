@@ -53,7 +53,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
           TAURI_KEY_PASSPHRASE: ${{ secrets.TAURI_KEY_PASSPHRASE }}
+          TAURI_SIGNING_PASSPHRASE: ${{ secrets.TAURI_KEY_PASSPHRASE }}
         with:
           tagName: ${{ github.ref_name }}
           releaseName: CP-Helper ${{ github.ref_name }}
