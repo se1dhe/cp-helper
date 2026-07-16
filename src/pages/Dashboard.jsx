@@ -76,7 +76,7 @@ export const Dashboard = () => {
 
   const questMembers = questData ? roster.filter(m =>
     m.name && m.name !== '—' && m.userId && m.userId !== '__occupied__' && getRaceForClass(questData, m.className)
-    && (isPL || isOfficer || m.userId === currentUser?.uid)
+    && m.userId === currentUser?.uid
   ) : [];
 
   const filledSlots = roster.filter(m => m.name && m.name !== '—').length;
