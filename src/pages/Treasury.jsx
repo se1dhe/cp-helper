@@ -53,7 +53,10 @@ export const Treasury = () => {
     }
   };
 
-  const rosterMembers = roster.filter(s => s.name && s.name !== '—');
+  // Только реально назначенные игроки: без вакантных и без слота-заглушки «Занято».
+  const rosterMembers = roster.filter(
+    s => s.name && s.name !== '—' && s.userId && s.userId !== '__occupied__'
+  );
 
   const formatNumber = (num) => new Intl.NumberFormat('ru-RU').format(num);
 

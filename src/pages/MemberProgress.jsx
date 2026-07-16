@@ -6,6 +6,7 @@ import { subscribeToQuestData } from '../services/questService';
 import { subscribeToQuestLog } from '../services/questLogService';
 import { subscribeToTransactions } from '../services/treasuryService';
 import { subscribeToMinContributions, setMinContribution } from '../services/memberService';
+import { subscribeToPresence, isUserOnline } from '../services/presenceService';
 import { getUniversalQuests, getRaceQuestsForClass, getRaceLabel } from '../data/quests';
 import { L2_CLASSES } from '../utils/classes';
 import { ClassIcon } from '../components/ClassIcon';
@@ -24,6 +25,7 @@ export const MemberProgress = () => {
   const [expandedMembers, setExpandedMembers] = useState({});
   const [editingMin, setEditingMin] = useState(false);
   const [minInput, setMinInput] = useState('');
+  const [presence, setPresence] = useState({});
 
   const activeMembers = roster.filter(
     m => m.name && m.name !== '—' && m.userId && m.userId !== '__occupied__' && m.userId !== ''
@@ -38,7 +40,8 @@ export const MemberProgress = () => {
       setTransactions(data.transactions || []);
     });
     const unsubMin = subscribeToMinContributions(setMinAdena);
-    return () => { unsubRoster(); unsubQuests(); unsubLog(); unsubTx(); unsubMin(); };
+    const unsubPresence = subscribeToPresence(setPresence);
+    return () => { unsubRoster(); unsubQuests(); unsubLog(); unsubTx(); unsubMin(); unsubPresence(); };
   }, [isPL, isOfficer]);
 
   if (!isPL && !isOfficer) {
@@ -151,6 +154,8 @@ export const MemberProgress = () => {
                 const total = progress ? progress.length : 0;
                 const adenaTodayAmount = adenaToday[m.name] || 0;
                 const adenaOk = minAdena > 0 ? adenaTodayAmount >= minAdena : null;
+                const adenaRemaining = minAdena > 0 ? Math.max(0, minAdena - adenaTodayAmount) : 0;
+                const online = isUserOnline(presence[m.userId]);
                 const questsOk = total > 0 ? done === total : null;
                 const isExpanded = expandedMembers[m.id];
 
@@ -178,7 +183,10 @@ export const MemberProgress = () => {
                         </button>
                         <ClassIcon className={m.className} type={cls.type} size={24} />
                         <div className="member-cell-info">
-                          <span className="member-cell-name">{m.name}</span>
+                          <span className="member-cell-name">
+                            <span className={`online-dot ${online ? 'online-dot--on' : 'online-dot--off'}`} title={online ? t('members.online') : t('members.offline')} />
+                            {m.name}
+                          </span>
                           <span className="member-cell-class" style={{ color: cls.color }}>
                             {m.className}{raceLabel ? ` · ${raceLabel}` : ''}
                           </span>
@@ -193,6 +201,9 @@ export const MemberProgress = () => {
                         <span className={`adena-today ${adenaOk === true ? 'adena-today--ok' : adenaOk === false ? 'adena-today--bad' : ''}`}>
                           {adenaTodayAmount > 0 ? adenaTodayAmount.toLocaleString('ru-RU') : '0'}
                         </span>
+                        {adenaOk === false && adenaRemaining > 0 && (
+                          <span className="adena-remaining">{t('members.needMore', { amount: adenaRemaining.toLocaleString('ru-RU') })}</span>
+                        )}
                       </td>
                       <td>
                         <span className={`status-badge ${statusClass}`}>{statusLabel}</span>
@@ -240,6 +251,12 @@ export const MemberProgress = () => {
                                     <span className={`adena-detail-value ${adenaOk ? 'status-good' : 'status-bad'}`}>
                                       {adenaOk ? t('members.compliant') : t('members.notCompliant')}
                                     </span>
+                                  </div>
+                                )}
+                                {adenaOk === false && adenaRemaining > 0 && (
+                                  <div className="adena-detail-row">
+                                    <span className="adena-detail-label">{t('members.needLabel')}:</span>
+                                    <span className="adena-detail-value status-bad">{adenaRemaining.toLocaleString('ru-RU')}</span>
                                   </div>
                                 )}
                               </div>

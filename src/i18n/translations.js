@@ -149,6 +149,54 @@ export const RU = {
   'alert.error': 'Ошибка',
   'alert.addTaskError': 'Ошибка при добавлении задачи',
   'alert.roleUpdateError': 'Ошибка при обновлении роли',
+
+  // Nav (доп.)
+  'nav.news': 'Новости',
+
+  // Заметки
+  'notes.title': 'Заметки',
+  'notes.placeholder': 'Заметка для всей пати...',
+  'notes.delete': 'Удалить заметку',
+  'notes.empty': 'Пока нет заметок.',
+  'notes.addError': 'Ошибка при добавлении заметки',
+  'notes.deleteError': 'Ошибка при удалении заметки',
+
+  // Квесты (доп.)
+  'dashboard.questSaveError': 'Не удалось сохранить квест',
+
+  // Новости
+  'news.title': 'Новости КП',
+  'news.add': 'Добавить',
+  'news.formTitle': 'Заголовок',
+  'news.titlePlaceholder': 'О чём новость?',
+  'news.formBody': 'Текст',
+  'news.bodyPlaceholder': 'Подробности...',
+  'news.publish': 'Опубликовать',
+  'news.saving': 'Публикация...',
+  'news.saveError': 'Ошибка при публикации новости',
+  'news.deleteConfirm': 'Удалить эту новость?',
+  'news.deleteError': 'Ошибка при удалении',
+  'news.edit': 'Редактировать',
+  'news.delete': 'Удалить',
+  'news.cancel': 'Отмена',
+  'news.save': 'Сохранить',
+  'news.empty': 'Новостей пока нет.',
+
+  // Мемберы (доп.)
+  'members.needMore': 'нужно ещё {amount}',
+  'members.needLabel': 'Нужно докинуть',
+  'members.online': 'В сети',
+  'members.offline': 'Не в сети',
+  'members.clickToSet': 'Нажмите чтобы задать минимум',
+
+  // Обновление
+  'update.available': 'Доступна новая версия {version}. Скачать и установить?',
+  'update.title': 'Доступно обновление',
+  'update.downloading': 'Загрузка обновления...',
+  'update.restartTitle': 'Обновление установлено',
+  'update.restart': 'Обновление {version} установлено. Перезапустить приложение сейчас?',
+  'tray.minimizeTitle': 'Закрыть приложение?',
+  'tray.minimizeQuestion': 'Свернуть в трей? (Нет — полностью выйти из приложения)',
 };
 
 export const UA = {
@@ -292,4 +340,52 @@ export const UA = {
   'alert.error': 'Помилка',
   'alert.addTaskError': 'Помилка при додаванні завдання',
   'alert.roleUpdateError': 'Помилка при оновленні ролі',
+
+  // Nav (дод.)
+  'nav.news': 'Новини',
+
+  // Нотатки
+  'notes.title': 'Нотатки',
+  'notes.placeholder': 'Нотатка для всієї паті...',
+  'notes.delete': 'Видалити нотатку',
+  'notes.empty': 'Поки немає нотаток.',
+  'notes.addError': 'Помилка при додаванні нотатки',
+  'notes.deleteError': 'Помилка при видаленні нотатки',
+
+  // Квести (дод.)
+  'dashboard.questSaveError': 'Не вдалося зберегти квест',
+
+  // Новини
+  'news.title': 'Новини КП',
+  'news.add': 'Додати',
+  'news.formTitle': 'Заголовок',
+  'news.titlePlaceholder': 'Про що новина?',
+  'news.formBody': 'Текст',
+  'news.bodyPlaceholder': 'Подробиці...',
+  'news.publish': 'Опублікувати',
+  'news.saving': 'Публікація...',
+  'news.saveError': 'Помилка при публікації новини',
+  'news.deleteConfirm': 'Видалити цю новину?',
+  'news.deleteError': 'Помилка при видаленні',
+  'news.edit': 'Редагувати',
+  'news.delete': 'Видалити',
+  'news.cancel': 'Скасувати',
+  'news.save': 'Зберегти',
+  'news.empty': 'Новин поки немає.',
+
+  // Мембери (дод.)
+  'members.needMore': 'треба ще {amount}',
+  'members.needLabel': 'Треба докинути',
+  'members.online': 'У мережі',
+  'members.offline': 'Не в мережі',
+  'members.clickToSet': 'Натисніть щоб задати мінімум',
+
+  // Оновлення
+  'update.available': 'Доступна нова версія {version}. Завантажити та встановити?',
+  'update.title': 'Доступне оновлення',
+  'update.downloading': 'Завантаження оновлення...',
+  'update.restartTitle': 'Оновлення встановлено',
+  'update.restart': 'Оновлення {version} встановлено. Перезапустити застосунок зараз?',
+  'tray.minimizeTitle': 'Закрити застосунок?',
+  'tray.minimizeQuestion': 'Згорнути в трей? (Ні — повністю вийти із застосунку)',
 };

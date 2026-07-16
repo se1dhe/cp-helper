@@ -4,6 +4,7 @@ import { doc, runTransaction } from 'firebase/firestore';
 import { db } from '../firebase';
 import { subscribeToRoster, addRosterSlot, deleteRosterSlot } from '../services/rosterService';
 import { subscribeToUsers, updateUserClass, clearUserClass } from '../services/adminService';
+import { subscribeToPresence, isUserOnline } from '../services/presenceService';
 import { useAuth } from '../context/AuthContext';
 import { useLang } from '../context/LanguageContext';
 import { L2_CLASSES } from '../utils/classes';
@@ -19,12 +20,14 @@ export const Roster = () => {
   const [editingId, setEditingId] = useState(null);
   const [editForm, setEditForm] = useState({});
   const [saving, setSaving] = useState(false);
+  const [presence, setPresence] = useState({});
 
   useEffect(() => {
     const unsubRoster = subscribeToRoster(setRoster);
+    const unsubPresence = subscribeToPresence(setPresence);
     let unsubUsers;
     if (isPL) { unsubUsers = subscribeToUsers(setUsers); }
-    return () => { unsubRoster(); if (unsubUsers) unsubUsers(); };
+    return () => { unsubRoster(); unsubPresence(); if (unsubUsers) unsubUsers(); };
   }, [isPL]);
 
   const OCCUPIED_MARKER = '__occupied__';
@@ -181,7 +184,10 @@ export const Roster = () => {
                 ) : isOccupiedNoUser ? (
                   <span className="occupied-label">{t('roster.occupied')}</span>
                 ) : (
-                  <>{m.name} <span className="occupied-badge">{t('roster.occupied')}</span></>
+                  <>
+                    <span className={`online-dot ${isUserOnline(presence[m.userId]) ? 'online-dot--on' : 'online-dot--off'}`} title={isUserOnline(presence[m.userId]) ? t('members.online') : t('members.offline')} />
+                    {m.name} <span className="occupied-badge">{t('roster.occupied')}</span>
+                  </>
                 )}
               </div>
             )}

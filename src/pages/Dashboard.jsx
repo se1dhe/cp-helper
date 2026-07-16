@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Coins, Gem, Swords, Target, Circle, CheckCircle2, Plus, Trash2, ChevronDown, ChevronRight, MapPin, Medal } from 'lucide-react';
+import { Coins, Gem, Swords, Target, Circle, CheckCircle2, Plus, Trash2, ChevronDown, ChevronRight, MapPin, Medal, Pin } from 'lucide-react';
 import { subscribeToRoster } from '../services/rosterService';
 import { subscribeToTasks, addTask, toggleTask, deleteTask } from '../services/taskService';
 import { subscribeToTransactions } from '../services/treasuryService';
 import { subscribeToQuestData } from '../services/questService';
 import { subscribeToQuestLog, toggleQuestCompletion } from '../services/questLogService';
+import { subscribeToNotes, addNote, deleteNote } from '../services/notesService';
 import { useAuth } from '../context/AuthContext';
 import { useLang } from '../context/LanguageContext';
 import { L2_CLASSES } from '../utils/classes';
@@ -14,7 +15,7 @@ import { getUniversalQuests, getRaceQuestsForClass, getRaceLabel, getRaceForClas
 const getClassDetails = (name) => L2_CLASSES.find(c => c.name === name) || { type: 'unknown', color: '#888' };
 
 export const Dashboard = () => {
-  const { currentUser, isPL, isOfficer } = useAuth();
+  const { currentUser, userNickname, isPL, isOfficer } = useAuth();
   const { t } = useLang();
   const [roster, setRoster] = useState([]);
   const [tasks, setTasks] = useState([]);
@@ -26,6 +27,10 @@ export const Dashboard = () => {
   const [expandedQuests, setExpandedQuests] = useState({});
   const [questData, setQuestData] = useState(null);
   const [questLog, setQuestLog] = useState({});
+  const [notes, setNotes] = useState([]);
+  const [newNote, setNewNote] = useState('');
+  const [notesCollapsed, setNotesCollapsed] = useState(() => localStorage.getItem('notesCollapsed') === 'true');
+  useEffect(() => { localStorage.setItem('notesCollapsed', notesCollapsed); }, [notesCollapsed]);
 
   useEffect(() => {
     const unsubRoster = subscribeToRoster(setRoster);
@@ -35,8 +40,11 @@ export const Dashboard = () => {
     });
     const unsubQuests = subscribeToQuestData(setQuestData);
     const unsubLog = subscribeToQuestLog(setQuestLog);
-    return () => { unsubRoster(); unsubTasks(); unsubTreasury(); unsubQuests(); unsubLog(); };
+    const unsubNotes = subscribeToNotes(setNotes);
+    return () => { unsubRoster(); unsubTasks(); unsubTreasury(); unsubQuests(); unsubLog(); unsubNotes(); };
   }, []);
+
+  const doneTasks = tasks.filter(task => task.done).length;
 
   const handleAddTask = async (e) => {
     e.preventDefault();
@@ -47,14 +55,31 @@ export const Dashboard = () => {
     } catch { alert(t('alert.addTaskError')); }
   };
 
+  const handleAddNote = async (e) => {
+    e.preventDefault();
+    if (!newNote.trim()) return;
+    try {
+      await addNote(newNote.trim(), userNickname || currentUser?.email, currentUser?.uid);
+      setNewNote('');
+    } catch { alert(t('notes.addError')); }
+  };
+
+  const handleDeleteNote = async (id) => {
+    try { await deleteNote(id); } catch { alert(t('notes.deleteError')); }
+  };
+
   const toggleQuest = (questId) => {
     setExpandedQuests(prev => ({ ...prev, [questId]: !prev[questId] }));
   };
 
   const handleToggleQuestDone = async (userId, questName, currentDone) => {
     if (!userId) return;
-    await toggleQuestCompletion(userId, questName, !currentDone);
+    try {
+      await toggleQuestCompletion(userId, questName, !currentDone);
+    } catch { alert(t('dashboard.questSaveError')); }
   };
+
+  const fmtDate = (ts) => ts?.toDate?.().toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) || '';
 
   const questMembers = questData ? roster.filter(m =>
     m.name && m.name !== '—' && m.userId && m.userId !== '__occupied__' && getRaceForClass(questData, m.className)
@@ -79,6 +104,60 @@ export const Dashboard = () => {
           <div className="stat-card-value">{treasury.totalMC ? fmt(treasury.totalMC) : '—'}</div>
         </div>
       </div>
+
+      {(notes.length > 0 || isOfficer) && (
+        <div className="notes-section">
+          <button className="section-header section-header--clickable" onClick={() => setNotesCollapsed(prev => !prev)}>
+            <Pin size={15} /> {t('notes.title')}
+            {notes.length > 0 && <span className="notes-count">{notes.length}</span>}
+            {notesCollapsed ? <ChevronRight size={14} /> : <ChevronDown size={14} />}
+          </button>
+          {!notesCollapsed && (
+            <>
+              {isOfficer && (
+                <form onSubmit={handleAddNote} style={{ display: 'flex', gap: '0.5rem', margin: '0.5rem 0 0.875rem' }}>
+                  <input
+                    type="text"
+                    className="input-field"
+                    style={{ flexGrow: 1 }}
+                    placeholder={t('notes.placeholder')}
+                    value={newNote}
+                    onChange={e => setNewNote(e.target.value)}
+                  />
+                  <button type="submit" className="btn btn-primary" style={{ padding: '0 1rem', flexShrink: 0 }}>
+                    <Plus size={18} />
+                  </button>
+                </form>
+              )}
+              <div className="notes-list">
+                {notes.map(note => (
+                  <div key={note.id} className="note-item">
+                    <Pin size={14} className="note-item-icon" />
+                    <div className="note-item-body">
+                      <p className="note-item-text">{note.text}</p>
+                      <span className="note-item-meta">{note.author}{note.createdAt ? ` · ${fmtDate(note.createdAt)}` : ''}</span>
+                    </div>
+                    {isOfficer && (
+                      <button
+                        onClick={() => handleDeleteNote(note.id)}
+                        className="note-item-del"
+                        title={t('notes.delete')}
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    )}
+                  </div>
+                ))}
+                {notes.length === 0 && (
+                  <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '1rem', fontSize: '0.85rem' }}>
+                    {t('notes.empty')}
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+        </div>
+      )}
 
       <div className="tasks-section">
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.875rem' }}>

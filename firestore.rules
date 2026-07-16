@@ -32,18 +32,69 @@ service cloud.firestore {
 
     match /roster/{slot} {
       allow read: if isNotGuest();
-      allow write: if isPL();
+      allow create, update: if isPL()
+                    && request.resource.data.name is string
+                    && request.resource.data.className is string
+                    && request.resource.data.position is int
+                    && request.resource.data.lvl is number
+                    && request.resource.data.lvl >= 1;
+      allow delete: if isPL();
     }
 
     match /tasks/{task} {
       allow read: if isNotGuest();
-      allow write: if isOfficer();
+      allow create, update: if isOfficer()
+                    && request.resource.data.text is string
+                    && request.resource.data.text.size() > 0
+                    && request.resource.data.tag in ['prime', 'offprime'];
+      allow delete: if isOfficer();
     }
 
     match /transactions/{transaction} {
       allow read: if isNotGuest();
-      allow create: if isOfficer();
-      allow update, delete: if isPL();
+      allow create: if isOfficer()
+                    && request.resource.data.amount is number
+                    && request.resource.data.amount >= 0
+                    && request.resource.data.type in ['income', 'expense']
+                    && request.resource.data.currency in ['adena', 'mc']
+                    && request.resource.data.member is string
+                    && request.resource.data.addedById == request.auth.uid;
+      // История неизменяема по сути: PL правит только описание/привязку, не суммы.
+      allow update: if isPL()
+                    && request.resource.data.diff(resource.data)
+                         .affectedKeys().hasOnly(['description', 'member', 'memberId']);
+      allow delete: if isPL();
+    }
+
+    // Прогресс квестов: каждый мембер пишет ТОЛЬКО свой документ, PL может всё.
+    match /questProgress/{userId} {
+      allow read: if isNotGuest();
+      allow write: if isAuth() && (request.auth.uid == userId || isPL());
+    }
+
+    // Заметки на дашборде: видят все (не гости), пишут офицеры+.
+    match /notes/{note} {
+      allow read: if isNotGuest();
+      allow create, update: if isOfficer()
+                    && request.resource.data.text is string
+                    && request.resource.data.text.size() > 0;
+      allow delete: if isOfficer();
+    }
+
+    // Новости: читают все (не гости), публикуют офицеры+.
+    match /news/{article} {
+      allow read: if isNotGuest();
+      allow create, update: if isOfficer()
+                    && request.resource.data.title is string
+                    && request.resource.data.body is string;
+      allow delete: if isOfficer();
+    }
+
+    // Онлайн-статус: пишет только сам пользователь, читают все (не гости).
+    match /presence/{userId} {
+      allow read: if isNotGuest();
+      allow write: if isAuth() && request.auth.uid == userId
+                    && request.resource.data.online is bool;
     }
 
     match /config/{doc} {

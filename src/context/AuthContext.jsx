@@ -1,7 +1,8 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useRef, useState } from "react";
 import { onAuthStateChanged, updateProfile } from "firebase/auth";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { auth, db } from "../firebase";
+import { startPresence, stopPresence } from "../services/presenceService";
 import { AlertTriangle, RefreshCw } from 'lucide-react';
 
 const AuthContext = createContext();
@@ -15,6 +16,7 @@ export const AuthProvider = ({ children }) => {
   const [userClass, setUserClass] = useState('');
   const [loading, setLoading] = useState(true);
   const [authError, setAuthError] = useState(null);
+  const presenceUidRef = useRef(null);
 
   const refreshUserDoc = async (uid) => {
     const userRef = doc(db, "users", uid);
@@ -40,6 +42,10 @@ export const AuthProvider = ({ children }) => {
             setUserClass(data.className || '');
             const nickname = data.nickname || data.displayName || user.displayName || user.email;
             setUserNickname(nickname);
+            if ((data.role || "GUEST") !== "GUEST") {
+              presenceUidRef.current = user.uid;
+              startPresence(user.uid, nickname);
+            }
             const isEmailFallback = data.nickname && data.nickname === user.email;
             if ((!data.nickname || isEmailFallback) && (data.displayName || user.displayName)) {
               const newNickname = data.displayName || user.displayName;
@@ -67,6 +73,10 @@ export const AuthProvider = ({ children }) => {
           setCurrentUser(user);
           setAuthError(null);
         } else {
+          if (presenceUidRef.current) {
+            stopPresence(presenceUidRef.current);
+            presenceUidRef.current = null;
+          }
           setCurrentUser(null);
           setUserRole("GUEST");
           setAuthError(null);
@@ -81,6 +91,14 @@ export const AuthProvider = ({ children }) => {
     });
 
     return unsubscribe;
+  }, []);
+
+  useEffect(() => {
+    const handleUnload = () => {
+      if (presenceUidRef.current) stopPresence(presenceUidRef.current);
+    };
+    window.addEventListener('beforeunload', handleUnload);
+    return () => window.removeEventListener('beforeunload', handleUnload);
   }, []);
 
   if (authError && !currentUser) {

@@ -6,7 +6,7 @@ import { signInWithEmail, registerWithEmail, logOut } from '../firebase';
 import { updateUserNickname } from '../services/adminService';
 import { subscribeToRoster, updateRosterNameByUserId } from '../services/rosterService';
 import { isRegistrationAllowed } from '../services/registrationService';
-import { LayoutDashboard, Users, Wallet, LogIn, LogOut, ShieldAlert, UserPlus, Check, X, Languages, UserCheck } from 'lucide-react';
+import { LayoutDashboard, Users, Wallet, LogIn, LogOut, ShieldAlert, UserPlus, Check, X, Languages, UserCheck, Newspaper } from 'lucide-react';
 import { L2_CLASSES } from '../utils/classes';
 import { ClassIcon } from './ClassIcon';
 
@@ -37,6 +37,7 @@ export const Layout = () => {
 
   const navItems = [
     { to: '/', icon: LayoutDashboard, label: t('nav.dashboard'), end: true },
+    { to: '/news', icon: Newspaper, label: t('nav.news') },
     { to: '/treasury', icon: Wallet, label: t('nav.treasury') },
   ];
 
