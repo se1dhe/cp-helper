@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const CLASS_ICON_ID = {
   'Sorcerer': 12,
@@ -41,6 +41,10 @@ const COLORS = {
 export const ClassIcon = ({ className, type, size = 48 }) => {
   const [useSvg, setUseSvg] = useState(false);
   const c = COLORS[type] || COLORS.mage;
+
+  useEffect(() => {
+    setUseSvg(false);
+  }, [className]);
   const iconId = CLASS_ICON_ID[className];
 
   if (iconId && !useSvg) {

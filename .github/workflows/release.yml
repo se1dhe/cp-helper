@@ -22,6 +22,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Validate version sync
+        run: |
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          PKG_VERSION=$(node -p "require('./package.json').version")
+          TAURI_VERSION=$(node -p "require('./src-tauri/tauri.conf.json').version")
+          if [ "$TAG_VERSION" != "$PKG_VERSION" ] || [ "$TAG_VERSION" != "$TAURI_VERSION" ]; then
+            echo "Version mismatch: tag=$TAG_VERSION package.json=$PKG_VERSION tauri.conf.json=$TAURI_VERSION"
+            exit 1
+          fi
+          echo "Versions synced: $TAG_VERSION"
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -40,11 +51,14 @@ jobs:
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PASSPHRASE: ${{ secrets.TAURI_SIGNING_PASSPHRASE }}
         with:
           tagName: ${{ github.ref_name }}
           releaseName: CP-Helper ${{ github.ref_name }}
           releaseBody: |
             ## Changes
             - See commits for details.
-          releaseDraft: true
+          releaseDraft: false
           prerelease: false
+          createUpdaterArtifacts: true

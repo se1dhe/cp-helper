@@ -26,10 +26,11 @@ export const subscribeToTransactions = (callback) => {
       const data = doc.data();
       transactions.push({ id: doc.id, ...data });
       
+      const amt = Number(data.amount) || 0;
       if (data.currency === 'adena') {
-        totalAdena += data.type === 'income' ? data.amount : -data.amount;
+        totalAdena += data.type === 'income' ? amt : -amt;
       } else if (data.currency === 'mc') {
-        totalMC += data.type === 'income' ? data.amount : -data.amount;
+        totalMC += data.type === 'income' ? amt : -amt;
       }
     });
     

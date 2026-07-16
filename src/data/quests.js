@@ -1,5 +1,5 @@
 const parseSortLevel = (lvl) => {
-  const match = lvl.match(/^(\d+)/);
+  const match = String(lvl ?? '').match(/^(\d+)/);
   return match ? parseInt(match[1], 10) : 999;
 };
 

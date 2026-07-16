@@ -40,15 +40,18 @@ export const Dashboard = () => {
 
   useEffect(() => {
     const unsubRoster = subscribeToRoster(setRoster);
-    const unsubUsers = subscribeToUsers(setUsers);
     const unsubTasks = subscribeToTasks(setTasks);
     const unsubTreasury = subscribeToTransactions((data) => {
       setTreasury({ totalAdena: data.totalAdena, totalMC: data.totalMC });
     });
     const unsubQuests = subscribeToQuestData(setQuestData);
     const unsubLog = subscribeToQuestLog(setQuestLog);
-    return () => { unsubRoster(); unsubUsers(); unsubTasks(); unsubTreasury(); unsubQuests(); unsubLog(); };
-  }, []);
+    let unsubUsers;
+    if (isPL || isOfficer) {
+      unsubUsers = subscribeToUsers(setUsers);
+    }
+    return () => { unsubRoster(); unsubTasks(); unsubTreasury(); unsubQuests(); unsubLog(); if (unsubUsers) unsubUsers(); };
+  }, [isPL, isOfficer]);
 
   const userMap = {};
   users.forEach(u => { userMap[u.id] = u; });
@@ -66,8 +69,9 @@ export const Dashboard = () => {
     setExpandedQuests(prev => ({ ...prev, [questId]: !prev[questId] }));
   };
 
-  const handleToggleQuestDone = async (slotId, questName, currentDone) => {
-    await toggleQuestCompletion(slotId, questName, !currentDone);
+  const handleToggleQuestDone = async (userId, questName, currentDone) => {
+    if (!userId) return;
+    await toggleQuestCompletion(userId, questName, !currentDone);
   };
 
   const filledSlots = roster.filter(m => m.name && m.name !== '—').length;
@@ -217,9 +221,9 @@ export const Dashboard = () => {
           <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '2rem', fontSize: '0.85rem' }}>
             {t('dashboard.loading')}
           </div>
-        ) : roster.filter(m => m.name && m.name !== '—' && m.userId !== '__occupied__' && getRaceForClass(questData, m.className)).length > 0 ? (
+        ) : roster.filter(m => m.name && m.name !== '—' && m.userId && m.userId !== '__occupied__' && getRaceForClass(questData, m.className)).length > 0 ? (
           <div className="quest-members">
-            {roster.filter(m => m.name && m.name !== '—' && m.userId !== '__occupied__' && getRaceForClass(questData, m.className)).map(m => {
+            {roster.filter(m => m.name && m.name !== '—' && m.userId && m.userId !== '__occupied__' && getRaceForClass(questData, m.className)).map(m => {
               const cls = getClassDetails(m.className);
               const universalQuests = getUniversalQuests(questData);
               const raceQuests = getRaceQuestsForClass(questData, m.className);
@@ -228,14 +232,14 @@ export const Dashboard = () => {
               const renderQuest = (q) => {
                 const questId = `${m.id}-${idx}`;
                 const isExpanded = expandedQuests[questId];
-                const isDone = questLog?.[m.id]?.[q.name] === true;
+                const isDone = questLog?.[m.userId]?.[q.name] === true;
                 idx++;
                 return (
                   <div key={questId} className={`quest-card ${isExpanded ? 'quest-card--expanded' : ''} ${isDone ? 'quest-card--done' : ''}`}>
                     <div className="quest-card-top">
                       <button
                         className="quest-card-done-btn"
-                        onClick={(e) => { e.stopPropagation(); handleToggleQuestDone(m.id, q.name, isDone); }}
+                        onClick={(e) => { e.stopPropagation(); handleToggleQuestDone(m.userId, q.name, isDone); }}
                       >
                         {isDone
                           ? <CheckCircle2 size={16} color="var(--success)" />

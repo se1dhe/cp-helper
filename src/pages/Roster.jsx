@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Shield, Edit2, Check, X, Plus, Trash2, Users } from 'lucide-react';
-import { subscribeToRoster, updateRosterSlot, addRosterSlot, deleteRosterSlot } from '../services/rosterService';
+import { doc, runTransaction } from 'firebase/firestore';
+import { db } from '../firebase';
+import { subscribeToRoster, addRosterSlot, deleteRosterSlot } from '../services/rosterService';
 import { subscribeToUsers, updateUserClass, clearUserClass } from '../services/adminService';
 import { useAuth } from '../context/AuthContext';
 import { useLang } from '../context/LanguageContext';
@@ -58,7 +60,23 @@ export const Roster = () => {
       const prevUserId = prevSlot?.userId;
       const newUserId = editForm.userId;
 
-      await updateRosterSlot(slotId, editForm);
+      if (newUserId && newUserId !== OCCUPIED_MARKER && newUserId !== prevUserId) {
+        const alreadyAssigned = roster.some(
+          s => s.id !== slotId && s.userId === newUserId
+        );
+        if (alreadyAssigned) {
+          alert(t('roster.alreadyAssigned'));
+          setSaving(false);
+          return;
+        }
+      }
+
+      const COLLECTION = 'roster';
+      const slotRef = doc(db, COLLECTION, slotId);
+
+      await runTransaction(db, async (transaction) => {
+        transaction.update(slotRef, editForm);
+      });
 
       if (newUserId && newUserId !== OCCUPIED_MARKER && editForm.className) {
         await updateUserClass(newUserId, editForm.className);
@@ -75,7 +93,7 @@ export const Roster = () => {
 
   const handleAddSlot = async () => {
     try {
-      await addRosterSlot(roster);
+      await addRosterSlot();
     } catch (e) {
       console.error(e);
       alert(t('roster.addError'));

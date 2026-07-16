@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { onAuthStateChanged, updateProfile } from "firebase/auth";
-import { doc, getDoc, setDoc, updateDoc, onSnapshot } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { auth, db } from "../firebase";
+import { AlertTriangle, RefreshCw } from 'lucide-react';
 
 const AuthContext = createContext();
 
@@ -13,6 +14,7 @@ export const AuthProvider = ({ children }) => {
   const [userNickname, setUserNickname] = useState('');
   const [userClass, setUserClass] = useState('');
   const [loading, setLoading] = useState(true);
+  const [authError, setAuthError] = useState(null);
 
   const refreshUserDoc = async (uid) => {
     const userRef = doc(db, "users", uid);
@@ -27,50 +29,80 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const userRef = doc(db, "users", user.uid);
-        const userSnap = await getDoc(userRef);
-        
-        if (userSnap.exists()) {
-          const data = userSnap.data();
-          setUserRole(data.role || "GUEST");
-          setUserClass(data.className || '');
-          const nickname = data.nickname || data.displayName || user.displayName || user.email;
-          setUserNickname(nickname);
-          const isEmailFallback = data.nickname && data.nickname === user.email;
-          if ((!data.nickname || isEmailFallback) && (data.displayName || user.displayName)) {
-            const newNickname = data.displayName || user.displayName;
-            await updateDoc(userRef, { nickname: newNickname });
-            setUserNickname(newNickname);
+      try {
+        if (user) {
+          const userRef = doc(db, "users", user.uid);
+          const userSnap = await getDoc(userRef);
+
+          if (userSnap.exists()) {
+            const data = userSnap.data();
+            setUserRole(data.role || "GUEST");
+            setUserClass(data.className || '');
+            const nickname = data.nickname || data.displayName || user.displayName || user.email;
+            setUserNickname(nickname);
+            const isEmailFallback = data.nickname && data.nickname === user.email;
+            if ((!data.nickname || isEmailFallback) && (data.displayName || user.displayName)) {
+              const newNickname = data.displayName || user.displayName;
+              await updateDoc(userRef, { nickname: newNickname });
+              setUserNickname(newNickname);
+            }
+          } else {
+            const pendingNickname = sessionStorage.getItem('pendingNickname') || '';
+            sessionStorage.removeItem('pendingNickname');
+            const fallbackName = pendingNickname || user.email?.split('@')[0] || user.email;
+            if (!user.displayName) {
+              await updateProfile(user, { displayName: fallbackName });
+            }
+            await setDoc(userRef, {
+              email: user.email,
+              displayName: fallbackName,
+              nickname: fallbackName,
+              role: "GUEST",
+              createdAt: new Date()
+            });
+            setUserRole("GUEST");
+            setUserNickname(fallbackName);
+            setUserClass('');
           }
+          setCurrentUser(user);
+          setAuthError(null);
         } else {
-          const pendingNickname = sessionStorage.getItem('pendingNickname') || '';
-          sessionStorage.removeItem('pendingNickname');
-          const fallbackName = pendingNickname || user.email?.split('@')[0] || user.email;
-          if (!user.displayName) {
-            await updateProfile(user, { displayName: fallbackName });
-          }
-          await setDoc(userRef, {
-            email: user.email,
-            displayName: fallbackName,
-            nickname: fallbackName,
-            role: "GUEST",
-            createdAt: new Date()
-          });
+          setCurrentUser(null);
           setUserRole("GUEST");
-          setUserNickname(fallbackName);
-          setUserClass('');
+          setAuthError(null);
         }
+      } catch (err) {
+        console.error("AuthProvider error:", err);
+        setAuthError(err.message || 'Ошибка авторизации');
         setCurrentUser(user);
-      } else {
-        setCurrentUser(null);
-        setUserRole("GUEST");
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     });
 
     return unsubscribe;
   }, []);
+
+  if (authError && !currentUser) {
+    return (
+      <div style={{
+        display: 'flex', flexDirection: 'column', alignItems: 'center',
+        justifyContent: 'center', minHeight: '100vh', padding: '2rem',
+        textAlign: 'center', background: 'var(--bg)',
+      }}>
+        <AlertTriangle size={48} style={{ color: 'var(--danger)', marginBottom: '1rem' }} />
+        <h2 style={{ marginBottom: '0.5rem', color: 'var(--text-primary)' }}>
+          Ошибка подключения
+        </h2>
+        <p style={{ marginBottom: '1.5rem', maxWidth: '400px', color: 'var(--text-secondary)' }}>
+          {authError}
+        </p>
+        <button className="btn btn-primary" onClick={() => window.location.reload()}>
+          <RefreshCw size={16} /> Перезагрузить
+        </button>
+      </div>
+    );
+  }
 
   const value = {
     currentUser,

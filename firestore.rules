@@ -1,0 +1,54 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAuth() {
+      return request.auth != null;
+    }
+    function userData() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+    function userRole() {
+      return userData().role;
+    }
+    function isNotGuest() {
+      return isAuth() && userRole() != 'GUEST';
+    }
+    function isPL() {
+      return isAuth() && userRole() == 'PL';
+    }
+    function isOfficer() {
+      return isAuth() && (userRole() == 'PL' || userRole() == 'OFFICER');
+    }
+
+    match /users/{userId} {
+      allow create: if request.auth.uid == userId
+                    && request.resource.data.role == 'GUEST';
+      allow read: if request.auth.uid == userId || isOfficer();
+      allow update: if (request.auth.uid == userId
+                        && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['role']))
+                     || isPL();
+      allow delete: if isPL();
+    }
+
+    match /roster/{slot} {
+      allow read: if isNotGuest();
+      allow write: if isPL();
+    }
+
+    match /tasks/{task} {
+      allow read: if isNotGuest();
+      allow write: if isOfficer();
+    }
+
+    match /transactions/{transaction} {
+      allow read: if isNotGuest();
+      allow create: if isOfficer();
+      allow update, delete: if isPL();
+    }
+
+    match /config/{doc} {
+      allow read: if isNotGuest() || doc == 'registration';
+      allow write: if isOfficer();
+    }
+  }
+}

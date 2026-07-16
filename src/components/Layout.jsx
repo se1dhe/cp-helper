@@ -5,6 +5,7 @@ import { useLang } from '../context/LanguageContext';
 import { signInWithEmail, registerWithEmail, logOut } from '../firebase';
 import { updateUserNickname } from '../services/adminService';
 import { subscribeToRoster, updateRosterNameByUserId } from '../services/rosterService';
+import { isRegistrationAllowed } from '../services/registrationService';
 import { LayoutDashboard, Users, Wallet, LogIn, LogOut, ShieldAlert, UserPlus, Check, X, Languages, UserCheck } from 'lucide-react';
 import { L2_CLASSES } from '../utils/classes';
 import { ClassIcon } from './ClassIcon';
@@ -55,6 +56,12 @@ export const Layout = () => {
     setLoading(true);
     try {
       if (isRegistering) {
+        const allowed = await isRegistrationAllowed(email);
+        if (!allowed) {
+          setError(t('auth.registrationClosed'));
+          setLoading(false);
+          return;
+        }
         sessionStorage.setItem('pendingNickname', nickname);
         await registerWithEmail(email, password);
       } else {
@@ -103,7 +110,7 @@ export const Layout = () => {
           </div>
 
           <h1>0utLaw</h1>
-          <p className="login-card-subtitle">CP-Helper • UaSqud</p>
+          <p className="login-card-subtitle">CP-Helper • UASQUAD</p>
           <p className="login-card-clan">lu4.org • MasterWork</p>
 
           <form onSubmit={handleAuth} className="login-form">
@@ -197,7 +204,7 @@ export const Layout = () => {
             </div>
             <div>
               <h1>0utLaw</h1>
-              <div className="sidebar-brand-sub">UaSqud • lu4</div>
+              <div className="sidebar-brand-sub">UASQUAD • lu4</div>
             </div>
           </div>
         </div>

@@ -75,7 +75,7 @@ export const MemberProgress = () => {
     const all = [...universal, ...race];
     return all.map(q => ({
       ...q,
-      done: questLog?.[member.id]?.[q.name] === true,
+      done: questLog?.[member.userId]?.[q.name] === true,
     }));
   };
 

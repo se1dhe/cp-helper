@@ -5,6 +5,7 @@ import { ask } from '@tauri-apps/plugin-dialog';
 import { AuthProvider } from './context/AuthContext';
 import { LanguageProvider } from './context/LanguageContext';
 import { Layout } from './components/Layout';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { Dashboard } from './pages/Dashboard';
 import { Treasury } from './pages/Treasury';
 import { Roster } from './pages/Roster';
@@ -34,6 +35,7 @@ function App() {
   }, []);
 
   return (
+    <ErrorBoundary>
     <LanguageProvider>
       <AuthProvider>
         <HashRouter>
@@ -49,6 +51,7 @@ function App() {
         </HashRouter>
       </AuthProvider>
     </LanguageProvider>
+    </ErrorBoundary>
   );
 }
 

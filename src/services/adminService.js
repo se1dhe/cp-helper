@@ -1,6 +1,6 @@
-import { collection, doc, updateDoc, deleteDoc, onSnapshot, query, orderBy, setDoc, getDocs } from 'firebase/firestore';
+import { collection, doc, updateDoc, onSnapshot, query, orderBy, getDocs, writeBatch } from 'firebase/firestore';
 import { db } from '../firebase';
-import { DEFAULT_ROSTER } from './rosterService';
+import { seedDefaultRoster } from './rosterService';
 
 export const subscribeToUsers = (callback) => {
   const q = query(collection(db, "users"), orderBy('createdAt', 'desc'));
@@ -30,14 +30,12 @@ export const clearUserClass = async (userId) => {
   await updateDoc(userRef, { className: '' });
 };
 
-// Сброс ростера до стандартного состояния (вызывается ПЛом)
 export const initializeRoster = async () => {
   const existing = await getDocs(collection(db, 'roster'));
+  const batch = writeBatch(db);
   for (const slot of existing.docs) {
-    await deleteDoc(doc(db, 'roster', slot.id));
+    batch.delete(doc(db, 'roster', slot.id));
   }
-  for (const slot of DEFAULT_ROSTER) {
-    const slotRef = doc(db, 'roster', slot.id);
-    await setDoc(slotRef, slot);
-  }
+  await batch.commit();
+  await seedDefaultRoster();
 };

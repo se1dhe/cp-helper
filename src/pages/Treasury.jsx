@@ -17,6 +17,7 @@ export const Treasury = () => {
   const [type, setType] = useState('income');
   const [member, setMember] = useState('');
   const [description, setDescription] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     const unsubTx = subscribeToTransactions(setData);
@@ -26,14 +27,17 @@ export const Treasury = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!amount || !member) return;
+    if (!amount || !member || submitting) return;
 
+    setSubmitting(true);
     try {
+      const selectedSlot = roster.find(s => s.name === member);
       await addTransaction({
         amount: Number(amount),
         currency,
         type,
         member,
+        memberId: selectedSlot?.userId || '',
         description,
         addedBy: currentUser.displayName,
         addedById: currentUser.uid
@@ -44,6 +48,8 @@ export const Treasury = () => {
     } catch (error) {
       console.error(error);
       alert(t('treasury.addError'));
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -173,8 +179,8 @@ export const Treasury = () => {
                 <label>{t('treasury.description')}</label>
                 <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} className="input-field" placeholder={t('treasury.descriptionPlaceholder')} />
               </div>
-              <button type="submit" className="btn btn-primary btn-block mt-2">
-                {type === 'income' ? <><ArrowUpCircle size={16} /> {t('treasury.submitIncome')}</> : <><ArrowDownCircle size={16} /> {t('treasury.submitExpense')}</>}
+              <button type="submit" className="btn btn-primary btn-block mt-2" disabled={submitting}>
+                {submitting ? t('treasury.saving') : (type === 'income' ? <><ArrowUpCircle size={16} /> {t('treasury.submitIncome')}</> : <><ArrowDownCircle size={16} /> {t('treasury.submitExpense')}</>)}
               </button>
             </form>
           </div>

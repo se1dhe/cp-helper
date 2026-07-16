@@ -3,7 +3,6 @@ import { db } from '../firebase';
 
 const COLLECTION = 'roster';
 
-// Default initial roster if empty
 export const DEFAULT_ROSTER = [
   { id: 'slot_1', className: 'Sorcerer', type: 'mage', name: '—', lvl: 1, position: 1 },
   { id: 'slot_2', className: 'Sorcerer', type: 'mage', name: '—', lvl: 1, position: 2 },
@@ -15,6 +14,24 @@ export const DEFAULT_ROSTER = [
   { id: 'slot_8', className: 'Elven Elder', type: 'support', name: '—', lvl: 1, position: 8 },
   { id: 'slot_9', className: 'Overlord', type: 'buffer', name: '—', lvl: 1, position: 9 },
 ];
+
+export const seedDefaultRoster = async () => {
+  const batch = writeBatch(db);
+  for (const slot of DEFAULT_ROSTER) {
+    const slotRef = doc(db, COLLECTION, slot.id);
+    batch.set(slotRef, slot);
+  }
+  await batch.commit();
+};
+
+export const ensureRosterSeeded = async () => {
+  const snapshot = await getDocs(collection(db, COLLECTION));
+  if (snapshot.empty) {
+    await seedDefaultRoster();
+    return true;
+  }
+  return false;
+};
 
 export const subscribeToRoster = (callback) => {
   const q = query(collection(db, COLLECTION), orderBy('position', 'asc'));
@@ -29,8 +46,11 @@ export const updateRosterSlot = async (slotId, data) => {
   await updateDoc(slotRef, data);
 };
 
-export const addRosterSlot = async (currentSlots) => {
-  const maxPos = currentSlots.reduce((max, s) => Math.max(max, s.position || 0), 0);
+export const addRosterSlot = async () => {
+  await ensureRosterSeeded();
+  const snapshot = await getDocs(collection(db, COLLECTION));
+  const existingSlots = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+  const maxPos = existingSlots.reduce((max, s) => Math.max(max, s.position || 0), 0);
   const newPos = maxPos + 1;
   const slotId = `slot_${newPos}`;
   const slotRef = doc(db, COLLECTION, slotId);

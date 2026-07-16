@@ -19,6 +19,7 @@ export const RU = {
   'auth.passwordPlaceholder': '••••••••',
   'auth.nicknamePlaceholder': 'Ваш ник в игре',
   'auth.error': 'Ошибка авторизации',
+  'auth.registrationClosed': 'Регистрация закрыта. Обратитесь к PL для добавления в клан.',
 
   // Guest
   'guest.title': 'Ожидание одобрения',
@@ -99,6 +100,7 @@ export const RU = {
   'roster.error': 'Ошибка при сохранении',
   'roster.addError': 'Ошибка при добавлении слота',
   'roster.deleteError': 'Ошибка при удалении слота',
+  'roster.alreadyAssigned': 'Этот пользователь уже назначен на другой слот',
 
   // Treasury
   'treasury.title': 'Казна',
@@ -119,6 +121,7 @@ export const RU = {
   'treasury.descriptionPlaceholder': 'Сет Кармиана, BSPS...',
   'treasury.submitIncome': 'Внести в казну',
   'treasury.submitExpense': 'Списать из казны',
+  'treasury.saving': 'Сохранение...',
   'treasury.addError': 'Ошибка при добавлении транзакции',
   'treasury.noPermission': 'У вас нет прав для добавления записей в казну.',
   'treasury.noTransactions': 'Нет транзакций',
@@ -167,6 +170,7 @@ export const UA = {
   'auth.passwordPlaceholder': '••••••••',
   'auth.nicknamePlaceholder': 'Ваш нік у грі',
   'auth.error': 'Помилка авторизації',
+  'auth.registrationClosed': 'Реєстрацію закрито. Зверніться до PL для додавання до клану.',
 
   'guest.title': 'Очікування схвалення',
   'guest.message': 'Ви авторизовані як',
@@ -242,6 +246,7 @@ export const UA = {
   'roster.error': 'Помилка при збереженні',
   'roster.addError': 'Помилка при додаванні слоту',
   'roster.deleteError': 'Помилка при видаленні слоту',
+  'roster.alreadyAssigned': 'Цей користувач вже призначений на інший слот',
 
   'treasury.title': 'Скарбниця',
   'treasury.rate': 'Курс MC:',
@@ -261,6 +266,7 @@ export const UA = {
   'treasury.descriptionPlaceholder': 'Сет Карміана, BSPS...',
   'treasury.submitIncome': 'Внести до скарбниці',
   'treasury.submitExpense': 'Списати зі скарбниці',
+  'treasury.saving': 'Збереження...',
   'treasury.addError': 'Помилка при додаванні транзакції',
   'treasury.noPermission': 'У вас немає прав для додавання записів до скарбниці.',
   'treasury.noTransactions': 'Немає транзакцій',

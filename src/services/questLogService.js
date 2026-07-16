@@ -1,4 +1,4 @@
-import { doc, onSnapshot, updateDoc, setDoc } from 'firebase/firestore';
+import { doc, onSnapshot, setDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 
 const DOC_PATH = 'config/questLog';
@@ -13,12 +13,7 @@ export const subscribeToQuestLog = (callback) => {
   });
 };
 
-export const toggleQuestCompletion = async (slotId, questName, done) => {
+export const toggleQuestCompletion = async (userId, questName, done) => {
   const ref = doc(db, DOC_PATH);
-  const update = { [`${slotId}.${questName}`]: done };
-  try {
-    await updateDoc(ref, update);
-  } catch {
-    await setDoc(ref, update, { merge: true });
-  }
+  await setDoc(ref, { [userId]: { [questName]: done } }, { merge: true });
 };

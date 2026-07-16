@@ -47,8 +47,13 @@ export const Admin = () => {
 
   const handleInitRoster = async () => {
     if (window.confirm(t('admin.resetConfirm'))) {
-      await initializeRoster();
-      alert(t('admin.resetDone'));
+      try {
+        await initializeRoster();
+        alert(t('admin.resetDone'));
+      } catch (e) {
+        console.error(e);
+        alert(t('admin.error'));
+      }
     }
   };
 
