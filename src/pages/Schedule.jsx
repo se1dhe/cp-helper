@@ -7,6 +7,20 @@ import {
   subscribeToAttendance, setAttendance,
 } from '../services/scheduleService';
 
+// Стартовый каркас недели под Lu4 — офицер грузит одним кликом и правит.
+// day: 0=Пн .. 6=Вс
+const STARTER_SCHEDULE = [
+  { day: 0, time: '20:00', title: 'Прайм-фарм по фазе', type: 'farm', note: 'bulk 100+, один радиус' },
+  { day: 1, time: '20:00', title: 'Прайм-фарм по фазе', type: 'farm', note: 'bulk 100+' },
+  { day: 2, time: '20:00', title: 'Прайм-фарм по фазе', type: 'farm', note: 'bulk 100+' },
+  { day: 2, time: '22:00', title: 'RB-выход', type: 'rb', note: 'боссы по уровню пака' },
+  { day: 3, time: '20:00', title: 'Прайм-фарм по фазе', type: 'farm', note: 'bulk 100+' },
+  { day: 4, time: '20:00', title: 'Прайм-фарм по фазе', type: 'farm', note: 'bulk 100+' },
+  { day: 5, time: '16:00', title: 'Донат-квесты (Аллигаторы/Св.Земля)', type: 'farm', note: 'цель 300/600 предметов' },
+  { day: 5, time: '21:00', title: 'RB-рейд', type: 'rb', note: 'по таймерам вики Lu4' },
+  { day: 6, time: '20:00', title: 'Планёрка + эпик/RB', type: 'event', note: 'итоги недели, цели' },
+];
+
 const TYPES = ['farm', 'rb', 'epic', 'siege', 'oly', 'event', 'other'];
 const TYPE_COLOR = {
   farm: 'var(--success)',
@@ -73,6 +87,14 @@ export const Schedule = () => {
     try { await deleteEvent(id); } catch { alert(t('sched.deleteError')); }
   };
 
+  const handleSeed = async () => {
+    try {
+      for (const ev of STARTER_SCHEDULE) {
+        await addEvent(ev.day, ev.time, ev.title, ev.type, ev.note);
+      }
+    } catch { alert(t('sched.saveError')); }
+  };
+
   return (
     <div className="fade-in">
       <h2 className="page-title"><CalendarClock size={22} /> {t('sched.title')}</h2>
@@ -90,6 +112,15 @@ export const Schedule = () => {
           <input className="input-field" style={{ flexGrow: 1, minWidth: '120px' }} placeholder={t('sched.notePlaceholder')} value={note} onChange={e => setNote(e.target.value)} />
           <button type="submit" className="btn btn-primary" style={{ padding: '0 1rem', flexShrink: 0 }}><Plus size={18} /></button>
         </form>
+      )}
+
+      {isOfficer && events.length === 0 && (
+        <div className="glass-panel" style={{ textAlign: 'center', padding: '1.5rem', marginBottom: '1.25rem' }}>
+          <p className="text-muted" style={{ marginBottom: '1rem' }}>{t('sched.empty')}</p>
+          <button className="btn btn-primary" onClick={handleSeed}>
+            <Plus size={16} /> {t('sched.loadTemplate')}
+          </button>
+        </div>
       )}
 
       <div className="sched-grid">

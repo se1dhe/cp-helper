@@ -32,12 +32,26 @@ service cloud.firestore {
 
     match /roster/{slot} {
       allow read: if isNotGuest();
-      allow create, update: if isPL()
+      allow create: if isPL()
                     && request.resource.data.name is string
                     && request.resource.data.className is string
                     && request.resource.data.position is int
                     && request.resource.data.lvl is number
                     && request.resource.data.lvl >= 1;
+      // PL правит слот целиком; игрок может менять только name/lvl/avatar
+      // в СВОЁМ слоте (профиль).
+      allow update: if (isPL()
+                        && request.resource.data.name is string
+                        && request.resource.data.className is string
+                        && request.resource.data.position is int
+                        && request.resource.data.lvl is number
+                        && request.resource.data.lvl >= 1)
+                     || (isNotGuest()
+                        && resource.data.userId == request.auth.uid
+                        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name', 'lvl', 'avatar'])
+                        && request.resource.data.name is string
+                        && request.resource.data.lvl is number
+                        && request.resource.data.lvl >= 1);
       allow delete: if isPL();
     }
 

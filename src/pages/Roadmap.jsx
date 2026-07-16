@@ -8,25 +8,56 @@ import {
 } from '../services/roadmapService';
 import { getCountdown } from '../utils/countdown';
 
-// Стартовый каркас плана — ПЛ грузит одним кликом и правит под свой сервер.
+// Стартовый шаблон под Lu4 (MasterWork) — ПЛ грузит одним кликом и правит под себя.
 const STARTER = [
-  { phase: 'День 1', items: [
-    'Собрать пати и расставить классы по ростеру',
-    'Все: 1-я профессия',
-    'Закрыть must-have квесты старта',
-    'Определить точки фарма: прайм и оффпрайм',
+  { phase: '0. Подготовка', items: [
+    'Финализировать ростер и роли (3 Сорка, Биш, ТК, БД, ШЕ, ЕЕ, Овер)',
+    'Забить прайм-тайм и RB в Расписание',
+    'У каждого личный запас Blessed Scroll of Resurrection',
+    'Договориться о дисциплине: bulk turn-in 100+, один радиус фарма',
   ] },
-  { phase: 'Неделя 1', items: [
-    'Все: 2-я профессия',
-    'Собрать стартовый сет и оружие',
-    'Казна: задать минимум адены в день',
-    'Первый совместный рейд-босс',
+  { phase: '1. Сепарация 1-15', items: [
+    'Расовые старты: оружие/бижа/заряды по расам',
+    'Люди: Sword of Solidarity + Spirit of Mirrors',
+    'Т.Эльфы: Forgotten Truth; Овер: Long live the Pa\'agrio Lord',
+    'Заряды: The Guard is Busy (Gilbert)',
+    'Сбор всей группы в Gludin на 12-15 lvl',
   ] },
-  { phase: 'Первый месяц', items: [
-    'Сабкласс / 3-я профессия',
-    'Ноблесс по готовности',
-    'Эпик-боссы: распределить роли и очередь',
-    'Выйти на стабильный доход казны',
+  { phase: '2. Концентрация 15-19', items: [
+    'Cure for Fever Disease (Bone Shield)',
+    'Will the Seal be Broken? (NG броня + D-скроллы)',
+    'Dragon Fangs (доспехи)',
+    'Стэк-фарм Lizardmen/Orcs: The Guard is Busy + Orc Subjugation',
+  ] },
+  { phase: '3. Первая профа (20)', items: [
+    'Все выходят на 20 и сдают профу ОДНОВРЕМЕННО',
+    'Забрать Weapon Upgrade Coupon (NG→D) → D-оружие',
+    'Проверить: 250k EXP, соски, Blessed Res у каждого',
+  ] },
+  { phase: '4. D-грейд 20-36', items: [
+    'Броня D: Acts of Evil (27-32), Aiding the Floran Village (30-42)',
+    'Бижа D: Magnificent Feast',
+    'Опыт: Red-Eyed Invaders, Dangerous Seduction, Seed of Evil',
+    'Форсировать до 36-39 lvl',
+  ] },
+  { phase: '5. Донорский цикл 36-40', items: [
+    'Аллигаторы (Heine, 600+ → 96700 аден)',
+    'Вторжение на Святую Землю (Heine, 600+ → 228000 аден)',
+    'Честь семьи (Oren, Timak) + статуи Патрину',
+    'Испытание магии (50k EXP) + призывателя (41k EXP)',
+    'Копить Mystic Map Parts; 2-я профа на 40',
+  ] },
+  { phase: '6. C-грейд 40-52', items: [
+    'Цепочка Coins of Removal → Kail\'s Magic Coin (C-броня)',
+    'Seductive Whispers (50+, рецепты оружия)',
+    'Bulk-квесты 40+: Trespassing, Alligator Hunter (пороги 300/600)',
+    'Treasure Hunt (42, Пиратская карта), Relic Exploration',
+  ] },
+  { phase: '7. Стабилизация', items: [
+    'Полный C-грейд на ядро пака',
+    'Ноблесс / сабкласс по готовности',
+    'Регулярные RB по расписанию',
+    'Стабильный доход казны',
   ] },
 ];
 

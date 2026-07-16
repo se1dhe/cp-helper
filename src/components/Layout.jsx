@@ -3,12 +3,12 @@ import { Outlet, NavLink } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useLang } from '../context/LanguageContext';
 import { signInWithEmail, registerWithEmail, logOut } from '../firebase';
-import { updateUserNickname } from '../services/adminService';
-import { subscribeToRoster, updateRosterNameByUserId } from '../services/rosterService';
+import { subscribeToRoster } from '../services/rosterService';
 import { isRegistrationAllowed } from '../services/registrationService';
-import { LayoutDashboard, Users, Wallet, LogIn, LogOut, ShieldAlert, UserPlus, Check, X, Languages, UserCheck, Newspaper, Map as MapIcon, CalendarClock } from 'lucide-react';
+import { LayoutDashboard, Users, Wallet, LogIn, LogOut, ShieldAlert, UserPlus, Languages, UserCheck, Newspaper, Map as MapIcon, CalendarClock, Pencil } from 'lucide-react';
 import { L2_CLASSES } from '../utils/classes';
 import { ClassIcon } from './ClassIcon';
+import { ProfileModal } from './ProfileModal';
 
 const getRoleBadgeClass = (role) => {
   switch (role) {
@@ -22,7 +22,7 @@ const getRoleBadgeClass = (role) => {
 const getClassDetails = (name) => L2_CLASSES.find(c => c.name === name) || null;
 
 export const Layout = () => {
-  const { currentUser, userRole, userNickname, userClass, isGuest, refreshUserDoc } = useAuth();
+  const { currentUser, userRole, userNickname, userClass, userAvatar, userLevel, isGuest } = useAuth();
   const { t, toggleLang, langLabel } = useLang();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -30,9 +30,7 @@ export const Layout = () => {
   const [isRegistering, setIsRegistering] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [editingNickname, setEditingNickname] = useState(false);
-  const [nicknameInput, setNicknameInput] = useState('');
-  const [savingNickname, setSavingNickname] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
   const [roster, setRoster] = useState([]);
 
   const navItems = [
@@ -74,33 +72,6 @@ export const Layout = () => {
     } finally {
       setLoading(false);
     }
-  };
-
-  const startEditNickname = () => {
-    setNicknameInput(userNickname || currentUser.email);
-    setEditingNickname(true);
-  };
-
-  const handleSaveNickname = async () => {
-    if (!nicknameInput.trim() || nicknameInput.trim() === userNickname) {
-      setEditingNickname(false);
-      return;
-    }
-    setSavingNickname(true);
-    try {
-      await updateUserNickname(currentUser.uid, nicknameInput.trim());
-      await updateRosterNameByUserId(currentUser.uid, nicknameInput.trim());
-      await refreshUserDoc(currentUser.uid);
-      setEditingNickname(false);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setSavingNickname(false);
-    }
-  };
-
-  const handleCancelNickname = () => {
-    setEditingNickname(false);
   };
 
   if (!currentUser) {
@@ -266,45 +237,31 @@ export const Layout = () => {
 
         <div className="sidebar-user">
           <div className="sidebar-user-top">
-            <div className="sidebar-user-icon">
-              {classDetails ? (
+            <button className="sidebar-user-icon sidebar-user-icon--btn" onClick={() => setProfileOpen(true)} title={t('profile.title')}>
+              {userAvatar ? (
+                <img src={userAvatar} alt="" className="sidebar-user-photo" />
+              ) : classDetails ? (
                 <ClassIcon className={effectiveClass} type={classDetails.type} size={38} />
               ) : (
                 <div className="sidebar-user-avatar">
                   {(userNickname || currentUser.email)?.[0]?.toUpperCase() || '?'}
                 </div>
               )}
-            </div>
+            </button>
             <div className="sidebar-user-meta">
-              {editingNickname ? (
-                <div className="sidebar-edit-name">
-                  <input
-                    type="text"
-                    className="input-field"
-                    value={nicknameInput}
-                    onChange={e => setNicknameInput(e.target.value)}
-                    onKeyDown={e => { if (e.key === 'Enter') handleSaveNickname(); if (e.key === 'Escape') handleCancelNickname(); }}
-                    autoFocus
-                    style={{ padding: '0.2rem 0.35rem', fontSize: '0.78rem', width: '100px' }}
-                  />
-                  <button className="btn btn-sm" onClick={handleSaveNickname} disabled={savingNickname} style={{ padding: '0.15rem 0.25rem' }}>
-                    <Check size={11} />
-                  </button>
-                  <button className="btn btn-sm" onClick={handleCancelNickname} style={{ padding: '0.15rem 0.25rem' }}>
-                    <X size={11} />
-                  </button>
-                </div>
-              ) : (
-                <div
-                  className="sidebar-user-name"
-                  style={{ color: classDetails?.color || undefined }}
-                  onClick={startEditNickname}
-                  title={t('sidebar.editNickname')}
-                >
-                  {userNickname || currentUser.email}
-                </div>
-              )}
-              <span className={getRoleBadgeClass(userRole)}>{t(`role.${userRole.toLowerCase()}`)}</span>
+              <div
+                className="sidebar-user-name"
+                style={{ color: classDetails?.color || undefined }}
+                onClick={() => setProfileOpen(true)}
+                title={t('profile.edit')}
+              >
+                {userNickname || currentUser.email}
+                <Pencil size={11} style={{ opacity: 0.5, flexShrink: 0 }} />
+              </div>
+              <div className="sidebar-user-sub">
+                <span className={getRoleBadgeClass(userRole)}>{t(`role.${userRole.toLowerCase()}`)}</span>
+                {userLevel > 1 && <span className="sidebar-user-lvl">{t('profile.lvlShort')} {userLevel}</span>}
+              </div>
             </div>
           </div>
           <button onClick={logOut} className="btn btn-sm btn-block">
@@ -312,6 +269,9 @@ export const Layout = () => {
           </button>
         </div>
       </aside>
+
+      <ProfileModal open={profileOpen} onClose={() => setProfileOpen(false)} />
+
 
       <main className="main-content">
         <Outlet />

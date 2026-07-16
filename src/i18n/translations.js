@@ -213,6 +213,8 @@ export const RU = {
   'sched.delete': 'Удалить',
   'sched.saveError': 'Ошибка при сохранении',
   'sched.deleteError': 'Ошибка при удалении',
+  'sched.empty': 'Расписание пустое. Загрузи каркас недели и подправь под свой прайм.',
+  'sched.loadTemplate': 'Загрузить шаблон недели',
 
   // Новости
   'news.title': 'Новости КП',
@@ -238,6 +240,22 @@ export const RU = {
   'members.online': 'В сети',
   'members.offline': 'Не в сети',
   'members.clickToSet': 'Нажмите чтобы задать минимум',
+
+  // Профиль
+  'profile.title': 'Профиль',
+  'profile.edit': 'Редактировать профиль',
+  'profile.nickname': 'Игровой ник',
+  'profile.level': 'Уровень',
+  'profile.lvlShort': 'Ур.',
+  'profile.changeAvatar': 'Сменить аватар',
+  'profile.removeAvatar': 'Убрать',
+  'profile.processing': 'Обработка...',
+  'profile.save': 'Сохранить',
+  'profile.saving': 'Сохранение...',
+  'profile.cancel': 'Отмена',
+  'profile.saveError': 'Ошибка при сохранении профиля',
+  'profile.imageOnly': 'Выберите файл изображения',
+  'profile.imageError': 'Не удалось обработать изображение',
 
   // Обновление
   'update.available': 'Доступна новая версия {version}. Скачать и установить?',
@@ -454,6 +472,8 @@ export const UA = {
   'sched.delete': 'Видалити',
   'sched.saveError': 'Помилка при збереженні',
   'sched.deleteError': 'Помилка при видаленні',
+  'sched.empty': 'Розклад порожній. Завантаж каркас тижня і підправ під свій прайм.',
+  'sched.loadTemplate': 'Завантажити шаблон тижня',
 
   // Новини
   'news.title': 'Новини КП',
@@ -479,6 +499,22 @@ export const UA = {
   'members.online': 'У мережі',
   'members.offline': 'Не в мережі',
   'members.clickToSet': 'Натисніть щоб задати мінімум',
+
+  // Профіль
+  'profile.title': 'Профіль',
+  'profile.edit': 'Редагувати профіль',
+  'profile.nickname': 'Ігровий нік',
+  'profile.level': 'Рівень',
+  'profile.lvlShort': 'Рів.',
+  'profile.changeAvatar': 'Змінити аватар',
+  'profile.removeAvatar': 'Прибрати',
+  'profile.processing': 'Обробка...',
+  'profile.save': 'Зберегти',
+  'profile.saving': 'Збереження...',
+  'profile.cancel': 'Скасувати',
+  'profile.saveError': 'Помилка при збереженні профілю',
+  'profile.imageOnly': 'Оберіть файл зображення',
+  'profile.imageError': 'Не вдалося обробити зображення',
 
   // Оновлення
   'update.available': 'Доступна нова версія {version}. Завантажити та встановити?',

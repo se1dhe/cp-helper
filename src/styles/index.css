@@ -1578,3 +1578,40 @@ tbody tr:hover { background: rgba(255,255,255,0.02); }
 }
 .sched-go-btn:hover { border-color: var(--border-hover); color: var(--text-primary); }
 .sched-go-btn--on { background: var(--success-glow); border-color: rgba(16,185,129,0.4); color: var(--success); }
+
+/* ===== Модальное окно ===== */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(0,0,0,0.6); backdrop-filter: blur(3px);
+  display: flex; align-items: center; justify-content: center; padding: 1rem;
+}
+.modal-card {
+  width: 100%; max-width: 380px;
+  background: var(--bg-surface); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 1.25rem; box-shadow: var(--shadow-elevated);
+}
+.modal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+.modal-head h3 { margin: 0; font-size: 1.05rem; color: var(--text-primary); }
+.modal-close { background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 4px; display: flex; transition: color var(--transition); }
+.modal-close:hover { color: var(--text-primary); }
+.modal-actions { display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 1.25rem; }
+
+/* ===== Аватар в профиле ===== */
+.profile-avatar-block { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; }
+.profile-avatar {
+  width: 72px; height: 72px; border-radius: 50%; overflow: hidden; flex-shrink: 0;
+  border: 2px solid var(--border-hover); background: var(--bg-card);
+}
+.profile-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.profile-avatar-fallback { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--text-muted); }
+.profile-avatar-actions { display: flex; flex-direction: column; gap: 0.4rem; }
+
+/* ===== Аватар в сайдбаре ===== */
+.sidebar-user-icon--btn { background: none; border: none; padding: 0; cursor: pointer; display: flex; }
+.sidebar-user-photo { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; display: block; border: 1px solid var(--border-hover); }
+.sidebar-user-name { display: inline-flex; align-items: center; gap: 5px; cursor: pointer; }
+.sidebar-user-sub { display: flex; align-items: center; gap: 6px; margin-top: 3px; flex-wrap: wrap; }
+.sidebar-user-lvl { font-size: 0.68rem; font-weight: 700; color: var(--gold-light); background: var(--gold-glow); border-radius: 6px; padding: 1px 6px; }
+
+/* ===== Аватар в списке мемберов ===== */
+.member-cell-avatar { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; display: block; flex-shrink: 0; border: 1px solid var(--border-hover); }

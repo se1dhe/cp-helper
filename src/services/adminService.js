@@ -20,6 +20,12 @@ export const updateUserNickname = async (userId, nickname) => {
   await updateDoc(userRef, { nickname, displayName: nickname });
 };
 
+// Обновление профиля игрока (ник, аватар, уровень) одним вызовом.
+export const updateUserProfile = async (userId, data) => {
+  const userRef = doc(db, "users", userId);
+  await updateDoc(userRef, data);
+};
+
 export const updateUserClass = async (userId, className) => {
   const userRef = doc(db, "users", userId);
   await updateDoc(userRef, { className });

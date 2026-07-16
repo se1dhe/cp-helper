@@ -14,6 +14,8 @@ export const AuthProvider = ({ children }) => {
   const [userRole, setUserRole] = useState("GUEST");
   const [userNickname, setUserNickname] = useState('');
   const [userClass, setUserClass] = useState('');
+  const [userAvatar, setUserAvatar] = useState('');
+  const [userLevel, setUserLevel] = useState(1);
   const [loading, setLoading] = useState(true);
   const [authError, setAuthError] = useState(null);
   const presenceUidRef = useRef(null);
@@ -25,6 +27,8 @@ export const AuthProvider = ({ children }) => {
       const data = userSnap.data();
       setUserRole(data.role || "GUEST");
       setUserClass(data.className || '');
+      setUserAvatar(data.avatar || '');
+      setUserLevel(data.level || 1);
       setUserNickname(data.nickname || data.displayName || userSnap.data().email);
     }
   };
@@ -40,6 +44,8 @@ export const AuthProvider = ({ children }) => {
             const data = userSnap.data();
             setUserRole(data.role || "GUEST");
             setUserClass(data.className || '');
+            setUserAvatar(data.avatar || '');
+            setUserLevel(data.level || 1);
             const nickname = data.nickname || data.displayName || user.displayName || user.email;
             setUserNickname(nickname);
             if ((data.role || "GUEST") !== "GUEST") {
@@ -127,6 +133,8 @@ export const AuthProvider = ({ children }) => {
     userRole,
     userNickname,
     userClass,
+    userAvatar,
+    userLevel,
     isPL: userRole === "PL",
     isOfficer: userRole === "OFFICER" || userRole === "PL",
     isGuest: userRole === "GUEST",

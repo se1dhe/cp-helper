@@ -181,7 +181,9 @@ export const MemberProgress = () => {
                         >
                           {isExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
                         </button>
-                        <ClassIcon className={m.className} type={cls.type} size={24} />
+                        {m.avatar
+                          ? <img src={m.avatar} alt="" className="member-cell-avatar" />
+                          : <ClassIcon className={m.className} type={cls.type} size={24} />}
                         <div className="member-cell-info">
                           <span className="member-cell-name">
                             <span className={`online-dot ${online ? 'online-dot--on' : 'online-dot--off'}`} title={online ? t('members.online') : t('members.offline')} />

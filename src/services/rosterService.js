@@ -83,3 +83,18 @@ export const updateRosterNameByUserId = async (userId, newName) => {
     await batch.commit();
   }
 };
+
+// Обновляет поля (name/lvl/avatar) во всех слотах ростера, привязанных к игроку.
+export const updateRosterByUserId = async (userId, data) => {
+  if (!userId) return;
+  const snapshot = await getDocs(collection(db, COLLECTION));
+  const batch = writeBatch(db);
+  let count = 0;
+  snapshot.forEach((d) => {
+    if (d.data().userId === userId) {
+      batch.update(d.ref, data);
+      count += 1;
+    }
+  });
+  if (count > 0) await batch.commit();
+};
