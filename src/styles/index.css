@@ -1619,3 +1619,65 @@ tbody tr:hover { background: rgba(255,255,255,0.02); }
 /* ===== Аватар в чипе онлайна и в ростере ===== */
 .chip-avatar { width: 16px; height: 16px; border-radius: 50%; object-fit: cover; display: inline-block; flex-shrink: 0; }
 .roster-name-avatar { width: 18px; height: 18px; border-radius: 50%; object-fit: cover; vertical-align: middle; margin-right: 5px; border: 1px solid var(--border-hover); }
+
+/* ===== Брендовое окно обновления ===== */
+.update-overlay {
+  position: fixed; inset: 0; z-index: 2000;
+  background: radial-gradient(circle at 50% 40%, rgba(20,10,12,0.92), rgba(5,5,10,0.97));
+  backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center; padding: 1.5rem;
+}
+.update-card {
+  width: 100%; max-width: 340px; text-align: center;
+  background: var(--bg-surface);
+  border: 1px solid var(--primary-border);
+  border-radius: var(--radius-lg);
+  padding: 2rem 1.75rem;
+  box-shadow: var(--shadow-elevated), var(--shadow-glow);
+}
+.update-logo {
+  width: 64px; height: 64px; margin: 0 auto 1rem;
+  border-radius: 18px; overflow: hidden;
+  box-shadow: 0 0 24px var(--primary-glow-strong);
+  animation: update-pulse 2.4s ease-in-out infinite;
+}
+.update-logo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.update-title { margin: 0 0 0.35rem; font-size: 1.1rem; color: var(--text-primary); }
+.update-sub { margin: 0; color: var(--text-secondary); font-size: 0.85rem; line-height: 1.45; }
+.update-actions { display: flex; gap: 0.6rem; justify-content: center; margin-top: 1.5rem; }
+
+.update-bar {
+  position: relative; height: 8px; margin: 1.25rem 0 0.5rem;
+  background: rgba(255,255,255,0.06); border-radius: 999px; overflow: hidden;
+}
+.update-bar-fill {
+  height: 100%; border-radius: 999px;
+  background: linear-gradient(90deg, var(--primary-dim), var(--primary-light), var(--gold-light));
+  background-size: 200% 100%;
+  box-shadow: 0 0 12px var(--primary-glow-strong);
+  transition: width 0.3s ease; animation: update-flow 1.6s linear infinite;
+}
+.update-bar--indeterminate .update-bar-fill {
+  width: 40%; animation: update-indet 1.2s ease-in-out infinite, update-flow 1.6s linear infinite;
+}
+.update-pct { display: inline-block; font-size: 0.82rem; font-weight: 700; color: var(--gold-light); }
+
+.update-spinner, .update-error-icon {
+  width: 56px; height: 56px; margin: 0 auto 1rem;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+}
+.update-spinner { color: var(--primary-light); background: var(--primary-glow); }
+.update-spinner svg { animation: update-spin 1s linear infinite; }
+.update-error-icon { color: var(--danger); background: rgba(239,68,68,0.12); }
+
+@keyframes update-spin { to { transform: rotate(360deg); } }
+@keyframes update-flow { to { background-position: 200% 0; } }
+@keyframes update-pulse {
+  0%, 100% { box-shadow: 0 0 20px var(--primary-glow); }
+  50% { box-shadow: 0 0 34px var(--primary-glow-strong); }
+}
+@keyframes update-indet {
+  0% { margin-left: -40%; }
+  100% { margin-left: 100%; }
+}
