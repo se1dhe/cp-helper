@@ -1,166 +1,100 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Map as MapIcon, Flag, Plus, Trash2, CheckCircle2, Circle, Rocket, CalendarDays } from 'lucide-react';
+import {
+  Map as MapIcon, Rocket, CalendarDays, ChevronDown, ChevronRight,
+  CheckCircle2, Circle, Send, Target, MapPin, Sun, Moon, ScrollText,
+  Shield, Swords, Lightbulb, Users, X,
+} from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useLang } from '../context/LanguageContext';
 import {
-  subscribeToRoadmap, addRoadmapItem, toggleRoadmapItem, deleteRoadmapItem,
+  subscribeToRoadmapProgress, toggleRoadmapProgress,
   subscribeToServerInfo, setLaunchDate,
 } from '../services/roadmapService';
+import { subscribeToRoster } from '../services/rosterService';
+import { addTask } from '../services/taskService';
 import { getCountdown } from '../utils/countdown';
+import { LU4_PHASES, LU4_MECHANICS, LU4_CHARACTERS, LU4_TENTH, allTaskIds } from '../data/lu4Roadmap';
 
-// Детальный шаблон под Lu4 (MasterWork), 1→40 с подзадачами.
-// ПЛ грузит одним кликом и правит под себя. Подробности — в ROADMAP_LU4_1-40.md.
-const STARTER = [
-  { phase: '0. Подготовка (до старта)', items: [
-    'Финализировать ростер и роли (3 Сорка, Биш, ТК, БД, СвС, ШЕ, ЕЕ, Овер)',
-    'Определить расы и стартовые деревни каждого',
-    'Каждый заранее выписал свои расовые квесты 1-6',
-    'Забить прайм/оффпрайм и RB в Расписание (мега-квесты — в оффпрайм)',
-    'У каждого личный запас Blessed Scroll of Resurrection',
-    'Правило вслух: bulk turn-in, один радиус, AoE-бёрст толпы',
-  ] },
-  { phase: '1. Расовый старт 1-6', items: [
-    'Люди: Letters of Love, Deliver Goods, Sacrifice to the Sea',
-    'Эльфы: What Women Want, Fruit of the Mother Tree',
-    'Т.Эльфы: Mass of Darkness, Deliver Supplies',
-    'Овер: Long live the Pa\'agrio Lord (NG оружие)',
-    'Люди на 3: Find Sir Windawood (зелья скорости)',
-    'Все дошли до 5-6 lvl',
-  ] },
-  { phase: '2. Оружие/заряды/сбор 6-12', items: [
-    'Люди: Sword of Solidarity; маги-люди: Spirit of Mirrors (Wand of Adept)',
-    'Т.Эльфы: Forgotten Truth; эльфы-маги: Skirmish with the Orcs',
-    'Прогнать 1-раз зарядные квесты (Bonds of Slavery / Hidden Veins / The Guard is Busy)',
-    'Овер начинает марш к Глудио на 12-15',
-    'Сбор всей пачки в Gludin к 12-15',
-    'Стэк-фарм: The Guard is Busy + Orc Subjugation у всех',
-  ] },
-  { phase: '3. Броня и разгон 12-19', items: [
-    'Cure for Fever Disease (Bone Shield + 20k EXP)',
-    'Offspring of Nightmares (20k EXP + 15k ад)',
-    'Will the Seal be Broken? (NG броня + D-Enchant Scrolls — СОХРАНИТЬ)',
-    'Фоном: Grim Collector / Crystals of Fire and Ice',
-    'Собрать первый NG-сет брони',
-    'Все дошли до 19 lvl',
-  ] },
-  { phase: '4. Мега-квесты + 1-я профа 19-26', items: [
-    'На 19: Dragon Fangs (Luis, Gludin) — 350k EXP + D-броня',
-    'На 20: 1-я профа ВСЕЙ пачкой одновременно (250k EXP + Weapon Coupon)',
-    'Обмен оружия NG→D по купону (город без налога) + D-скроллы',
-    'На 20: Red-Eyed Invaders (Babenco) — ~300k EXP + 3 Blessed Res',
-    'Blood Fiend / Dangerous Seduction / Seed of Evil (по расам, +250k)',
-    'Цикл Magnificent Feast (D-бижа) + Adept of Taste (53k EXP)',
-    'Дойти до 26 lvl',
-  ] },
-  { phase: '5. D-грейд и донор 26-35', items: [
-    'На 27: Acts of Evil (200k EXP + D-броня Turek)',
-    'Клан до 4 ур. → Proof of Clan Alliance (200k EXP)',
-    'Донор в прайм: Arrow of Vengeance / Fairy Breath (150+ = 50k EXP)',
-    'Aiding the Floran Village — закрыть слоты D-брони',
-    'Song of the Hunter: копить C-Blessed SpS и краски +3/-3',
-    'Полный D-сет на 3 Сорках, танке, хиле',
-    'Дойти до 35 lvl',
-  ] },
-  { phase: '6. Цепочка Temple + 2-я профа 35-40', items: [
-    'Temple: Missionary → Executor → Champion 1 → Champion 2 (Дион)',
-    'Shadow Fox 1-3 (Heine) → Fallen Angel Dawn (592k!) → Dusk',
-    'Донор: Trespassing (Restina, 600+ = 228k ад)',
-    'Донор: Аллигаторы (Kluck, 600+ = 96.7k ад + Pirate Map)',
-    'Копить Pirate\'s Treasure Map / Mystic Map Parts',
-    'На 40: 2-я профа ВСЕЙ пачкой одновременно',
-  ] },
-  { phase: '7. После 40 (C-грейд)', items: [
-    'Kail\'s Magic Coin (C-броня), Seductive Whispers (рецепты оружия)',
-    'Treasure Hunt (42, Пиратская карта), Relic Exploration',
-    'Регулярные RB по расписанию, ноблесс/сабкласс по готовности',
-    'Стабильный доход казны на Trespassing 600+',
-  ] },
-];
+const EXPANDED_KEY = 'roadmapExpanded';
 
 export const Roadmap = () => {
   const { isPL, isOfficer, isGuest } = useAuth();
   const { t } = useLang();
-  const [items, setItems] = useState([]);
+  const [progress, setProgress] = useState({});
   const [launchDate, setLaunchDateState] = useState('');
-  const [newPhase, setNewPhase] = useState('');
-  const [newText, setNewText] = useState('');
+  const [roster, setRoster] = useState([]);
+  const [expanded, setExpanded] = useState(() => {
+    try { return new Set(JSON.parse(localStorage.getItem(EXPANDED_KEY) || '[]')); } catch { return new Set(); }
+  });
+  const [assign, setAssign] = useState(null); // { text, tag, target }
 
   useEffect(() => {
-    const unsub = subscribeToRoadmap(setItems);
+    const unsub = subscribeToRoadmapProgress(setProgress);
     const unsubServer = subscribeToServerInfo((info) => setLaunchDateState(info.launchDate || ''));
-    return () => { unsub(); unsubServer(); };
+    const unsubRoster = subscribeToRoster(setRoster);
+    return () => { unsub(); unsubServer(); unsubRoster(); };
   }, []);
 
-  const phases = useMemo(() => {
-    const map = new Map();
-    for (const it of items) {
-      if (!map.has(it.phase)) map.set(it.phase, { name: it.phase, phaseOrder: it.phaseOrder ?? 0, items: [] });
-      map.get(it.phase).items.push(it);
-    }
-    const arr = [...map.values()].sort((a, b) => (a.phaseOrder - b.phaseOrder) || a.name.localeCompare(b.name));
-    arr.forEach(p => p.items.sort((a, b) => (a.order || 0) - (b.order || 0)));
-    return arr;
-  }, [items]);
+  const persistExpanded = (set) => {
+    localStorage.setItem(EXPANDED_KEY, JSON.stringify([...set]));
+  };
+  const toggleExpand = (id) => {
+    setExpanded(prev => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      persistExpanded(next);
+      return next;
+    });
+  };
 
-  const totalDone = items.filter(i => i.done).length;
-  const cd = getCountdown(launchDate);
-
-  const handleToggle = async (item) => {
+  const handleToggle = async (id) => {
     if (isGuest) return;
-    try { await toggleRoadmapItem(item.id, item.done); } catch { alert(t('roadmap.saveError')); }
+    try { await toggleRoadmapProgress(id, !progress[id]); } catch { alert(t('roadmap.saveError')); }
   };
 
-  const handleAdd = async (e) => {
-    e.preventDefault();
-    const phase = newPhase.trim();
-    const text = newText.trim();
-    if (!phase || !text) return;
-    const existing = phases.find(p => p.name === phase);
-    const phaseOrder = existing ? existing.phaseOrder : (phases.reduce((m, p) => Math.max(m, p.phaseOrder), 0) + 1);
-    const order = existing ? existing.items.length : 0;
+  const cd = getCountdown(launchDate);
+  const allIds = useMemo(() => allTaskIds(), []);
+  const totalDone = allIds.filter(id => progress[id]).length;
+
+  const phaseStats = (phase) => {
+    const ids = [];
+    phase.tasks.forEach(tk => { ids.push(tk.id); if (tk.sub) tk.sub.forEach(s => ids.push(s.id)); });
+    return { done: ids.filter(id => progress[id]).length, total: ids.length };
+  };
+
+  const activeMembers = roster.filter(m => m.name && m.name !== '—' && m.userId && m.userId !== '__occupied__');
+
+  const openAssign = (task) => {
+    setAssign({ text: task.text, tag: task.offprime ? 'offprime' : 'prime', target: '' });
+  };
+  const sendAssign = async () => {
+    if (!assign?.text.trim()) return;
     try {
-      await addRoadmapItem(phase, phaseOrder, text, order);
-      setNewText('');
-    } catch { alert(t('roadmap.saveError')); }
-  };
-
-  const handleDelete = async (id) => {
-    try { await deleteRoadmapItem(id); } catch { alert(t('roadmap.deleteError')); }
-  };
-
-  const handleSeed = async () => {
-    try {
-      let po = 0;
-      for (const ph of STARTER) {
-        po += 1;
-        let ord = 0;
-        for (const text of ph.items) {
-          await addRoadmapItem(ph.phase, po, text, ord);
-          ord += 1;
-        }
-      }
-    } catch { alert(t('roadmap.saveError')); }
+      const m = activeMembers.find(x => x.userId === assign.target);
+      await addTask(assign.text.trim(), assign.tag, assign.target, m?.name || '');
+      setAssign(null);
+    } catch { alert(t('roadmap.assignError')); }
   };
 
   const handleDate = async (e) => {
-    const val = e.target.value;
-    setLaunchDateState(val);
-    try { await setLaunchDate(val); } catch { alert(t('roadmap.saveError')); }
+    const v = e.target.value;
+    setLaunchDateState(v);
+    try { await setLaunchDate(v); } catch { alert(t('roadmap.saveError')); }
   };
+
+  const renderList = (arr, cls) => (
+    <ul className={cls}>{arr.map((x, i) => <li key={i}>{x}</li>)}</ul>
+  );
 
   return (
     <div className="fade-in">
       <div className="flex justify-between items-center mb-4" style={{ flexWrap: 'wrap', gap: '0.75rem' }}>
-        <h2 className="page-title" style={{ marginBottom: 0 }}>
-          <MapIcon size={22} /> {t('roadmap.title')}
-        </h2>
+        <h2 className="page-title" style={{ marginBottom: 0 }}><MapIcon size={22} /> {t('roadmap.title')}</h2>
         <div className="flex items-center gap-2" style={{ flexWrap: 'wrap' }}>
           {cd && (
             <span className={`launch-chip ${cd.started ? 'launch-chip--live' : ''}`}>
               <Rocket size={14} />
-              {cd.started
-                ? t('roadmap.dayN', { n: cd.dayNumber })
-                : t('roadmap.daysLeft', { n: cd.days })}
+              {cd.started ? t('roadmap.dayN', { n: cd.dayNumber }) : t('roadmap.daysLeft', { n: cd.days })}
             </span>
           )}
           {isPL && (
@@ -173,86 +107,189 @@ export const Roadmap = () => {
         </div>
       </div>
 
-      {items.length > 0 && (
-        <div className="roadmap-overall">
-          <div className="roadmap-overall-bar">
-            <div className="roadmap-overall-fill" style={{ width: `${Math.round((totalDone / items.length) * 100)}%` }} />
-          </div>
-          <span className="roadmap-overall-label">{totalDone}/{items.length}</span>
+      {/* Общий прогресс */}
+      <div className="roadmap-overall">
+        <div className="roadmap-overall-bar">
+          <div className="roadmap-overall-fill" style={{ width: `${Math.round((totalDone / allIds.length) * 100)}%` }} />
         </div>
-      )}
+        <span className="roadmap-overall-label">{totalDone}/{allIds.length}</span>
+      </div>
 
-      {isOfficer && (
-        <form onSubmit={handleAdd} className="roadmap-add">
-          <input
-            list="roadmap-phases"
-            className="input-field"
-            style={{ width: '170px' }}
-            placeholder={t('roadmap.phasePlaceholder')}
-            value={newPhase}
-            onChange={e => setNewPhase(e.target.value)}
-          />
-          <datalist id="roadmap-phases">
-            {phases.map(p => <option key={p.name} value={p.name} />)}
-          </datalist>
-          <input
-            className="input-field"
-            style={{ flexGrow: 1, minWidth: '160px' }}
-            placeholder={t('roadmap.itemPlaceholder')}
-            value={newText}
-            onChange={e => setNewText(e.target.value)}
-          />
-          <button type="submit" className="btn btn-primary" style={{ padding: '0 1rem', flexShrink: 0 }}>
-            <Plus size={18} />
-          </button>
-        </form>
-      )}
-
-      {phases.length === 0 ? (
-        <div className="glass-panel" style={{ textAlign: 'center', padding: '2rem' }}>
-          <p className="text-muted" style={{ marginBottom: isPL ? '1rem' : 0 }}>{t('roadmap.empty')}</p>
-          {isPL && (
-            <button className="btn btn-primary" onClick={handleSeed}>
-              <Rocket size={16} /> {t('roadmap.loadTemplate')}
-            </button>
-          )}
-        </div>
-      ) : (
-        <div className="roadmap-phases">
-          {phases.map(phase => {
-            const done = phase.items.filter(i => i.done).length;
-            const pct = Math.round((done / phase.items.length) * 100);
-            const complete = done === phase.items.length;
-            return (
-              <div key={phase.name} className={`roadmap-phase ${complete ? 'roadmap-phase--done' : ''}`}>
-                <div className="roadmap-phase-head">
-                  <Flag size={15} className="roadmap-phase-icon" />
-                  <span className="roadmap-phase-title">{phase.name}</span>
-                  <span className="roadmap-phase-count">{done}/{phase.items.length}</span>
-                </div>
-                <div className="roadmap-phase-bar">
-                  <div className="roadmap-phase-fill" style={{ width: `${pct}%` }} />
-                </div>
-                <div className="roadmap-items">
-                  {phase.items.map(item => (
-                    <div key={item.id} className={`roadmap-item ${item.done ? 'roadmap-item--done' : ''}`}>
-                      <button className="roadmap-item-check" onClick={() => handleToggle(item)} disabled={isGuest}>
-                        {item.done
-                          ? <CheckCircle2 size={17} color="var(--success)" />
-                          : <Circle size={17} color="var(--text-muted)" />}
-                      </button>
-                      <span className="roadmap-item-text">{item.text}</span>
-                      {isOfficer && (
-                        <button className="roadmap-item-del" onClick={() => handleDelete(item.id)} title={t('roadmap.delete')}>
-                          <Trash2 size={14} />
-                        </button>
-                      )}
-                    </div>
-                  ))}
-                </div>
+      {/* О пачке и механиках */}
+      <div className="rm-phase">
+        <button className="rm-phase-head" onClick={() => toggleExpand('about')}>
+          <Users size={16} className="rm-phase-icon" />
+          <span className="rm-phase-title">{t('roadmap.about')}</span>
+          {expanded.has('about') ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+        </button>
+        {expanded.has('about') && (
+          <div className="rm-phase-body">
+            <div className="rm-section">
+              <h4 className="rm-section-h"><Users size={13} /> {t('roadmap.core')}</h4>
+              <div className="rm-chars">
+                {LU4_CHARACTERS.map((c, i) => (
+                  <div key={i} className="rm-char"><b>{c.role}</b> <span className="rm-char-race">{c.race}</span> — {c.note}</div>
+                ))}
               </div>
-            );
-          })}
+              <div className="rm-tenth">{t('roadmap.tenth')}: {LU4_TENTH.join(', ')}</div>
+            </div>
+            <div className="rm-section">
+              <h4 className="rm-section-h"><Lightbulb size={13} /> {t('roadmap.mechanics')}</h4>
+              {renderList(LU4_MECHANICS, 'rm-ul')}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Фазы */}
+      {LU4_PHASES.map(phase => {
+        const st = phaseStats(phase);
+        const isOpen = expanded.has(phase.id);
+        const complete = st.total > 0 && st.done === st.total;
+        return (
+          <div key={phase.id} className={`rm-phase ${complete ? 'rm-phase--done' : ''}`}>
+            <button className="rm-phase-head" onClick={() => toggleExpand(phase.id)}>
+              {phase.star && <span className="rm-star">★</span>}
+              <span className="rm-phase-title">{phase.title}</span>
+              <span className="rm-phase-levels">{phase.levels}</span>
+              <span className="rm-phase-count">{st.done}/{st.total}</span>
+              {isOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+            </button>
+            <div className="rm-phase-bar"><div className="rm-phase-fill" style={{ width: `${st.total ? Math.round(st.done / st.total * 100) : 0}%` }} /></div>
+
+            {isOpen && (
+              <div className="rm-phase-body">
+                <div className="rm-goal"><Target size={14} /> {phase.goal}</div>
+
+                {(phase.prime.length > 0 || phase.offprime.length > 0) && (
+                  <div className="rm-primeoff">
+                    <div className="rm-po rm-po--prime">
+                      <h5><Sun size={13} /> {t('roadmap.prime')}</h5>
+                      {phase.prime.length ? renderList(phase.prime, 'rm-ul') : <span className="rm-empty">—</span>}
+                    </div>
+                    <div className="rm-po rm-po--off">
+                      <h5><Moon size={13} /> {t('roadmap.offprime')}</h5>
+                      {phase.offprime.length ? renderList(phase.offprime, 'rm-ul') : <span className="rm-empty">—</span>}
+                    </div>
+                  </div>
+                )}
+
+                {phase.farmZones.length > 0 && (
+                  <div className="rm-section">
+                    <h4 className="rm-section-h"><MapPin size={13} /> {t('roadmap.zones')}</h4>
+                    <div className="rm-chips">{phase.farmZones.map((z, i) => <span key={i} className="rm-chip">{z}</span>)}</div>
+                  </div>
+                )}
+
+                {phase.quests.length > 0 && (
+                  <div className="rm-section">
+                    <h4 className="rm-section-h"><ScrollText size={13} /> {t('roadmap.quests')}</h4>
+                    <div className="rm-quests">
+                      {phase.quests.map((q, i) => (
+                        <div key={i} className="rm-quest">
+                          <span className="rm-quest-rep">{q.rep}</span>
+                          <div className="rm-quest-main">
+                            <span className="rm-quest-name">{q.ru} <em>({q.name})</em></span>
+                            <span className="rm-quest-meta">{q.npc} · {q.lvl}</span>
+                          </div>
+                          <span className="rm-quest-reward">{q.reward}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {phase.gear.length > 0 && (
+                  <div className="rm-section">
+                    <h4 className="rm-section-h"><Shield size={13} /> {t('roadmap.gear')}</h4>
+                    {renderList(phase.gear, 'rm-ul')}
+                  </div>
+                )}
+
+                {phase.rb.length > 0 && (
+                  <div className="rm-section">
+                    <h4 className="rm-section-h"><Swords size={13} /> {t('roadmap.rb')}</h4>
+                    <div className="rm-chips">{phase.rb.map((b, i) => <span key={i} className="rm-chip rm-chip--rb">{b}</span>)}</div>
+                  </div>
+                )}
+
+                <div className="rm-section">
+                  <h4 className="rm-section-h"><CheckCircle2 size={13} /> {t('roadmap.tasks')}</h4>
+                  <div className="rm-tasks">
+                    {phase.tasks.map(task => (
+                      <div key={task.id} className="rm-task">
+                        <div className="rm-task-row">
+                          <button className="rm-check" onClick={() => handleToggle(task.id)} disabled={isGuest}>
+                            {progress[task.id] ? <CheckCircle2 size={17} color="var(--success)" /> : <Circle size={17} color="var(--text-muted)" />}
+                          </button>
+                          <span className={`rm-task-text ${progress[task.id] ? 'rm-done' : ''}`}>{task.text}</span>
+                          {task.star && <span className="rm-star rm-star--sm">★</span>}
+                          {task.prime && <span className="rm-tag rm-tag--prime">{t('roadmap.primeShort')}</span>}
+                          {task.offprime && <span className="rm-tag rm-tag--off">{t('roadmap.offShort')}</span>}
+                          {isOfficer && (
+                            <button className="rm-assign" onClick={() => openAssign(task)} title={t('roadmap.assign')}>
+                              <Send size={13} />
+                            </button>
+                          )}
+                        </div>
+                        {task.tip && <div className="rm-tip rm-tip--inline"><Lightbulb size={11} /> {task.tip}</div>}
+                        {task.sub && task.sub.map(s => (
+                          <div key={s.id} className="rm-subtask">
+                            <button className="rm-check rm-check--sm" onClick={() => handleToggle(s.id)} disabled={isGuest}>
+                              {progress[s.id] ? <CheckCircle2 size={14} color="var(--success)" /> : <Circle size={14} color="var(--text-muted)" />}
+                            </button>
+                            <span className={`rm-subtask-text ${progress[s.id] ? 'rm-done' : ''}`}>{s.text}</span>
+                          </div>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {phase.tips.length > 0 && (
+                  <div className="rm-tips">
+                    {phase.tips.map((tp, i) => <div key={i} className="rm-tip"><Lightbulb size={13} /> {tp}</div>)}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        );
+      })}
+
+      {/* Модалка «Выдать в дашборд» */}
+      {assign && (
+        <div className="modal-overlay" onClick={() => setAssign(null)}>
+          <div className="modal-card fade-in-scale" onClick={e => e.stopPropagation()}>
+            <div className="modal-head">
+              <h3>{t('roadmap.assignTitle')}</h3>
+              <button className="modal-close" onClick={() => setAssign(null)}><X size={18} /></button>
+            </div>
+            <div className="input-group">
+              <label>{t('roadmap.assignText')}</label>
+              <input type="text" className="input-field" value={assign.text} onChange={e => setAssign({ ...assign, text: e.target.value })} />
+            </div>
+            <div className="flex gap-2">
+              <div className="input-group" style={{ flex: 1 }}>
+                <label>{t('roadmap.assignTo')}</label>
+                <select className="input-field" value={assign.target} onChange={e => setAssign({ ...assign, target: e.target.value })}>
+                  <option value="">{t('roadmap.forEveryone')}</option>
+                  {activeMembers.map(m => <option key={m.id} value={m.userId}>{m.name}</option>)}
+                </select>
+              </div>
+              <div className="input-group" style={{ width: '120px' }}>
+                <label>{t('roadmap.assignTag')}</label>
+                <select className="input-field" value={assign.tag} onChange={e => setAssign({ ...assign, tag: e.target.value })}>
+                  <option value="prime">{t('dashboard.prime')}</option>
+                  <option value="offprime">{t('dashboard.offprime')}</option>
+                </select>
+              </div>
+            </div>
+            <div className="modal-actions">
+              <button className="btn btn-sm" onClick={() => setAssign(null)}>{t('roadmap.cancel')}</button>
+              <button className="btn btn-primary btn-sm" onClick={sendAssign}><Send size={14} /> {t('roadmap.assignSend')}</button>
+            </div>
+          </div>
         </div>
       )}
     </div>

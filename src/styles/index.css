@@ -1725,3 +1725,113 @@ tbody tr:hover { background: rgba(255,255,255,0.02); }
 
 .member-cell-name { min-width: 0; }
 .task-item-text { min-width: 0; overflow-wrap: anywhere; }
+
+/* ===== Роадмап: структурированные фазы ===== */
+.rm-phase {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); margin-bottom: 0.75rem; overflow: hidden;
+}
+.rm-phase--done { border-color: rgba(16,185,129,0.3); }
+.rm-phase-head {
+  display: flex; align-items: center; gap: 0.5rem; width: 100%;
+  padding: 0.85rem 1rem; background: none; border: none; cursor: pointer;
+  color: var(--text-primary); font-family: inherit; text-align: left;
+}
+.rm-phase-head:hover { background: rgba(255,255,255,0.02); }
+.rm-phase-icon { color: var(--primary-light); flex-shrink: 0; }
+.rm-phase-title { font-weight: 700; font-size: 0.95rem; }
+.rm-phase-levels { font-size: 0.72rem; color: var(--text-muted); font-weight: 600; }
+.rm-phase-count { margin-left: auto; font-size: 0.75rem; font-weight: 700; color: var(--text-muted); flex-shrink: 0; }
+.rm-phase--done .rm-phase-count { color: var(--success); }
+.rm-phase-bar { height: 3px; background: rgba(255,255,255,0.05); }
+.rm-phase-fill { height: 100%; background: var(--success); transition: width var(--transition-slow); }
+.rm-phase-body { padding: 0.5rem 1rem 1.1rem; display: flex; flex-direction: column; gap: 1rem; }
+
+.rm-star { color: var(--gold-light); font-size: 0.9rem; flex-shrink: 0; }
+.rm-star--sm { font-size: 0.72rem; }
+
+.rm-goal {
+  display: flex; align-items: flex-start; gap: 0.5rem;
+  padding: 0.6rem 0.75rem; background: var(--primary-glow);
+  border-left: 2px solid var(--primary-border); border-radius: var(--radius-sm);
+  font-size: 0.86rem; color: var(--text-primary);
+}
+.rm-goal svg { color: var(--primary-light); flex-shrink: 0; margin-top: 2px; }
+
+/* Прайм / оффпрайм */
+.rm-primeoff { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+.rm-po { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.6rem 0.75rem; min-width: 0; }
+.rm-po h5 { margin: 0 0 0.4rem; font-size: 0.78rem; display: flex; align-items: center; gap: 5px; }
+.rm-po--prime { background: var(--gold-glow); border-color: var(--gold-border); }
+.rm-po--prime h5 { color: var(--gold-light); }
+.rm-po--off { background: rgba(59,130,246,0.06); border-color: rgba(59,130,246,0.25); }
+.rm-po--off h5 { color: var(--info); }
+.rm-empty { color: var(--text-muted); font-size: 0.8rem; }
+
+.rm-section { min-width: 0; }
+.rm-section-h {
+  margin: 0 0 0.5rem; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em;
+  color: var(--text-secondary); display: flex; align-items: center; gap: 5px; font-weight: 700;
+}
+.rm-section-h svg { color: var(--text-muted); }
+
+.rm-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.rm-chip {
+  font-size: 0.76rem; color: var(--text-secondary);
+  background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+  border-radius: 6px; padding: 3px 8px; overflow-wrap: anywhere;
+}
+.rm-chip--rb { color: var(--primary-light); background: var(--primary-glow); border-color: var(--primary-border); }
+
+.rm-ul { margin: 0; padding-left: 1.1rem; display: flex; flex-direction: column; gap: 0.25rem; }
+.rm-ul li { font-size: 0.84rem; color: var(--text-secondary); overflow-wrap: anywhere; }
+
+/* Квесты */
+.rm-quests { display: flex; flex-direction: column; gap: 0.4rem; }
+.rm-quest {
+  display: flex; align-items: flex-start; gap: 0.5rem;
+  padding: 0.5rem 0.6rem; background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border); border-radius: var(--radius-sm); min-width: 0;
+}
+.rm-quest-rep { flex-shrink: 0; font-size: 0.8rem; }
+.rm-quest-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.rm-quest-name { font-size: 0.84rem; color: var(--text-primary); font-weight: 600; overflow-wrap: anywhere; }
+.rm-quest-name em { color: var(--text-muted); font-weight: 400; font-style: normal; font-size: 0.78rem; }
+.rm-quest-meta { font-size: 0.72rem; color: var(--text-muted); }
+.rm-quest-reward { flex-shrink: 0; max-width: 42%; text-align: right; font-size: 0.76rem; color: var(--gold-light); overflow-wrap: anywhere; }
+
+/* Задачи */
+.rm-tasks { display: flex; flex-direction: column; gap: 0.55rem; }
+.rm-task { display: flex; flex-direction: column; gap: 0.3rem; }
+.rm-task-row { display: flex; align-items: center; gap: 0.5rem; }
+.rm-check { background: none; border: none; cursor: pointer; padding: 0; display: flex; flex-shrink: 0; }
+.rm-check:disabled { cursor: default; }
+.rm-check--sm { margin-left: 0.35rem; }
+.rm-task-text { flex: 1; min-width: 0; font-size: 0.87rem; color: var(--text-primary); overflow-wrap: anywhere; }
+.rm-subtask-text { flex: 1; min-width: 0; font-size: 0.82rem; color: var(--text-secondary); overflow-wrap: anywhere; }
+.rm-done { color: var(--text-muted); text-decoration: line-through; }
+.rm-tag { flex-shrink: 0; font-size: 0.64rem; font-weight: 700; text-transform: uppercase; border-radius: 5px; padding: 1px 5px; }
+.rm-tag--prime { color: var(--gold-light); background: var(--gold-glow); }
+.rm-tag--off { color: var(--info); background: var(--info-glow); }
+.rm-assign { background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 2px; display: flex; flex-shrink: 0; transition: color var(--transition); }
+.rm-assign:hover { color: var(--primary-light); }
+.rm-subtask { display: flex; align-items: flex-start; gap: 0.4rem; padding-left: 1.5rem; }
+
+.rm-tip {
+  display: flex; align-items: flex-start; gap: 0.4rem;
+  font-size: 0.8rem; color: var(--text-secondary);
+  background: rgba(245,158,11,0.06); border-left: 2px solid var(--gold-border);
+  border-radius: var(--radius-sm); padding: 0.45rem 0.6rem; overflow-wrap: anywhere;
+}
+.rm-tip svg { color: var(--gold-light); flex-shrink: 0; margin-top: 2px; }
+.rm-tip--inline { margin-left: 1.6rem; }
+.rm-tips { display: flex; flex-direction: column; gap: 0.4rem; }
+
+/* О пачке */
+.rm-chars { display: flex; flex-direction: column; gap: 0.3rem; margin-bottom: 0.5rem; }
+.rm-char { font-size: 0.84rem; color: var(--text-secondary); overflow-wrap: anywhere; }
+.rm-char b { color: var(--text-primary); }
+.rm-char-race { font-size: 0.72rem; color: var(--text-muted); }
+.rm-tenth { font-size: 0.8rem; color: var(--text-muted); overflow-wrap: anywhere; }
+
+@media (max-width: 640px) { .rm-primeoff { grid-template-columns: 1fr; } }

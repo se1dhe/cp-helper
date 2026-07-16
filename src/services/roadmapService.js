@@ -29,6 +29,20 @@ export const updateRoadmapItem = (id, data) => updateDoc(doc(db, COLLECTION, id)
 
 export const deleteRoadmapItem = (id) => deleteDoc(doc(db, COLLECTION, id));
 
+// Общий прогресс встроенного роадмапа: roadmapProgress/{taskId} = { done }
+const PROGRESS = 'roadmapProgress';
+
+export const subscribeToRoadmapProgress = (callback) => {
+  return onSnapshot(collection(db, PROGRESS), (snap) => {
+    const map = {};
+    snap.forEach((d) => { map[d.id] = d.data().done === true; });
+    callback(map);
+  });
+};
+
+export const toggleRoadmapProgress = (taskId, done) =>
+  setDoc(doc(db, PROGRESS, taskId), { done }, { merge: true });
+
 // Инфо о сервере (дата старта) — config/serverInfo
 const SERVER_DOC = 'config/serverInfo';
 

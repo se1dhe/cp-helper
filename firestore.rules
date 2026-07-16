@@ -133,6 +133,14 @@ service cloud.firestore {
       allow write: if isAuth() && (request.auth.uid == userId || isPL());
     }
 
+    // Общий прогресс встроенного роадмапа: любой не-гость отмечает задачи.
+    match /roadmapProgress/{taskId} {
+      allow read: if isNotGuest();
+      allow write: if isNotGuest()
+                    && request.resource.data.keys().hasOnly(['done'])
+                    && request.resource.data.done is bool;
+    }
+
     // Новости: читают все (не гости), публикуют офицеры+.
     match /news/{article} {
       allow read: if isNotGuest();
