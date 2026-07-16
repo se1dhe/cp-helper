@@ -10,15 +10,19 @@ import {
 // Стартовый каркас недели под Lu4 — офицер грузит одним кликом и правит.
 // day: 0=Пн .. 6=Вс
 const STARTER_SCHEDULE = [
-  { day: 0, time: '20:00', title: 'Прайм-фарм по фазе', type: 'farm', note: 'bulk 100+, один радиус' },
+  // Прайм-фарм по фазе роадмапа (Пн-Пт)
+  { day: 0, time: '20:00', title: 'Прайм-фарм по фазе', type: 'farm', note: 'bulk 100+, один радиус, AoE-бёрст' },
   { day: 1, time: '20:00', title: 'Прайм-фарм по фазе', type: 'farm', note: 'bulk 100+' },
   { day: 2, time: '20:00', title: 'Прайм-фарм по фазе', type: 'farm', note: 'bulk 100+' },
-  { day: 2, time: '22:00', title: 'RB-выход', type: 'rb', note: 'боссы по уровню пака' },
   { day: 3, time: '20:00', title: 'Прайм-фарм по фазе', type: 'farm', note: 'bulk 100+' },
   { day: 4, time: '20:00', title: 'Прайм-фарм по фазе', type: 'farm', note: 'bulk 100+' },
-  { day: 5, time: '16:00', title: 'Донат-квесты (Аллигаторы/Св.Земля)', type: 'farm', note: 'цель 300/600 предметов' },
-  { day: 5, time: '21:00', title: 'RB-рейд', type: 'rb', note: 'по таймерам вики Lu4' },
-  { day: 6, time: '20:00', title: 'Планёрка + эпик/RB', type: 'event', note: 'итоги недели, цели' },
+  // RB по уровневым окнам — оставить актуальное окно под уровень пака
+  { day: 2, time: '22:00', title: 'RB 20-25', type: 'rb', note: 'Ferkel/Madness Beast/Bifrons 21/Kutus 23/Kael 24/Molrang 25' },
+  { day: 4, time: '22:00', title: 'RB 26-34', type: 'rb', note: 'Tiger Hornet 26/Tirak 28/Skyla 32/Kylon 33/Zyrnna 34' },
+  { day: 5, time: '21:00', title: 'RB 35-40', type: 'rb', note: 'Shadar/Sirocco/Beleth 35/Tempest/Sebek 36/Hellion 38 — по таймерам вики' },
+  // Донор-квесты и планёрка
+  { day: 5, time: '16:00', title: 'Донор-выход (Аллигаторы/Св.Земля)', type: 'farm', note: 'цель 300/600 предметов' },
+  { day: 6, time: '20:00', title: 'Планёрка + эпик/RB', type: 'event', note: 'итоги недели, цели по роадмапу' },
 ];
 
 const TYPES = ['farm', 'rb', 'epic', 'siege', 'oly', 'event', 'other'];

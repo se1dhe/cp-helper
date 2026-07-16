@@ -55,6 +55,13 @@ fi
 # 1) убрать stale-локи, если остались от прерванного git
 rm -f .git/HEAD.lock .git/index.lock .git/objects/maintenance.lock 2>/dev/null || true
 
+# 1b) чистка репозитория от хлама (идемпотентно)
+echo "▶ Чистка хлама (dist, .DS_Store, temp.html)..."
+rm -f temp.html 2>/dev/null || true
+find . -name '.DS_Store' -not -path './node_modules/*' -not -path './.git/*' -not -path './src-tauri/target/*' -delete 2>/dev/null || true
+git rm -r --cached --quiet --ignore-unmatch dist temp.html >/dev/null 2>&1 || true
+git ls-files -z '*.DS_Store' 2>/dev/null | xargs -0 -r git rm --cached --quiet --ignore-unmatch >/dev/null 2>&1 || true
+
 # 2) сверить версии package.json и tauri.conf.json
 PKG_VERSION="$(node -p "require('./package.json').version")"
 TAURI_VERSION="$(node -p "require('./src-tauri/tauri.conf.json').version")"

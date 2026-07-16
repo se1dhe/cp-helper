@@ -29,7 +29,6 @@ export const RU = {
 
   // Sidebar
   'sidebar.logout': 'Выйти',
-  'sidebar.editNickname': 'Нажмите чтобы изменить ник',
 
   // Roles
   'role.pl': 'Лидер',
@@ -310,7 +309,6 @@ export const UA = {
   'guest.logout': 'Вийти',
 
   'sidebar.logout': 'Вийти',
-  'sidebar.editNickname': 'Натисніть щоб змінити нік',
 
   'role.pl': 'Лідер',
   'role.officer': 'Офіцер',

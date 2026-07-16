@@ -8,56 +8,72 @@ import {
 } from '../services/roadmapService';
 import { getCountdown } from '../utils/countdown';
 
-// Стартовый шаблон под Lu4 (MasterWork) — ПЛ грузит одним кликом и правит под себя.
+// Детальный шаблон под Lu4 (MasterWork), 1→40 с подзадачами.
+// ПЛ грузит одним кликом и правит под себя. Подробности — в ROADMAP_LU4_1-40.md.
 const STARTER = [
-  { phase: '0. Подготовка', items: [
-    'Финализировать ростер и роли (3 Сорка, Биш, ТК, БД, ШЕ, ЕЕ, Овер)',
-    'Забить прайм-тайм и RB в Расписание',
+  { phase: '0. Подготовка (до старта)', items: [
+    'Финализировать ростер и роли (3 Сорка, Биш, ТК, БД, СвС, ШЕ, ЕЕ, Овер)',
+    'Определить расы и стартовые деревни каждого',
+    'Каждый заранее выписал свои расовые квесты 1-6',
+    'Забить прайм/оффпрайм и RB в Расписание (мега-квесты — в оффпрайм)',
     'У каждого личный запас Blessed Scroll of Resurrection',
-    'Договориться о дисциплине: bulk turn-in 100+, один радиус фарма',
+    'Правило вслух: bulk turn-in, один радиус, AoE-бёрст толпы',
   ] },
-  { phase: '1. Сепарация 1-15', items: [
-    'Расовые старты: оружие/бижа/заряды по расам',
-    'Люди: Sword of Solidarity + Spirit of Mirrors',
-    'Т.Эльфы: Forgotten Truth; Овер: Long live the Pa\'agrio Lord',
-    'Заряды: The Guard is Busy (Gilbert)',
-    'Сбор всей группы в Gludin на 12-15 lvl',
+  { phase: '1. Расовый старт 1-6', items: [
+    'Люди: Letters of Love, Deliver Goods, Sacrifice to the Sea',
+    'Эльфы: What Women Want, Fruit of the Mother Tree',
+    'Т.Эльфы: Mass of Darkness, Deliver Supplies',
+    'Овер: Long live the Pa\'agrio Lord (NG оружие)',
+    'Люди на 3: Find Sir Windawood (зелья скорости)',
+    'Все дошли до 5-6 lvl',
   ] },
-  { phase: '2. Концентрация 15-19', items: [
-    'Cure for Fever Disease (Bone Shield)',
-    'Will the Seal be Broken? (NG броня + D-скроллы)',
-    'Dragon Fangs (доспехи)',
-    'Стэк-фарм Lizardmen/Orcs: The Guard is Busy + Orc Subjugation',
+  { phase: '2. Оружие/заряды/сбор 6-12', items: [
+    'Люди: Sword of Solidarity; маги-люди: Spirit of Mirrors (Wand of Adept)',
+    'Т.Эльфы: Forgotten Truth; эльфы-маги: Skirmish with the Orcs',
+    'Прогнать 1-раз зарядные квесты (Bonds of Slavery / Hidden Veins / The Guard is Busy)',
+    'Овер начинает марш к Глудио на 12-15',
+    'Сбор всей пачки в Gludin к 12-15',
+    'Стэк-фарм: The Guard is Busy + Orc Subjugation у всех',
   ] },
-  { phase: '3. Первая профа (20)', items: [
-    'Все выходят на 20 и сдают профу ОДНОВРЕМЕННО',
-    'Забрать Weapon Upgrade Coupon (NG→D) → D-оружие',
-    'Проверить: 250k EXP, соски, Blessed Res у каждого',
+  { phase: '3. Броня и разгон 12-19', items: [
+    'Cure for Fever Disease (Bone Shield + 20k EXP)',
+    'Offspring of Nightmares (20k EXP + 15k ад)',
+    'Will the Seal be Broken? (NG броня + D-Enchant Scrolls — СОХРАНИТЬ)',
+    'Фоном: Grim Collector / Crystals of Fire and Ice',
+    'Собрать первый NG-сет брони',
+    'Все дошли до 19 lvl',
   ] },
-  { phase: '4. D-грейд 20-36', items: [
-    'Броня D: Acts of Evil (27-32), Aiding the Floran Village (30-42)',
-    'Бижа D: Magnificent Feast',
-    'Опыт: Red-Eyed Invaders, Dangerous Seduction, Seed of Evil',
-    'Форсировать до 36-39 lvl',
+  { phase: '4. Мега-квесты + 1-я профа 19-26', items: [
+    'На 19: Dragon Fangs (Luis, Gludin) — 350k EXP + D-броня',
+    'На 20: 1-я профа ВСЕЙ пачкой одновременно (250k EXP + Weapon Coupon)',
+    'Обмен оружия NG→D по купону (город без налога) + D-скроллы',
+    'На 20: Red-Eyed Invaders (Babenco) — ~300k EXP + 3 Blessed Res',
+    'Blood Fiend / Dangerous Seduction / Seed of Evil (по расам, +250k)',
+    'Цикл Magnificent Feast (D-бижа) + Adept of Taste (53k EXP)',
+    'Дойти до 26 lvl',
   ] },
-  { phase: '5. Донорский цикл 36-40', items: [
-    'Аллигаторы (Heine, 600+ → 96700 аден)',
-    'Вторжение на Святую Землю (Heine, 600+ → 228000 аден)',
-    'Честь семьи (Oren, Timak) + статуи Патрину',
-    'Испытание магии (50k EXP) + призывателя (41k EXP)',
-    'Копить Mystic Map Parts; 2-я профа на 40',
+  { phase: '5. D-грейд и донор 26-35', items: [
+    'На 27: Acts of Evil (200k EXP + D-броня Turek)',
+    'Клан до 4 ур. → Proof of Clan Alliance (200k EXP)',
+    'Донор в прайм: Arrow of Vengeance / Fairy Breath (150+ = 50k EXP)',
+    'Aiding the Floran Village — закрыть слоты D-брони',
+    'Song of the Hunter: копить C-Blessed SpS и краски +3/-3',
+    'Полный D-сет на 3 Сорках, танке, хиле',
+    'Дойти до 35 lvl',
   ] },
-  { phase: '6. C-грейд 40-52', items: [
-    'Цепочка Coins of Removal → Kail\'s Magic Coin (C-броня)',
-    'Seductive Whispers (50+, рецепты оружия)',
-    'Bulk-квесты 40+: Trespassing, Alligator Hunter (пороги 300/600)',
+  { phase: '6. Цепочка Temple + 2-я профа 35-40', items: [
+    'Temple: Missionary → Executor → Champion 1 → Champion 2 (Дион)',
+    'Shadow Fox 1-3 (Heine) → Fallen Angel Dawn (592k!) → Dusk',
+    'Донор: Trespassing (Restina, 600+ = 228k ад)',
+    'Донор: Аллигаторы (Kluck, 600+ = 96.7k ад + Pirate Map)',
+    'Копить Pirate\'s Treasure Map / Mystic Map Parts',
+    'На 40: 2-я профа ВСЕЙ пачкой одновременно',
+  ] },
+  { phase: '7. После 40 (C-грейд)', items: [
+    'Kail\'s Magic Coin (C-броня), Seductive Whispers (рецепты оружия)',
     'Treasure Hunt (42, Пиратская карта), Relic Exploration',
-  ] },
-  { phase: '7. Стабилизация', items: [
-    'Полный C-грейд на ядро пака',
-    'Ноблесс / сабкласс по готовности',
-    'Регулярные RB по расписанию',
-    'Стабильный доход казны',
+    'Регулярные RB по расписанию, ноблесс/сабкласс по готовности',
+    'Стабильный доход казны на Trespassing 600+',
   ] },
 ];
 
