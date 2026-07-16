@@ -1615,3 +1615,7 @@ tbody tr:hover { background: rgba(255,255,255,0.02); }
 
 /* ===== Аватар в списке мемберов ===== */
 .member-cell-avatar { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; display: block; flex-shrink: 0; border: 1px solid var(--border-hover); }
+
+/* ===== Аватар в чипе онлайна и в ростере ===== */
+.chip-avatar { width: 16px; height: 16px; border-radius: 50%; object-fit: cover; display: inline-block; flex-shrink: 0; }
+.roster-name-avatar { width: 18px; height: 18px; border-radius: 50%; object-fit: cover; vertical-align: middle; margin-right: 5px; border: 1px solid var(--border-hover); }

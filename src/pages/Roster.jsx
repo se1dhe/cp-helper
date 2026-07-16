@@ -185,6 +185,7 @@ export const Roster = () => {
                   <span className="occupied-label">{t('roster.occupied')}</span>
                 ) : (
                   <>
+                    {m.avatar && <img src={m.avatar} alt="" className="roster-name-avatar" />}
                     <span className={`online-dot ${isUserOnline(presence[m.userId]) ? 'online-dot--on' : 'online-dot--off'}`} title={isUserOnline(presence[m.userId]) ? t('members.online') : t('members.offline')} />
                     {m.name} <span className="occupied-badge">{t('roster.occupied')}</span>
                   </>

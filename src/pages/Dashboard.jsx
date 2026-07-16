@@ -145,7 +145,12 @@ export const Dashboard = () => {
           </div>
           <div className="stat-card-online-list">
             {assignableMembers.filter(m => isUserOnline(presence[m.userId])).slice(0, 6).map(m => (
-              <span key={m.id} className="stat-online-chip"><span className="online-dot online-dot--on" />{m.name}</span>
+              <span key={m.id} className="stat-online-chip">
+                {m.avatar
+                  ? <img src={m.avatar} alt="" className="chip-avatar" />
+                  : <span className="online-dot online-dot--on" />}
+                {m.name}
+              </span>
             ))}
             {onlineCount === 0 && <span className="stat-online-none">{t('dashboard.nobodyOnline')}</span>}
           </div>
