@@ -5,10 +5,11 @@ import { useLang } from '../context/LanguageContext';
 import { signInWithEmail, registerWithEmail, logOut } from '../firebase';
 import { subscribeToRoster } from '../services/rosterService';
 import { isRegistrationAllowed } from '../services/registrationService';
-import { LayoutDashboard, Users, Wallet, LogIn, LogOut, ShieldAlert, UserPlus, Languages, UserCheck, Newspaper, Map as MapIcon, CalendarClock, Pencil } from 'lucide-react';
+import { LayoutDashboard, Users, Wallet, LogIn, LogOut, ShieldAlert, UserPlus, Languages, UserCheck, Newspaper, Map as MapIcon, CalendarClock, Pencil, Settings } from 'lucide-react';
 import { L2_CLASSES } from '../utils/classes';
 import { ClassIcon } from './ClassIcon';
 import { ProfileModal } from './ProfileModal';
+import { SettingsModal } from './SettingsModal';
 
 const getRoleBadgeClass = (role) => {
   switch (role) {
@@ -31,6 +32,7 @@ export const Layout = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const [roster, setRoster] = useState([]);
 
   const navItems = [
@@ -233,6 +235,10 @@ export const Layout = () => {
             <Languages size={17} />
             {langLabel}
           </button>
+          <button onClick={() => setSettingsOpen(true)} className="sidebar-link" style={{ width: '100%', background: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 'inherit', textAlign: 'left' }}>
+            <Settings size={17} />
+            {t('settings.title')}
+          </button>
         </nav>
 
         <div className="sidebar-user">
@@ -255,7 +261,7 @@ export const Layout = () => {
                 onClick={() => setProfileOpen(true)}
                 title={t('profile.edit')}
               >
-                {userNickname || currentUser.email}
+                <span className="sidebar-user-name-text">{userNickname || currentUser.email}</span>
                 <Pencil size={11} style={{ opacity: 0.5, flexShrink: 0 }} />
               </div>
               <div className="sidebar-user-sub">
@@ -271,6 +277,7 @@ export const Layout = () => {
       </aside>
 
       <ProfileModal open={profileOpen} onClose={() => setProfileOpen(false)} />
+      <SettingsModal open={settingsOpen} onClose={() => setSettingsOpen(false)} />
 
 
       <main className="main-content">

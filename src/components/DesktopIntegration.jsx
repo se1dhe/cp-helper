@@ -6,6 +6,7 @@ import { ask } from '@tauri-apps/plugin-dialog';
 import { RefreshCw, Download, AlertTriangle } from 'lucide-react';
 import { useLang } from '../context/LanguageContext';
 import { subscribeToNews } from '../services/newsService';
+import { getCloseAction } from '../utils/settings';
 
 const isTauri = typeof window !== 'undefined' && '__TAURI_INTERNALS__' in window;
 
@@ -27,6 +28,9 @@ export const DesktopIntegration = () => {
         const appWindow = getCurrentWindow();
         unlisten = await appWindow.onCloseRequested(async (event) => {
           event.preventDefault();
+          const action = getCloseAction(); // читаем актуальную настройку в момент закрытия
+          if (action === 'tray') { await appWindow.hide(); return; }
+          if (action === 'close') { await invoke('quit_app'); return; }
           const minimize = await ask(t('tray.minimizeQuestion'), {
             title: t('tray.minimizeTitle'),
             kind: 'warning',

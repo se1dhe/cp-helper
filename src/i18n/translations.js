@@ -257,6 +257,14 @@ export const RU = {
   'profile.imageOnly': 'Выберите файл изображения',
   'profile.imageError': 'Не удалось обработать изображение',
 
+  // Настройки
+  'settings.title': 'Настройки',
+  'settings.closeAction': 'При нажатии на крестик (✕):',
+  'settings.closeAsk': 'Спрашивать каждый раз',
+  'settings.closeTray': 'Свернуть в трей',
+  'settings.closeQuit': 'Закрыть приложение',
+  'settings.done': 'Готово',
+
   // Обновление
   'update.available': 'Доступна новая версия {version}. Скачать и установить?',
   'update.title': 'Доступно обновление',
@@ -523,6 +531,14 @@ export const UA = {
   'profile.saveError': 'Помилка при збереженні профілю',
   'profile.imageOnly': 'Оберіть файл зображення',
   'profile.imageError': 'Не вдалося обробити зображення',
+
+  // Налаштування
+  'settings.title': 'Налаштування',
+  'settings.closeAction': 'При натисканні на хрестик (✕):',
+  'settings.closeAsk': 'Питати щоразу',
+  'settings.closeTray': 'Згорнути в трей',
+  'settings.closeQuit': 'Закрити застосунок',
+  'settings.done': 'Готово',
 
   // Оновлення
   'update.available': 'Доступна нова версія {version}. Завантажити та встановити?',

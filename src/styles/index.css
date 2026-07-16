@@ -1681,3 +1681,47 @@ tbody tr:hover { background: rgba(255,255,255,0.02); }
   0% { margin-left: -40%; }
   100% { margin-left: 100%; }
 }
+
+/* ===== Настройки ===== */
+.settings-group { margin-bottom: 0.25rem; }
+.settings-label { display: block; font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.6rem; font-weight: 600; }
+.settings-options { display: flex; flex-direction: column; gap: 0.45rem; }
+.settings-option {
+  display: flex; align-items: center; gap: 0.6rem;
+  padding: 0.65rem 0.8rem; border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.02); border: 1px solid var(--border);
+  color: var(--text-secondary); cursor: pointer; font-family: inherit;
+  font-size: 0.86rem; text-align: left; width: 100%; transition: all var(--transition);
+}
+.settings-option:hover { border-color: var(--border-hover); color: var(--text-primary); }
+.settings-option svg { flex-shrink: 0; }
+.settings-option--active { background: var(--primary-glow); border-color: var(--primary-border); color: var(--text-primary); }
+.settings-option--active svg { color: var(--primary-light); }
+
+/* ===== Полировка: переполнения и выравнивания ===== */
+.modal-card { max-height: 90vh; overflow-y: auto; }
+
+.sidebar-user-meta { min-width: 0; flex: 1; }
+.sidebar-user-name { min-width: 0; max-width: 100%; }
+.sidebar-user-name-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+
+.stat-card { min-width: 0; }
+.stat-card-value { min-width: 0; }
+.stat-online-chip { max-width: 100%; }
+
+.note-card { min-width: 0; }
+.note-card-text { overflow-wrap: anywhere; }
+
+.news-card-head { gap: 0.75rem; }
+.news-card-title { min-width: 0; overflow-wrap: anywhere; }
+.news-card-body { overflow-wrap: anywhere; }
+
+.sched-event { min-width: 0; }
+.sched-event-title, .sched-event-note, .sched-event-att-names { overflow-wrap: anywhere; }
+
+.roadmap-phase { min-width: 0; }
+.roadmap-item-text { overflow-wrap: anywhere; }
+.roadmap-phase-title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.member-cell-name { min-width: 0; }
+.task-item-text { min-width: 0; overflow-wrap: anywhere; }
