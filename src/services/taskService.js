@@ -11,11 +11,14 @@ export const subscribeToTasks = (callback) => {
   });
 };
 
-export const addTask = async (text, tag) => {
+// assignedTo: '' — общая задача для всей пати; иначе userId конкретного игрока.
+export const addTask = async (text, tag, assignedTo = '', assignedToName = '') => {
   await addDoc(collection(db, COLLECTION), {
     text,
     tag, // 'prime' or 'offprime'
     done: false,
+    assignedTo: assignedTo || '',
+    assignedToName: assignedToName || '',
     createdAt: serverTimestamp()
   });
 };

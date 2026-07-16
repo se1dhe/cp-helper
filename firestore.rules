@@ -43,10 +43,20 @@ service cloud.firestore {
 
     match /tasks/{task} {
       allow read: if isNotGuest();
-      allow create, update: if isOfficer()
+      allow create: if isOfficer()
                     && request.resource.data.text is string
                     && request.resource.data.text.size() > 0
                     && request.resource.data.tag in ['prime', 'offprime'];
+      // Офицеры правят задачи целиком; любой не-гость может лишь переключать
+      // done у общей задачи или у своей личной.
+      allow update: if (isOfficer()
+                        && request.resource.data.text is string
+                        && request.resource.data.tag in ['prime', 'offprime'])
+                     || (isNotGuest()
+                        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['done'])
+                        && (!('assignedTo' in resource.data)
+                            || resource.data.assignedTo == ''
+                            || resource.data.assignedTo == request.auth.uid));
       allow delete: if isOfficer();
     }
 

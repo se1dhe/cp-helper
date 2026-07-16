@@ -164,6 +164,14 @@ export const RU = {
   // Квесты (доп.)
   'dashboard.questSaveError': 'Не удалось сохранить квест',
 
+  // Дашборд (доп.)
+  'dashboard.online': 'В сети',
+  'dashboard.nobodyOnline': 'Никого нет в сети',
+  'dashboard.assignTo': 'Назначить игроку',
+  'dashboard.forEveryone': 'Всей пати',
+  'dashboard.assignedTo': 'Личная задача: {name}',
+  'dashboard.personal': 'Личная',
+
   // Новости
   'news.title': 'Новости КП',
   'news.add': 'Добавить',
@@ -354,6 +362,14 @@ export const UA = {
 
   // Квести (дод.)
   'dashboard.questSaveError': 'Не вдалося зберегти квест',
+
+  // Дашборд (дод.)
+  'dashboard.online': 'У мережі',
+  'dashboard.nobodyOnline': 'Нікого немає в мережі',
+  'dashboard.assignTo': 'Призначити гравцю',
+  'dashboard.forEveryone': 'Всій паті',
+  'dashboard.assignedTo': 'Особисте завдання: {name}',
+  'dashboard.personal': 'Особисте',
 
   // Новини
   'news.title': 'Новини КП',

@@ -1429,3 +1429,46 @@ tbody tr:hover { background: rgba(255,255,255,0.02); }
   display: block; margin-top: 2px; font-size: 0.68rem; font-weight: 600;
   color: var(--danger);
 }
+
+/* ===== Онлайн-список в стат-карточке ===== */
+.stat-card-online-list {
+  display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.6rem;
+}
+.stat-online-chip {
+  display: inline-flex; align-items: center; gap: 3px;
+  font-size: 0.68rem; font-weight: 600; color: var(--text-secondary);
+  background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+  border-radius: 6px; padding: 1px 6px 1px 4px; max-width: 100%;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.stat-online-none { font-size: 0.7rem; color: var(--text-muted); }
+
+/* ===== Заметки: карточки ===== */
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.75rem;
+}
+.note-card {
+  display: flex; flex-direction: column;
+  background: var(--gold-glow); border: 1px solid var(--gold-border);
+  border-radius: var(--radius-sm); padding: 0.75rem 0.85rem;
+}
+.note-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.4rem; }
+.note-card-icon { color: var(--gold-light); }
+.note-card-del {
+  background: none; border: none; color: var(--text-muted); cursor: pointer;
+  padding: 2px; display: flex; transition: color var(--transition);
+}
+.note-card-del:hover { color: var(--danger); }
+.note-card-text { margin: 0 0 0.5rem; color: var(--text-primary); font-size: 0.85rem; line-height: 1.45; white-space: pre-wrap; word-break: break-word; flex-grow: 1; }
+.note-card-meta { font-size: 0.68rem; color: var(--text-muted); }
+
+/* ===== Личные задачи ===== */
+.task-item--personal { border-left: 2px solid var(--info); }
+.task-item-assignee {
+  display: inline-flex; align-items: center; gap: 3px;
+  font-size: 0.68rem; font-weight: 600; color: var(--info);
+  background: var(--info-glow); border-radius: 6px; padding: 1px 6px;
+  white-space: nowrap;
+}
