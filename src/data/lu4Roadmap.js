@@ -238,6 +238,12 @@ export const packLevel = (members) => {
   return lvls.length % 2 ? lvls[mid] : Math.floor((lvls[mid - 1] + lvls[mid]) / 2);
 };
 
+// Минимальный уровень для участия в фазе (порог «готовности»).
+export const phaseMinLevel = (phaseId) => {
+  const band = PHASE_BANDS.find(([id]) => id === phaseId);
+  return band ? band[1] : 1;
+};
+
 // Активная фаза по уровню пачки. started=false (до старта сервера) → фаза 0.
 export const getActivePhaseId = (level, started = true) => {
   if (!started) return 'p0';

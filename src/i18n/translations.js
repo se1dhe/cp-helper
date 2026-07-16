@@ -213,6 +213,8 @@ export const RU = {
   'dashboard.nowPhase': 'Сейчас по роадмапу',
   'dashboard.fullRoadmap': 'весь роадмап',
   'dashboard.phaseDone': 'Фаза выполнена — разворачивай следующую в Роадмапе.',
+  'dashboard.ready': 'Готовы к фазе: {done}/{total}',
+  'dashboard.lagging': 'Отстают',
 
   // Расписание
   'nav.schedule': 'Расписание',
@@ -513,6 +515,8 @@ export const UA = {
   'dashboard.nowPhase': 'Зараз по роадмапу',
   'dashboard.fullRoadmap': 'весь роадмап',
   'dashboard.phaseDone': 'Фаза виконана — розгортай наступну в Роадмапі.',
+  'dashboard.ready': 'Готові до фази: {done}/{total}',
+  'dashboard.lagging': 'Відстають',
 
   // Розклад
   'nav.schedule': 'Розклад',

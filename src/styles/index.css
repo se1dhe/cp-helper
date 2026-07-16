@@ -1864,3 +1864,11 @@ tbody tr:hover { background: rgba(255,255,255,0.02); }
 .dash-phase-task { display: flex; align-items: center; gap: 0.5rem; }
 .dash-phase-task-text { flex: 1; min-width: 0; font-size: 0.85rem; color: var(--text-primary); overflow-wrap: anywhere; }
 .dash-phase-done { font-size: 0.85rem; color: var(--success); }
+
+/* ===== Готовность пачки к фазе (дашборд) ===== */
+.dash-phase-readiness {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 0.75rem;
+  margin: 0 0 0.7rem; font-size: 0.78rem;
+}
+.dash-ready { color: var(--success); font-weight: 700; flex-shrink: 0; }
+.dash-lagging { color: var(--danger); overflow-wrap: anywhere; min-width: 0; }

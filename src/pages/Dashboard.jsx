@@ -11,7 +11,7 @@ import { subscribeToServerInfo, subscribeToRoadmapProgress, toggleRoadmapProgres
 import { getCountdown } from '../utils/countdown';
 import { Rocket, Map as MapIcon, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { LU4_PHASES, packLevel, getActivePhaseId } from '../data/lu4Roadmap';
+import { LU4_PHASES, packLevel, getActivePhaseId, phaseMinLevel } from '../data/lu4Roadmap';
 import { useAuth } from '../context/AuthContext';
 import { useLang } from '../context/LanguageContext';
 import { L2_CLASSES } from '../utils/classes';
@@ -69,6 +69,12 @@ export const Dashboard = () => {
   const activePhase = LU4_PHASES.find(p => p.id === getActivePhaseId(pLvl, countdown ? countdown.started : true));
   const phaseTasksLeft = activePhase ? activePhase.tasks.filter(tk => !roadmapProgress[tk.id]) : [];
   const toggleRmTask = async (id) => { try { await toggleRoadmapProgress(id, !roadmapProgress[id]); } catch { /* ignore */ } };
+  // Готовность пачки к текущей фазе: кто на нужном уровне, кто отстаёт.
+  const phaseMin = activePhase ? phaseMinLevel(activePhase.id) : 1;
+  const readyCount = assignableMembers.filter(m => (Number(m.lvl) || 1) >= phaseMin).length;
+  const lagging = assignableMembers
+    .filter(m => (Number(m.lvl) || 1) < phaseMin)
+    .sort((a, b) => (Number(a.lvl) || 1) - (Number(b.lvl) || 1));
 
   // Мемберы видят общие задачи и свои личные; офицеры/ПЛ — все.
   const visibleTasks = tasks.filter(
@@ -176,6 +182,16 @@ export const Dashboard = () => {
             <Link to="/roadmap" className="dash-phase-link">{t('dashboard.fullRoadmap')} <ArrowRight size={12} /></Link>
           </div>
           <div className="dash-phase-goal">{activePhase.goal}</div>
+          {phaseMin > 1 && assignableMembers.length > 0 && (
+            <div className="dash-phase-readiness">
+              <span className="dash-ready">{t('dashboard.ready', { done: readyCount, total: assignableMembers.length })}</span>
+              {lagging.length > 0 && (
+                <span className="dash-lagging">
+                  {t('dashboard.lagging')}: {lagging.map(m => `${m.name} (${m.lvl})`).join(', ')}
+                </span>
+              )}
+            </div>
+          )}
           <div className="dash-phase-tasks">
             {phaseTasksLeft.length === 0 ? (
               <div className="dash-phase-done">{t('dashboard.phaseDone')}</div>
