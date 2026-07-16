@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Coins, Gem, Users, Swords, Target, Circle, CheckCircle2, Plus, Trash2, ChevronDown, ChevronRight, MapPin, Medal } from 'lucide-react';
+import { Coins, Gem, Swords, Target, Circle, CheckCircle2, Plus, Trash2, ChevronDown, ChevronRight, MapPin, Medal } from 'lucide-react';
 import { subscribeToRoster } from '../services/rosterService';
 import { subscribeToTasks, addTask, toggleTask, deleteTask } from '../services/taskService';
 import { subscribeToTransactions } from '../services/treasuryService';
-import { subscribeToUsers } from '../services/adminService';
 import { subscribeToQuestData } from '../services/questService';
 import { subscribeToQuestLog, toggleQuestCompletion } from '../services/questLogService';
 import { useAuth } from '../context/AuthContext';
@@ -12,22 +11,12 @@ import { L2_CLASSES } from '../utils/classes';
 import { ClassIcon } from '../components/ClassIcon';
 import { getUniversalQuests, getRaceQuestsForClass, getRaceLabel, getRaceForClass } from '../data/quests';
 
-const getRoleBadgeClass = (role) => {
-  switch (role) {
-    case 'PL': return 'role-badge role-badge-pl';
-    case 'OFFICER': return 'role-badge role-badge-officer';
-    case 'MEMBER': return 'role-badge role-badge-member';
-    default: return 'role-badge role-badge-guest';
-  }
-};
-
 const getClassDetails = (name) => L2_CLASSES.find(c => c.name === name) || { type: 'unknown', color: '#888' };
 
 export const Dashboard = () => {
   const { currentUser, isPL, isOfficer } = useAuth();
   const { t } = useLang();
   const [roster, setRoster] = useState([]);
-  const [users, setUsers] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState('');
   const [newTaskTag, setNewTaskTag] = useState('prime');
@@ -46,15 +35,8 @@ export const Dashboard = () => {
     });
     const unsubQuests = subscribeToQuestData(setQuestData);
     const unsubLog = subscribeToQuestLog(setQuestLog);
-    let unsubUsers;
-    if (isPL || isOfficer) {
-      unsubUsers = subscribeToUsers(setUsers);
-    }
-    return () => { unsubRoster(); unsubTasks(); unsubTreasury(); unsubQuests(); unsubLog(); if (unsubUsers) unsubUsers(); };
-  }, [isPL, isOfficer]);
-
-  const userMap = {};
-  users.forEach(u => { userMap[u.id] = u; });
+    return () => { unsubRoster(); unsubTasks(); unsubTreasury(); unsubQuests(); unsubLog(); };
+  }, []);
 
   const handleAddTask = async (e) => {
     e.preventDefault();
@@ -79,33 +61,7 @@ export const Dashboard = () => {
     && m.userId === currentUser?.uid
   ) : [];
 
-  const filledSlots = roster.filter(m => m.name && m.name !== '—').length;
-  const doneTasks = tasks.filter(t => t.done).length;
   const fmt = (n) => new Intl.NumberFormat('ru-RU').format(n);
-
-  const renderMemberCard = (m) => {
-    const cls = getClassDetails(m.className);
-    const slotUser = m.userId && m.userId !== '__occupied__' ? userMap[m.userId] : null;
-    const slotRole = slotUser?.role;
-    const isVacant = !m.userId || m.userId === '' || m.userId === '—';
-    const isOccupiedNoUser = m.userId === '__occupied__';
-    return (
-      <div key={m.id} className={`member-card member-card--${cls.type}`} style={m.position > 9 ? { borderStyle: 'dashed' } : {}}>
-        <ClassIcon className={m.className} type={cls.type} size={44} />
-        <div className="member-card-info">
-          <h4>{isVacant ? t('dashboard.vacant') : isOccupiedNoUser ? t('dashboard.occupied') : m.name}</h4>
-          <div className="member-card-class" style={{ color: cls.color }}>{m.className}</div>
-          <div className="member-card-lvl">{t('dashboard.lvl')} {m.lvl}</div>
-        </div>
-        {slotRole && (
-          <span className={getRoleBadgeClass(slotRole)}>{t(`role.${slotRole.toLowerCase()}`)}</span>
-        )}
-      </div>
-    );
-  };
-
-  const mainSlots = roster.filter(s => s.position <= 9);
-  const extraSlots = roster.filter(s => s.position > 9);
 
   return (
     <div className="fade-in">
@@ -122,29 +78,7 @@ export const Dashboard = () => {
           <div className="stat-card-label">{t('dashboard.masterCoins')}</div>
           <div className="stat-card-value">{treasury.totalMC ? fmt(treasury.totalMC) : '—'}</div>
         </div>
-        <div className="stat-card stat-card--red">
-          <div className="stat-card-icon stat-card-icon--red"><Users size={20} /></div>
-          <div className="stat-card-label">{t('dashboard.partyComposition')}</div>
-          <div className="stat-card-value">{filledSlots} <span style={{ fontSize: '1rem', color: 'var(--text-muted)', fontFamily: 'Inter' }}>/ {roster.length}</span></div>
-        </div>
       </div>
-
-      <h3 className="section-header"><Users size={15} /> {t('dashboard.partyRoster')}</h3>
-
-      <div className="members-grid mb-2">
-        {mainSlots.map(renderMemberCard)}
-      </div>
-
-      {extraSlots.length > 0 && (
-        <>
-          <div className="section-header" style={{ fontSize: '0.75rem', marginTop: '0.75rem' }}>
-            <Users size={13} /> {t('dashboard.extraSlots')}
-          </div>
-          <div className="members-grid mb-4">
-            {extraSlots.map(renderMemberCard)}
-          </div>
-        </>
-      )}
 
       <div className="tasks-section">
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.875rem' }}>

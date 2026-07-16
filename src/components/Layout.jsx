@@ -37,7 +37,6 @@ export const Layout = () => {
 
   const navItems = [
     { to: '/', icon: LayoutDashboard, label: t('nav.dashboard'), end: true },
-    { to: '/roster', icon: Users, label: t('nav.roster') },
     { to: '/treasury', icon: Wallet, label: t('nav.treasury') },
   ];
 
@@ -222,6 +221,18 @@ export const Layout = () => {
             </NavLink>
           ))}
 
+          {userRole === 'PL' && (
+            <>
+              <div className="sidebar-sep" />
+              <NavLink
+                to="/roster"
+                className={({ isActive }) => `sidebar-link${isActive ? ' active' : ''}`}
+              >
+                <Users size={17} />
+                {t('nav.roster')}
+              </NavLink>
+            </>
+          )}
           {(userRole === 'PL' || userRole === 'OFFICER') && (
             <>
               <div className="sidebar-sep" />
