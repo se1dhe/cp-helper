@@ -1472,3 +1472,109 @@ tbody tr:hover { background: rgba(255,255,255,0.02); }
   background: var(--info-glow); border-radius: 6px; padding: 1px 6px;
   white-space: nowrap;
 }
+
+/* ===== Баннер отсчёта до старта ===== */
+.launch-banner {
+  display: flex; align-items: center; gap: 0.6rem;
+  padding: 0.7rem 1rem; margin-bottom: 1.25rem;
+  border-radius: var(--radius);
+  background: linear-gradient(90deg, var(--primary-glow), transparent);
+  border: 1px solid var(--primary-border);
+  color: var(--text-primary); font-size: 0.92rem;
+}
+.launch-banner svg { color: var(--primary-light); flex-shrink: 0; }
+.launch-banner strong { color: var(--gold-light); }
+.launch-banner--live {
+  background: linear-gradient(90deg, var(--success-glow), transparent);
+  border-color: rgba(16,185,129,0.35);
+}
+.launch-banner--live svg { color: var(--success); }
+
+/* ===== Чип отсчёта / выбор даты (страница роадмапа) ===== */
+.launch-chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 0.35rem 0.7rem; border-radius: var(--radius-sm);
+  background: var(--primary-glow); border: 1px solid var(--primary-border);
+  color: var(--text-primary); font-size: 0.8rem; font-weight: 600;
+}
+.launch-chip svg { color: var(--primary-light); }
+.launch-chip--live { background: var(--success-glow); border-color: rgba(16,185,129,0.35); }
+.launch-chip--live svg { color: var(--success); }
+.launch-date-edit { display: inline-flex; align-items: center; gap: 5px; color: var(--text-muted); }
+
+/* ===== Роадмап ===== */
+.roadmap-overall { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1rem; }
+.roadmap-overall-bar { flex-grow: 1; height: 8px; background: rgba(255,255,255,0.05); border-radius: 999px; overflow: hidden; }
+.roadmap-overall-fill { height: 100%; background: linear-gradient(90deg, var(--gold-dim), var(--gold-light)); border-radius: 999px; transition: width var(--transition-slow); }
+.roadmap-overall-label { font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); flex-shrink: 0; }
+
+.roadmap-add { display: flex; gap: 0.5rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
+
+.roadmap-phases { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+.roadmap-phase {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 1rem 1.1rem;
+}
+.roadmap-phase--done { border-color: rgba(16,185,129,0.3); }
+.roadmap-phase-head { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
+.roadmap-phase-icon { color: var(--gold-light); flex-shrink: 0; }
+.roadmap-phase-title { font-weight: 700; color: var(--text-primary); flex-grow: 1; font-size: 0.95rem; }
+.roadmap-phase-count { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); }
+.roadmap-phase--done .roadmap-phase-count { color: var(--success); }
+.roadmap-phase-bar { height: 5px; background: rgba(255,255,255,0.05); border-radius: 999px; overflow: hidden; margin-bottom: 0.75rem; }
+.roadmap-phase-fill { height: 100%; background: var(--success); border-radius: 999px; transition: width var(--transition-slow); }
+
+.roadmap-items { display: flex; flex-direction: column; gap: 0.35rem; }
+.roadmap-item { display: flex; align-items: flex-start; gap: 0.5rem; padding: 0.35rem 0; }
+.roadmap-item-check { background: none; border: none; cursor: pointer; padding: 0; display: flex; flex-shrink: 0; margin-top: 1px; }
+.roadmap-item-check:disabled { cursor: default; }
+.roadmap-item-text { flex-grow: 1; font-size: 0.86rem; color: var(--text-primary); line-height: 1.4; word-break: break-word; }
+.roadmap-item--done .roadmap-item-text { color: var(--text-muted); text-decoration: line-through; }
+.roadmap-item-del { background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 2px; display: flex; flex-shrink: 0; transition: color var(--transition); }
+.roadmap-item-del:hover { color: var(--danger); }
+
+/* ===== Расписание прайм-тайма ===== */
+.sched-add {
+  display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;
+  padding: 0.85rem 1rem; margin-bottom: 1.25rem;
+}
+.sched-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.75rem;
+}
+.sched-day {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 0.6rem;
+  display: flex; flex-direction: column; gap: 0.5rem; min-width: 0;
+}
+.sched-day-head {
+  text-align: center; font-weight: 700; font-size: 0.8rem;
+  color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.04em;
+  padding-bottom: 0.4rem; border-bottom: 1px solid var(--border);
+}
+.sched-day-empty { text-align: center; color: var(--text-muted); font-size: 0.85rem; padding: 0.5rem 0; }
+.sched-event {
+  background: rgba(255,255,255,0.02); border: 1px solid var(--border);
+  border-left: 3px solid var(--border);
+  border-radius: var(--radius-sm); padding: 0.5rem 0.6rem;
+}
+.sched-event-top { display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.3rem; }
+.sched-event-time { display: inline-flex; align-items: center; gap: 3px; font-size: 0.72rem; font-weight: 700; color: var(--text-secondary); }
+.sched-event-type { font-size: 0.66rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; margin-left: auto; }
+.sched-event-del { background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 0 0 0 2px; display: flex; transition: color var(--transition); }
+.sched-event-del:hover { color: var(--danger); }
+.sched-event-title { font-size: 0.85rem; font-weight: 600; color: var(--text-primary); word-break: break-word; }
+.sched-event-note { font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; word-break: break-word; }
+.sched-event-att { display: flex; align-items: center; gap: 4px; margin-top: 0.4rem; color: var(--text-muted); font-size: 0.7rem; flex-wrap: wrap; }
+.sched-event-att-count { font-weight: 700; color: var(--text-secondary); }
+.sched-event-att-names { color: var(--text-muted); word-break: break-word; }
+.sched-go-btn {
+  width: 100%; margin-top: 0.45rem; padding: 0.28rem; border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+  color: var(--text-secondary); font-size: 0.74rem; font-weight: 600; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+  transition: all var(--transition); font-family: inherit;
+}
+.sched-go-btn:hover { border-color: var(--border-hover); color: var(--text-primary); }
+.sched-go-btn--on { background: var(--success-glow); border-color: rgba(16,185,129,0.4); color: var(--success); }

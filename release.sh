@@ -1,14 +1,25 @@
 #!/usr/bin/env bash
-# Релиз CP-Helper: коммит + тег + пуш. Тег запускает сборку Mac+Win в GitHub Actions.
+# Релиз CP-Helper: деплой правил Firestore + коммит + тег + пуш.
+# Тег запускает сборку Mac+Win в GitHub Actions.
+#
 # Использование:
-#   ./release.sh "текст коммита"
+#   ./release.sh "текст коммита"          # деплой правил + релиз
+#   ./release.sh "текст коммита" --no-rules   # без деплоя правил
+#
 # Версия берётся из package.json; тег = v<версия>. Перед запуском подними версию
 # в package.json и src-tauri/tauri.conf.json (они должны совпадать, иначе CI упадёт).
 
 set -euo pipefail
 cd "$(dirname "$0")"
 
-MSG="${1:-release}"
+MSG="release"
+SKIP_RULES=0
+for arg in "$@"; do
+  case "$arg" in
+    --no-rules) SKIP_RULES=1 ;;
+    *) MSG="$arg" ;;
+  esac
+done
 
 # 1) убрать stale-локи, если остались от прерванного git
 rm -f .git/HEAD.lock .git/index.lock .git/objects/maintenance.lock 2>/dev/null || true
@@ -24,7 +35,20 @@ fi
 TAG="v$PKG_VERSION"
 echo "▶ Версия: $PKG_VERSION  →  тег $TAG"
 
-# 3) коммит
+# 3) деплой правил Firestore (до пуша, чтобы БД была готова к новой версии)
+if [ "$SKIP_RULES" = "1" ]; then
+  echo "ℹ Деплой правил пропущен (--no-rules)."
+elif command -v firebase >/dev/null 2>&1; then
+  echo "▶ Деплой правил Firestore..."
+  firebase deploy --only firestore:rules
+  echo "✔ Правила задеплоены."
+else
+  echo "⚠ firebase CLI не найден — пропускаю деплой правил."
+  echo "  Установи (npm i -g firebase-tools) и залогинься (firebase login), либо запусти с --no-rules."
+  exit 1
+fi
+
+# 4) коммит
 git add -A
 if git diff --cached --quiet; then
   echo "ℹ Нет изменений для коммита — пропускаю commit."
@@ -33,7 +57,7 @@ else
   echo "✔ Коммит создан."
 fi
 
-# 4) тег (если уже есть — предупреждаем)
+# 5) тег (если уже есть — предупреждаем)
 if git rev-parse "$TAG" >/dev/null 2>&1; then
   echo "⚠ Тег $TAG уже существует. Если это новый релиз — подними версию. Пропускаю создание тега."
 else
@@ -41,7 +65,7 @@ else
   echo "✔ Тег $TAG создан."
 fi
 
-# 5) пуш ветки и тега
+# 6) пуш ветки и тега
 git push origin HEAD
 git push origin "$TAG"
 echo "✅ Готово. Открой вкладку Actions на GitHub — пошла сборка $TAG."

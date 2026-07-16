@@ -7,6 +7,9 @@ import { subscribeToQuestData } from '../services/questService';
 import { subscribeToQuestLog, toggleQuestCompletion } from '../services/questLogService';
 import { subscribeToNotes, addNote, deleteNote } from '../services/notesService';
 import { subscribeToPresence, isUserOnline } from '../services/presenceService';
+import { subscribeToServerInfo } from '../services/roadmapService';
+import { getCountdown } from '../utils/countdown';
+import { Rocket } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useLang } from '../context/LanguageContext';
 import { L2_CLASSES } from '../utils/classes';
@@ -34,6 +37,7 @@ export const Dashboard = () => {
   const [newNote, setNewNote] = useState('');
   const [notesCollapsed, setNotesCollapsed] = useState(() => localStorage.getItem('notesCollapsed') === 'true');
   useEffect(() => { localStorage.setItem('notesCollapsed', notesCollapsed); }, [notesCollapsed]);
+  const [launchDate, setLaunchDate] = useState('');
 
   useEffect(() => {
     const unsubRoster = subscribeToRoster(setRoster);
@@ -45,8 +49,11 @@ export const Dashboard = () => {
     const unsubLog = subscribeToQuestLog(setQuestLog);
     const unsubNotes = subscribeToNotes(setNotes);
     const unsubPresence = subscribeToPresence(setPresence);
-    return () => { unsubRoster(); unsubTasks(); unsubTreasury(); unsubQuests(); unsubLog(); unsubNotes(); unsubPresence(); };
+    const unsubServer = subscribeToServerInfo((info) => setLaunchDate(info.launchDate || ''));
+    return () => { unsubRoster(); unsubTasks(); unsubTreasury(); unsubQuests(); unsubLog(); unsubNotes(); unsubPresence(); unsubServer(); };
   }, []);
+
+  const countdown = getCountdown(launchDate);
 
   const assignableMembers = roster.filter(
     m => m.name && m.name !== '—' && m.userId && m.userId !== '__occupied__'
@@ -106,6 +113,17 @@ export const Dashboard = () => {
   return (
     <div className="fade-in">
       <h2 className="page-title"><Swords size={22} /> {t('dashboard.title')}</h2>
+
+      {countdown && (
+        <div className={`launch-banner ${countdown.started ? 'launch-banner--live' : ''}`}>
+          <Rocket size={20} />
+          {countdown.started ? (
+            <span><strong>lu4.org</strong> — {t('dashboard.serverDay', { n: countdown.dayNumber })}</span>
+          ) : (
+            <span>{t('dashboard.launchCountdown')}: <strong>{countdown.days}</strong> {t('dashboard.daysShort')}</span>
+          )}
+        </div>
+      )}
 
       <div className="stat-cards">
         <div className="stat-card stat-card--gold">

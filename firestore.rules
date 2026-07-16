@@ -91,6 +91,34 @@ service cloud.firestore {
       allow delete: if isOfficer();
     }
 
+    // Роадмап развития пака: офицеры управляют пунктами, любой не-гость
+    // может отмечать выполнение (общий прогресс).
+    match /roadmap/{item} {
+      allow read: if isNotGuest();
+      allow create: if isOfficer()
+                    && request.resource.data.text is string
+                    && request.resource.data.text.size() > 0;
+      allow update: if isOfficer()
+                     || (isNotGuest()
+                        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['done']));
+      allow delete: if isOfficer();
+    }
+
+    // Расписание прайм-тайма: офицеры управляют событиями.
+    match /schedule/{event} {
+      allow read: if isNotGuest();
+      allow create, update: if isOfficer()
+                    && request.resource.data.title is string
+                    && request.resource.data.title.size() > 0;
+      allow delete: if isOfficer();
+    }
+
+    // Посещаемость: каждый мембер пишет только свой документ.
+    match /scheduleAttendance/{userId} {
+      allow read: if isNotGuest();
+      allow write: if isAuth() && (request.auth.uid == userId || isPL());
+    }
+
     // Новости: читают все (не гости), публикуют офицеры+.
     match /news/{article} {
       allow read: if isNotGuest();

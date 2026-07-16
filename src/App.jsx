@@ -11,6 +11,8 @@ import { Roster } from './pages/Roster';
 import { Admin } from './pages/Admin';
 import { MemberProgress } from './pages/MemberProgress';
 import { News } from './pages/News';
+import { Roadmap } from './pages/Roadmap';
+import { Schedule } from './pages/Schedule';
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index element={<Dashboard />} />
+              <Route path="roadmap" element={<Roadmap />} />
+              <Route path="schedule" element={<Schedule />} />
               <Route path="news" element={<News />} />
               <Route path="treasury" element={<Treasury />} />
               <Route path="roster" element={<Roster />} />
