@@ -18,7 +18,7 @@ import { LU4_PHASES, LU4_MECHANICS, LU4_CHARACTERS, LU4_TENTH, allTaskIds, packL
 const EXPANDED_KEY = 'roadmapExpanded';
 
 export const Roadmap = () => {
-  const { isPL, isOfficer, isGuest } = useAuth();
+  const { isPL, isOfficer } = useAuth();
   const { t } = useLang();
   const [progress, setProgress] = useState({});
   const [launchDate, setLaunchDateState] = useState('');
@@ -48,7 +48,7 @@ export const Roadmap = () => {
   };
 
   const handleToggle = async (id) => {
-    if (isGuest) return;
+    if (!isOfficer) return;
     try { await toggleRoadmapProgress(id, !progress[id]); } catch { alert(t('roadmap.saveError')); }
   };
 
@@ -151,8 +151,8 @@ export const Roadmap = () => {
         )}
       </div>
 
-      {/* Фазы */}
-      {LU4_PHASES.map(phase => {
+      {/* Фазы: офицеры видят все, мемберы — только текущую */}
+      {(isOfficer ? LU4_PHASES : LU4_PHASES.filter(p => p.id === activePhaseId)).map(phase => {
         const st = phaseStats(phase);
         const isOpen = expanded.has(phase.id);
         const complete = st.total > 0 && st.done === st.total;
@@ -231,7 +231,7 @@ export const Roadmap = () => {
                     {phase.tasks.map(task => (
                       <div key={task.id} className="rm-task">
                         <div className="rm-task-row">
-                          <button className="rm-check" onClick={() => handleToggle(task.id)} disabled={isGuest}>
+                          <button className="rm-check" onClick={() => handleToggle(task.id)} disabled={!isOfficer}>
                             {progress[task.id] ? <CheckCircle2 size={17} color="var(--success)" /> : <Circle size={17} color="var(--text-muted)" />}
                           </button>
                           <span className={`rm-task-text ${progress[task.id] ? 'rm-done' : ''}`}>{task.text}</span>
@@ -247,7 +247,7 @@ export const Roadmap = () => {
                         {task.tip && <div className="rm-tip rm-tip--inline"><Lightbulb size={11} /> {task.tip}</div>}
                         {task.sub && task.sub.map(s => (
                           <div key={s.id} className="rm-subtask">
-                            <button className="rm-check rm-check--sm" onClick={() => handleToggle(s.id)} disabled={isGuest}>
+                            <button className="rm-check rm-check--sm" onClick={() => handleToggle(s.id)} disabled={!isOfficer}>
                               {progress[s.id] ? <CheckCircle2 size={14} color="var(--success)" /> : <Circle size={14} color="var(--text-muted)" />}
                             </button>
                             <span className={`rm-subtask-text ${progress[s.id] ? 'rm-done' : ''}`}>{s.text}</span>

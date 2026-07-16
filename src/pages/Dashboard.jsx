@@ -68,7 +68,7 @@ export const Dashboard = () => {
   const pLvl = packLevel(assignableMembers);
   const activePhase = LU4_PHASES.find(p => p.id === getActivePhaseId(pLvl, countdown ? countdown.started : true));
   const phaseTasksLeft = activePhase ? activePhase.tasks.filter(tk => !roadmapProgress[tk.id]) : [];
-  const toggleRmTask = async (id) => { try { await toggleRoadmapProgress(id, !roadmapProgress[id]); } catch { /* ignore */ } };
+  const toggleRmTask = async (id) => { if (!isOfficer) return; try { await toggleRoadmapProgress(id, !roadmapProgress[id]); } catch { /* ignore */ } };
   // Готовность пачки к текущей фазе: кто на нужном уровне, кто отстаёт.
   const phaseMin = activePhase ? phaseMinLevel(activePhase.id) : 1;
   const readyCount = assignableMembers.filter(m => (Number(m.lvl) || 1) >= phaseMin).length;
@@ -197,7 +197,7 @@ export const Dashboard = () => {
               <div className="dash-phase-done">{t('dashboard.phaseDone')}</div>
             ) : phaseTasksLeft.slice(0, 6).map(tk => (
               <div key={tk.id} className="dash-phase-task">
-                <button className="rm-check" onClick={() => toggleRmTask(tk.id)}>
+                <button className="rm-check" onClick={() => toggleRmTask(tk.id)} disabled={!isOfficer}>
                   <Circle size={16} color="var(--text-muted)" />
                 </button>
                 <span className="dash-phase-task-text">{tk.text}</span>
