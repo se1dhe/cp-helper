@@ -1,16 +1,15 @@
-import { initializeApp } from 'firebase/app';
-import { getFirestore, doc, setDoc } from 'firebase/firestore';
+import { readFileSync, existsSync } from "fs";
+import { initializeApp, cert } from "firebase-admin/app";
+import { getFirestore } from "firebase-admin/firestore";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDU5KhGtNTsFliP5GX2UGo2a-zkGjnAvAw",
-  authDomain: "cp-helper-78139.firebaseapp.com",
-  projectId: "cp-helper-78139",
-  storageBucket: "cp-helper-78139.firebasestorage.app",
-  messagingSenderId: "565085621815",
-  appId: "1:565085621815:web:3e9aef31200ba99f9379b2"
-};
+const keyFile = process.env.GOOGLE_APPLICATION_CREDENTIALS;
+if (!keyFile || !existsSync(keyFile)) {
+  console.error("Укажите GOOGLE_APPLICATION_CREDENTIALS = путь к serviceAccountKey.json");
+  process.exit(1);
+}
 
-const app = initializeApp(firebaseConfig);
+const serviceAccount = JSON.parse(readFileSync(keyFile, "utf8"));
+const app = initializeApp({ credential: cert(serviceAccount) });
 const db = getFirestore(app);
 
 const questData = {
@@ -244,10 +243,8 @@ const questData = {
 };
 
 async function seed() {
-  const ref = doc(db, 'config', 'questData');
-  await setDoc(ref, questData);
+  await db.doc('config/questData').set(questData);
   console.log('Quest data seeded successfully!');
-  process.exit(0);
 }
 
 seed().catch((err) => {

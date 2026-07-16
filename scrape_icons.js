@@ -45,7 +45,7 @@ async function scrape() {
     images.forEach(img => {
       const src = img.src;
       // В masterwork.wiki обычно иконки профессий лежат в специфичных папках или имеют названия проф
-      if (src && src.includes('class') || src.includes('skill')) {
+      if (src && (src.includes('class') || src.includes('skill'))) {
         results.push({
           src,
           alt: img.alt || path.basename(src)
