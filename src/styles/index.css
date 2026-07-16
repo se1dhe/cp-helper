@@ -1835,3 +1835,32 @@ tbody tr:hover { background: rgba(255,255,255,0.02); }
 .rm-tenth { font-size: 0.8rem; color: var(--text-muted); overflow-wrap: anywhere; }
 
 @media (max-width: 640px) { .rm-primeoff { grid-template-columns: 1fr; } }
+
+/* ===== Активная фаза роадмапа ===== */
+.rm-phase--active { border-color: var(--primary-border); box-shadow: 0 0 0 1px var(--primary-border), var(--shadow-glow); }
+.rm-active-badge {
+  font-size: 0.62rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;
+  color: var(--primary-light); background: var(--primary-glow);
+  border: 1px solid var(--primary-border); border-radius: 5px; padding: 1px 6px; flex-shrink: 0;
+}
+
+/* ===== Карточка текущей фазы на дашборде ===== */
+.dash-phase {
+  background: linear-gradient(180deg, var(--primary-glow), transparent), var(--bg-card);
+  border: 1px solid var(--primary-border); border-radius: var(--radius);
+  padding: 0.9rem 1rem; margin-bottom: 1.5rem;
+}
+.dash-phase-head { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+.dash-phase-head > svg { color: var(--primary-light); flex-shrink: 0; }
+.dash-phase-title { font-weight: 700; font-size: 0.92rem; color: var(--text-primary); min-width: 0; overflow-wrap: anywhere; }
+.dash-phase-lvl { font-size: 0.68rem; font-weight: 700; color: var(--gold-light); background: var(--gold-glow); border-radius: 6px; padding: 1px 6px; }
+.dash-phase-link {
+  margin-left: auto; display: inline-flex; align-items: center; gap: 3px;
+  font-size: 0.75rem; color: var(--text-secondary); text-decoration: none; flex-shrink: 0;
+}
+.dash-phase-link:hover { color: var(--primary-light); }
+.dash-phase-goal { font-size: 0.82rem; color: var(--text-secondary); margin: 0.5rem 0 0.7rem; overflow-wrap: anywhere; }
+.dash-phase-tasks { display: flex; flex-direction: column; gap: 0.4rem; }
+.dash-phase-task { display: flex; align-items: center; gap: 0.5rem; }
+.dash-phase-task-text { flex: 1; min-width: 0; font-size: 0.85rem; color: var(--text-primary); overflow-wrap: anywhere; }
+.dash-phase-done { font-size: 0.85rem; color: var(--success); }

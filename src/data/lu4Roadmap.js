@@ -224,6 +224,29 @@ export const LU4_PHASES = [
   },
 ];
 
+// Уровневый диапазон каждой фазы (для авто-определения активной фазы).
+const PHASE_BANDS = [
+  ['p1', 1, 6], ['p2', 6, 12], ['p3', 12, 19],
+  ['p4', 19, 26], ['p5', 26, 35], ['p6', 35, 999],
+];
+
+// Медианный уровень пачки (устойчив к одному «забывчивому» участнику).
+export const packLevel = (members) => {
+  const lvls = (members || []).map(m => Number(m.lvl) || 1).filter(n => n >= 1).sort((a, b) => a - b);
+  if (!lvls.length) return 1;
+  const mid = Math.floor(lvls.length / 2);
+  return lvls.length % 2 ? lvls[mid] : Math.floor((lvls[mid - 1] + lvls[mid]) / 2);
+};
+
+// Активная фаза по уровню пачки. started=false (до старта сервера) → фаза 0.
+export const getActivePhaseId = (level, started = true) => {
+  if (!started) return 'p0';
+  const L = Number(level) || 1;
+  if (L <= 1) return 'p1';
+  for (const [id, a, b] of PHASE_BANDS) if (L >= a && L < b) return id;
+  return 'p6';
+};
+
 // Плоский список всех id задач и подзадач (для расчёта прогресса).
 export const allTaskIds = () => {
   const ids = [];

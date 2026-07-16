@@ -7,9 +7,11 @@ import { subscribeToQuestData } from '../services/questService';
 import { subscribeToQuestLog, toggleQuestCompletion } from '../services/questLogService';
 import { subscribeToNotes, addNote, deleteNote } from '../services/notesService';
 import { subscribeToPresence, isUserOnline } from '../services/presenceService';
-import { subscribeToServerInfo } from '../services/roadmapService';
+import { subscribeToServerInfo, subscribeToRoadmapProgress, toggleRoadmapProgress } from '../services/roadmapService';
 import { getCountdown } from '../utils/countdown';
-import { Rocket } from 'lucide-react';
+import { Rocket, Map as MapIcon, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { LU4_PHASES, packLevel, getActivePhaseId } from '../data/lu4Roadmap';
 import { useAuth } from '../context/AuthContext';
 import { useLang } from '../context/LanguageContext';
 import { L2_CLASSES } from '../utils/classes';
@@ -38,6 +40,7 @@ export const Dashboard = () => {
   const [notesCollapsed, setNotesCollapsed] = useState(() => localStorage.getItem('notesCollapsed') === 'true');
   useEffect(() => { localStorage.setItem('notesCollapsed', notesCollapsed); }, [notesCollapsed]);
   const [launchDate, setLaunchDate] = useState('');
+  const [roadmapProgress, setRoadmapProgress] = useState({});
 
   useEffect(() => {
     const unsubRoster = subscribeToRoster(setRoster);
@@ -50,7 +53,8 @@ export const Dashboard = () => {
     const unsubNotes = subscribeToNotes(setNotes);
     const unsubPresence = subscribeToPresence(setPresence);
     const unsubServer = subscribeToServerInfo((info) => setLaunchDate(info.launchDate || ''));
-    return () => { unsubRoster(); unsubTasks(); unsubTreasury(); unsubQuests(); unsubLog(); unsubNotes(); unsubPresence(); unsubServer(); };
+    const unsubRmProgress = subscribeToRoadmapProgress(setRoadmapProgress);
+    return () => { unsubRoster(); unsubTasks(); unsubTreasury(); unsubQuests(); unsubLog(); unsubNotes(); unsubPresence(); unsubServer(); unsubRmProgress(); };
   }, []);
 
   const countdown = getCountdown(launchDate);
@@ -59,6 +63,12 @@ export const Dashboard = () => {
     m => m.name && m.name !== '—' && m.userId && m.userId !== '__occupied__'
   );
   const onlineCount = assignableMembers.filter(m => isUserOnline(presence[m.userId])).length;
+
+  // Текущая фаза роадмапа по медианному уровню пачки.
+  const pLvl = packLevel(assignableMembers);
+  const activePhase = LU4_PHASES.find(p => p.id === getActivePhaseId(pLvl, countdown ? countdown.started : true));
+  const phaseTasksLeft = activePhase ? activePhase.tasks.filter(tk => !roadmapProgress[tk.id]) : [];
+  const toggleRmTask = async (id) => { try { await toggleRoadmapProgress(id, !roadmapProgress[id]); } catch { /* ignore */ } };
 
   // Мемберы видят общие задачи и свои личные; офицеры/ПЛ — все.
   const visibleTasks = tasks.filter(
@@ -156,6 +166,32 @@ export const Dashboard = () => {
           </div>
         </div>
       </div>
+
+      {activePhase && (
+        <div className="dash-phase">
+          <div className="dash-phase-head">
+            <MapIcon size={16} />
+            <span className="dash-phase-title">{t('dashboard.nowPhase')}: {activePhase.title}</span>
+            <span className="dash-phase-lvl">{t('profile.lvlShort')} {pLvl}</span>
+            <Link to="/roadmap" className="dash-phase-link">{t('dashboard.fullRoadmap')} <ArrowRight size={12} /></Link>
+          </div>
+          <div className="dash-phase-goal">{activePhase.goal}</div>
+          <div className="dash-phase-tasks">
+            {phaseTasksLeft.length === 0 ? (
+              <div className="dash-phase-done">{t('dashboard.phaseDone')}</div>
+            ) : phaseTasksLeft.slice(0, 6).map(tk => (
+              <div key={tk.id} className="dash-phase-task">
+                <button className="rm-check" onClick={() => toggleRmTask(tk.id)}>
+                  <Circle size={16} color="var(--text-muted)" />
+                </button>
+                <span className="dash-phase-task-text">{tk.text}</span>
+                {tk.prime && <span className="rm-tag rm-tag--prime">{t('roadmap.primeShort')}</span>}
+                {tk.offprime && <span className="rm-tag rm-tag--off">{t('roadmap.offShort')}</span>}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {(notes.length > 0 || isOfficer) && (
         <div className="notes-section">

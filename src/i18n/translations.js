@@ -209,6 +209,10 @@ export const RU = {
   'roadmap.assignSend': 'Выдать',
   'roadmap.assignError': 'Ошибка при выдаче задачи',
   'roadmap.cancel': 'Отмена',
+  'roadmap.current': 'текущая',
+  'dashboard.nowPhase': 'Сейчас по роадмапу',
+  'dashboard.fullRoadmap': 'весь роадмап',
+  'dashboard.phaseDone': 'Фаза выполнена — разворачивай следующую в Роадмапе.',
 
   // Расписание
   'nav.schedule': 'Расписание',
@@ -505,6 +509,10 @@ export const UA = {
   'roadmap.assignSend': 'Видати',
   'roadmap.assignError': 'Помилка при видачі завдання',
   'roadmap.cancel': 'Скасувати',
+  'roadmap.current': 'поточна',
+  'dashboard.nowPhase': 'Зараз по роадмапу',
+  'dashboard.fullRoadmap': 'весь роадмап',
+  'dashboard.phaseDone': 'Фаза виконана — розгортай наступну в Роадмапі.',
 
   // Розклад
   'nav.schedule': 'Розклад',

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   Map as MapIcon, Rocket, CalendarDays, ChevronDown, ChevronRight,
   CheckCircle2, Circle, Send, Target, MapPin, Sun, Moon, ScrollText,
@@ -13,7 +13,7 @@ import {
 import { subscribeToRoster } from '../services/rosterService';
 import { addTask } from '../services/taskService';
 import { getCountdown } from '../utils/countdown';
-import { LU4_PHASES, LU4_MECHANICS, LU4_CHARACTERS, LU4_TENTH, allTaskIds } from '../data/lu4Roadmap';
+import { LU4_PHASES, LU4_MECHANICS, LU4_CHARACTERS, LU4_TENTH, allTaskIds, packLevel, getActivePhaseId } from '../data/lu4Roadmap';
 
 const EXPANDED_KEY = 'roadmapExpanded';
 
@@ -63,6 +63,16 @@ export const Roadmap = () => {
   };
 
   const activeMembers = roster.filter(m => m.name && m.name !== '—' && m.userId && m.userId !== '__occupied__');
+  const pLvl = packLevel(activeMembers);
+  const activePhaseId = getActivePhaseId(pLvl, cd ? cd.started : true);
+
+  // Один раз после загрузки ростера открываем активную фазу.
+  const autoRef = useRef(false);
+  useEffect(() => {
+    if (autoRef.current || roster.length === 0) return;
+    autoRef.current = true;
+    setExpanded(prev => { const n = new Set(prev); n.add(activePhaseId); return n; });
+  }, [roster.length, activePhaseId]);
 
   const openAssign = (task) => {
     setAssign({ text: task.text, tag: task.offprime ? 'offprime' : 'prime', target: '' });
@@ -146,12 +156,14 @@ export const Roadmap = () => {
         const st = phaseStats(phase);
         const isOpen = expanded.has(phase.id);
         const complete = st.total > 0 && st.done === st.total;
+        const isActive = phase.id === activePhaseId;
         return (
-          <div key={phase.id} className={`rm-phase ${complete ? 'rm-phase--done' : ''}`}>
+          <div key={phase.id} className={`rm-phase ${complete ? 'rm-phase--done' : ''} ${isActive ? 'rm-phase--active' : ''}`}>
             <button className="rm-phase-head" onClick={() => toggleExpand(phase.id)}>
               {phase.star && <span className="rm-star">★</span>}
               <span className="rm-phase-title">{phase.title}</span>
               <span className="rm-phase-levels">{phase.levels}</span>
+              {isActive && <span className="rm-active-badge">{t('roadmap.current')}</span>}
               <span className="rm-phase-count">{st.done}/{st.total}</span>
               {isOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
             </button>
