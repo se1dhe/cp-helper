@@ -24,7 +24,7 @@ const getRoleBadgeClass = (role) => {
 const getClassDetails = (name) => L2_CLASSES.find(c => c.name === name) || { type: 'unknown', color: '#888' };
 
 export const Dashboard = () => {
-  const { isPL, isOfficer } = useAuth();
+  const { currentUser, isPL, isOfficer } = useAuth();
   const { t } = useLang();
   const [roster, setRoster] = useState([]);
   const [users, setUsers] = useState([]);
@@ -73,6 +73,11 @@ export const Dashboard = () => {
     if (!userId) return;
     await toggleQuestCompletion(userId, questName, !currentDone);
   };
+
+  const questMembers = questData ? roster.filter(m =>
+    m.name && m.name !== '—' && m.userId && m.userId !== '__occupied__' && getRaceForClass(questData, m.className)
+    && (isPL || isOfficer || m.userId === currentUser?.uid)
+  ) : [];
 
   const filledSlots = roster.filter(m => m.name && m.name !== '—').length;
   const doneTasks = tasks.filter(t => t.done).length;
@@ -221,9 +226,9 @@ export const Dashboard = () => {
           <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '2rem', fontSize: '0.85rem' }}>
             {t('dashboard.loading')}
           </div>
-        ) : roster.filter(m => m.name && m.name !== '—' && m.userId && m.userId !== '__occupied__' && getRaceForClass(questData, m.className)).length > 0 ? (
+        ) : questMembers.length > 0 ? (
           <div className="quest-members">
-            {roster.filter(m => m.name && m.name !== '—' && m.userId && m.userId !== '__occupied__' && getRaceForClass(questData, m.className)).map(m => {
+            {questMembers.map(m => {
               const cls = getClassDetails(m.className);
               const universalQuests = getUniversalQuests(questData);
               const raceQuests = getRaceQuestsForClass(questData, m.className);
