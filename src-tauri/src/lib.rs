@@ -38,6 +38,15 @@ pub fn run() {
         .plugin(tauri_plugin_notification::init())
         .plugin(tauri_plugin_updater::Builder::new().build())
         .invoke_handler(tauri::generate_handler![quit_app, restart_app, notify])
+        // Сворачивание (кнопка _) уходит в трей: прячем окно, убирая его из панели задач.
+        // В таскбаре приложение появляется только когда его разворачивают из трея.
+        .on_window_event(|window, event| {
+            if let tauri::WindowEvent::Resized(_) = event {
+                if window.is_minimized().unwrap_or(false) {
+                    let _ = window.hide();
+                }
+            }
+        })
         .setup(|app| {
             // Меню трея: Открыть / Выход
             let show_i = MenuItem::with_id(app, "show", "Открыть", true, None::<&str>)?;
