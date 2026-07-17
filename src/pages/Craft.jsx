@@ -1,11 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Hammer, RotateCcw, ChevronRight, ChevronDown, Search, Lightbulb, ShoppingCart, MapPin, ExternalLink } from 'lucide-react';
+import { Hammer, RotateCcw, ChevronRight, ChevronDown, Search, Lightbulb, ShoppingCart, ExternalLink } from 'lucide-react';
 import { useLang } from '../context/LanguageContext';
 import {
   listProducts, flattenBase, buildTree, itemName, itemGrade, itemIcon, hasRecipe,
   itemStats, wikiUrl, RECIPES, PRODUCT_TYPES,
 } from '../utils/recipeCalc';
-import { SPOIL_HINTS } from '../data/spoilHints';
 import { openExternal } from '../utils/openExternal';
 import { LU4_CRAFT } from '../data/lu4Roadmap';
 
@@ -156,7 +155,6 @@ const RecipeCalc = () => {
                           )}
                           <button className="rc-wiki" onClick={() => openExternal(wikiUrl(r.id))} title={t('craft.whereGet')}><ExternalLink size={11} /></button>
                         </div>
-                        {SPOIL_HINTS[r.id] && <span className="rc-spoil"><MapPin size={10} /> {SPOIL_HINTS[r.id]}</span>}
                       </td>
                       <td>{fmt(r.qty)}</td>
                       <td><input type="number" className="input-field craft-market" value={prices[r.id] ?? ''} placeholder="0" onChange={e => setPrice(r.id, e.target.value)} /></td>
@@ -184,30 +182,51 @@ const RecipeCalc = () => {
   );
 };
 
-// ---------- Быстрый расчёт сосок + рекомендация КП Дикей ----------
-const SHOT_RECIPES = [
-  { id: 'ssd', name: 'Soulshot D — физ', dc: 1, so: 3, output: 200, market: 7 },
-  { id: 'ssnd', name: 'Spiritshot D — маг', dc: 1, so: 3, output: 140, market: 20 },
-  { id: 'bssd', name: 'Blessed Spiritshot D — маг', dc: 2, so: 8, output: 120, market: 43 },
+// ---------- Расчёт сосок по 4 грейдам (Д/Ц/Б/А) + рекомендация КП Дикей ----------
+const SHOT_TYPES = [
+  { id: 'soul', name: 'Soulshot (физ)', ore: 'soul', out: { D: 200, C: 600, B: 450, A: 300 } },
+  { id: 'spirit', name: 'Spiritshot (маг)', ore: 'spirit', out: { D: 140, C: 270, B: 150, A: 200 } },
+  { id: 'bspirit', name: 'Blessed Spiritshot (маг)', ore: 'spirit', out: { D: 120, C: 240, B: 100, A: 200 } },
 ];
-const SHOT_DEFAULTS = { dc: 274, so: 300, fee: 0, crafts: 100 };
-const SHOT_STORE = 'craftCalc';
-const loadShots = () => { try { return { ...SHOT_DEFAULTS, markets: {}, ...JSON.parse(localStorage.getItem(SHOT_STORE) || '{}') }; } catch { return { ...SHOT_DEFAULTS, markets: {} }; } };
+const SHOT_GRADES = ['D', 'C', 'B', 'A'];
+// дефолтные кол-ва материалов на 1 крафт (редактируемые — точные значения зависят от сервера)
+const DEF_RECIPE = {
+  soul: { D: { c: 1, o: 3 }, C: { c: 1, o: 6 }, B: { c: 2, o: 12 }, A: { c: 2, o: 25 } },
+  spirit: { D: { c: 1, o: 5 }, C: { c: 1, o: 10 }, B: { c: 2, o: 20 }, A: { c: 2, o: 40 } },
+  bspirit: { D: { c: 1, o: 6 }, C: { c: 1, o: 15 }, B: { c: 2, o: 35 }, A: { c: 2, o: 70 } },
+};
+const DEF_MARKET = { soul: { D: 7, C: 14, B: 28, A: 55 }, spirit: { D: 20, C: 40, B: 80, A: 160 }, bspirit: { D: 43, C: 90, B: 180, A: 360 } };
+const SHOT_STORE = 'shotsCalc2';
 
 const ShotsCalc = () => {
   const { t } = useLang();
-  const [state, setState] = useState(loadShots);
-  useEffect(() => { localStorage.setItem(SHOT_STORE, JSON.stringify(state)); }, [state]);
-  const marketOf = (r) => (state.markets?.[r.id] ?? r.market);
-  const setMarket = (id, v) => setState(s => ({ ...s, markets: { ...s.markets, [id]: Number(v) || 0 } }));
-  const setNum = (k, v) => setState(s => ({ ...s, [k]: Number(v) || 0 }));
-  const rows = SHOT_RECIPES.map(r => {
-    const costCraft = r.dc * state.dc + r.so * state.so + state.fee;
-    const market = marketOf(r);
-    const profitCraft = r.output * market - costCraft;
-    const pct = costCraft ? (profitCraft / costCraft) * 100 : 0;
-    return { r, costShot: costCraft / r.output, market, profitCraft, pct, total: profitCraft * state.crafts };
-  });
+  const [type, setType] = useState('soul');
+  const [grade, setGrade] = useState('D');
+  const [st, setSt] = useState(() => ({
+    crystal: { D: 274, C: 0, B: 0, A: 0 }, soulOre: 300, spiritOre: 0, fee: 0, crafts: 100, recipe: {}, market: {},
+    ...(() => { try { return JSON.parse(localStorage.getItem(SHOT_STORE) || '{}'); } catch { return {}; } })(),
+  }));
+  useEffect(() => { localStorage.setItem(SHOT_STORE, JSON.stringify(st)); }, [st]);
+
+  const tObj = SHOT_TYPES.find(x => x.id === type);
+  const key = `${type}_${grade}`;
+  const out = tObj.out[grade];
+  const rc = st.recipe[key] || DEF_RECIPE[type][grade];
+  const market = st.market[key] ?? DEF_MARKET[type][grade];
+  const orePrice = tObj.ore === 'soul' ? st.soulOre : st.spiritOre;
+  const oreName = tObj.ore === 'soul' ? 'Soul Ore' : 'Spirit Ore';
+
+  const costCraft = rc.c * (st.crystal[grade] || 0) + rc.o * (orePrice || 0) + (st.fee || 0);
+  const costShot = costCraft / out;
+  const profitCraft = out * market - costCraft;
+  const pct = costCraft ? profitCraft / costCraft * 100 : 0;
+  const totalProfit = profitCraft * (st.crafts || 0);
+
+  const setCrystal = (g, v) => setSt(s => ({ ...s, crystal: { ...s.crystal, [g]: Number(v) || 0 } }));
+  const setField = (k, v) => setSt(s => ({ ...s, [k]: Number(v) || 0 }));
+  const setRc = (f, v) => setSt(s => ({ ...s, recipe: { ...s.recipe, [key]: { ...rc, [f]: Number(v) || 0 } } }));
+  const setMk = (v) => setSt(s => ({ ...s, market: { ...s.market, [key]: Number(v) || 0 } }));
+
   return (
     <>
       <div className="reco-card mb-4">
@@ -221,36 +240,44 @@ const ShotsCalc = () => {
       </div>
 
       <div className="glass-panel mb-4">
+        <div className="craft-inputs">
+          <label>{t('craft.shotType')}
+            <select className="input-field" value={type} onChange={e => setType(e.target.value)}>
+              {SHOT_TYPES.map(x => <option key={x.id} value={x.id}>{x.name}</option>)}
+            </select>
+          </label>
+          <label>{t('craft.grade')}
+            <select className="input-field" value={grade} onChange={e => setGrade(e.target.value)}>
+              {SHOT_GRADES.map(g => <option key={g} value={g}>{g}</option>)}
+            </select>
+          </label>
+          <label>Crystal ({grade}) ×<input type="number" className="input-field" value={rc.c} onChange={e => setRc('c', e.target.value)} /></label>
+          <label>{oreName} ×<input type="number" className="input-field" value={rc.o} onChange={e => setRc('o', e.target.value)} /></label>
+          <label>{t('craft.output')}<input type="number" className="input-field" value={out} readOnly /></label>
+          <label>{t('craft.market')}<input type="number" className="input-field" value={market} onChange={e => setMk(e.target.value)} /></label>
+        </div>
+        <p className="craft-hint">{t('craft.shotsHint')}</p>
+      </div>
+
+      <div className="glass-panel mb-4">
         <h3 className="section-header">{t('craft.prices')}</h3>
         <div className="craft-inputs">
-          <label>{t('craft.dc')}<input type="number" className="input-field" value={state.dc} onChange={e => setNum('dc', e.target.value)} /></label>
-          <label>{t('craft.so')}<input type="number" className="input-field" value={state.so} onChange={e => setNum('so', e.target.value)} /></label>
-          <label>{t('craft.fee')}<input type="number" className="input-field" value={state.fee} onChange={e => setNum('fee', e.target.value)} /></label>
-          <label>{t('craft.crafts')}<input type="number" className="input-field" value={state.crafts} onChange={e => setNum('crafts', e.target.value)} /></label>
+          {SHOT_GRADES.map(g => (
+            <label key={g}>Crystal ({g})<input type="number" className="input-field" value={st.crystal[g] ?? 0} onChange={e => setCrystal(g, e.target.value)} /></label>
+          ))}
+          <label>Soul Ore ({t('craft.shop')})<input type="number" className="input-field" value={st.soulOre} onChange={e => setField('soulOre', e.target.value)} /></label>
+          <label>Spirit Ore ({t('craft.shop')})<input type="number" className="input-field" value={st.spiritOre} onChange={e => setField('spiritOre', e.target.value)} /></label>
+          <label>{t('craft.fee')}<input type="number" className="input-field" value={st.fee} onChange={e => setField('fee', e.target.value)} /></label>
+          <label>{t('craft.crafts')}<input type="number" className="input-field" value={st.crafts} onChange={e => setField('crafts', e.target.value)} /></label>
         </div>
       </div>
+
       <div className="glass-panel">
-        <div style={{ overflowX: 'auto' }}>
-          <table className="craft-table">
-            <thead><tr>
-              <th>{t('craft.recipe')}</th><th>{t('craft.ingredients')}</th><th>{t('craft.output')}</th>
-              <th>{t('craft.market')}</th><th>{t('craft.costShot')}</th><th>{t('craft.profitCraft')}</th><th>{t('craft.pct')}</th><th>{t('craft.totalProfit')}</th>
-            </tr></thead>
-            <tbody>
-              {rows.map(({ r, costShot, market, profitCraft, pct, total }) => (
-                <tr key={r.id}>
-                  <td style={{ fontWeight: 600 }}>{r.name}</td>
-                  <td className="text-secondary">{r.dc}× D-Crystal + {r.so}× Soul Ore</td>
-                  <td>{r.output}</td>
-                  <td><input type="number" className="input-field craft-market" value={market} onChange={e => setMarket(r.id, e.target.value)} /></td>
-                  <td className="text-secondary">{fmt(costShot)}</td>
-                  <td className={profitCraft >= 0 ? 'text-success' : 'text-danger'}>{fmt(profitCraft)}</td>
-                  <td className={pct >= 0 ? 'text-success' : 'text-danger'} style={{ fontWeight: 700 }}>{fmt(pct)}%</td>
-                  <td className={total >= 0 ? 'text-success' : 'text-danger'} style={{ fontWeight: 700 }}>{fmt(total)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="shots-result">
+          <div><span className="rc-total-label">{t('craft.costShot')}</span><span className="rc-total-val">{fmt(costShot)}</span></div>
+          <div><span className="rc-total-label">{t('craft.profitCraft')}</span><span className={`rc-total-val ${profitCraft >= 0 ? 'text-success' : 'text-danger'}`}>{fmt(profitCraft)}</span></div>
+          <div><span className="rc-total-label">{t('craft.pct')}</span><span className={`rc-total-val ${pct >= 0 ? 'text-success' : 'text-danger'}`}>{fmt(pct)}%</span></div>
+          <div><span className="rc-total-label">{t('craft.totalProfit')}</span><span className={`rc-total-val ${totalProfit >= 0 ? 'text-success' : 'text-danger'}`}>{fmt(totalProfit)}</span></div>
         </div>
         <p className="craft-hint" style={{ marginTop: '0.75rem' }}>{t('craft.note')}</p>
       </div>
@@ -261,7 +288,7 @@ const ShotsCalc = () => {
 export const Craft = () => {
   const { t } = useLang();
   const [tab, setTab] = useState('recipes');
-  const clearPrices = () => { if (window.confirm(t('craft.resetConfirm'))) { localStorage.removeItem('matPrices'); localStorage.removeItem('craftBuy'); localStorage.removeItem('craftCalc'); window.location.reload(); } };
+  const clearPrices = () => { if (window.confirm(t('craft.resetConfirm'))) { localStorage.removeItem('matPrices'); localStorage.removeItem('craftBuy'); localStorage.removeItem('craftCalc'); localStorage.removeItem('shotsCalc2'); window.location.reload(); } };
   return (
     <div className="fade-in">
       <div className="flex justify-between items-center mb-4">

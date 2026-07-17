@@ -182,10 +182,6 @@ export const Roadmap = () => {
               </div>
             </div>
             <div className="rm-section">
-              <h4 className="rm-section-h"><Package size={13} /> {t('roadmap.spoil')}</h4>
-              {renderList(LU4_CRAFT.spoil, 'rm-ul')}
-            </div>
-            <div className="rm-section">
               <h4 className="rm-section-h"><Lightbulb size={13} /> {t('roadmap.nukeMath')}</h4>
               {renderList(LU4_CRAFT.nukeMath, 'rm-ul')}
             </div>
