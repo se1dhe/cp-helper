@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useLang } from '../context/LanguageContext';
 import { subscribeToUsers, updateUserRole, updateUserNickname, initializeRoster } from '../services/adminService';
-import { Users, ShieldAlert, Shield, RotateCcw, Edit2, Check, X } from 'lucide-react';
+import { logAction, subscribeToAudit } from '../services/auditService';
+import { Users, ShieldAlert, Shield, RotateCcw, Edit2, Check, X, ScrollText } from 'lucide-react';
 
 const ROLE_BADGE = {
   PL: 'role-badge role-badge-pl',
@@ -12,16 +13,18 @@ const ROLE_BADGE = {
 };
 
 export const Admin = () => {
-  const { isPL, isOfficer } = useAuth();
+  const { isPL, isOfficer, currentUser, userNickname } = useAuth();
   const { t } = useLang();
   const [users, setUsers] = useState([]);
   const [editingNickname, setEditingNickname] = useState(null);
   const [nicknameValue, setNicknameValue] = useState('');
+  const [audit, setAudit] = useState([]);
 
   useEffect(() => {
     if (!isPL && !isOfficer) return;
     const unsubscribe = subscribeToUsers(setUsers);
-    return () => unsubscribe();
+    const unsubAudit = subscribeToAudit(setAudit);
+    return () => { unsubscribe(); unsubAudit(); };
   }, [isPL, isOfficer]);
 
   if (!isPL && !isOfficer) {
@@ -38,7 +41,9 @@ export const Admin = () => {
 
   const handleRoleChange = async (userId, role) => {
     try {
+      const u = users.find(x => x.id === userId);
       await updateUserRole(userId, role);
+      logAction(currentUser?.uid, userNickname, 'role', `${u?.nickname || u?.email || userId} → ${role}`);
     } catch (e) {
       console.error(e);
       alert(t('admin.error'));
@@ -174,6 +179,21 @@ export const Admin = () => {
               )}
             </tbody>
           </table>
+        </div>
+      </div>
+
+      <div className="glass-panel" style={{ marginTop: '1.25rem' }}>
+        <h3 className="section-header"><ScrollText size={16} /> {t('audit.title')}</h3>
+        <div className="audit-list">
+          {audit.map(a => (
+            <div key={a.id} className="audit-row">
+              <span className={`audit-tag audit-tag--${a.action}`}>{t(`audit.act.${a.action}`)}</span>
+              <span className="audit-detail">{a.detail}</span>
+              <span className="audit-by">{a.actorName}</span>
+              <span className="audit-ts">{a.ts?.toDate?.().toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) || ''}</span>
+            </div>
+          ))}
+          {audit.length === 0 && <div className="text-muted text-center" style={{ padding: '1rem', fontSize: '0.85rem' }}>{t('audit.empty')}</div>}
         </div>
       </div>
     </div>

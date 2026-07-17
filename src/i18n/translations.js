@@ -293,6 +293,21 @@ export const RU = {
   'cq.deleteConfirm': 'Удалить заявку?',
   'cq.needRes': 'Нужно ресурсов (с разворотом до базовых):',
   'cq.error': 'Ошибка при создании заявки',
+
+  // Графики казны
+  'charts.title': 'Графики казны',
+  'charts.balance': 'Баланс адены по дням',
+  'charts.contrib': 'Вклад по мемберам (адена)',
+  'charts.noData': 'Нет данных',
+
+  // Аудит-лог
+  'audit.title': 'Аудит-лог',
+  'audit.empty': 'Действий пока нет.',
+  'audit.act.role': 'РОЛЬ',
+  'audit.act.treasury': 'КАЗНА',
+  'audit.act.rb': 'БОСС',
+  'audit.rbAdd': 'добавил',
+  'audit.rbKill': 'отметил убитым',
   'craft.search': 'Поиск по названию...',
   'craft.allGrades': 'Все грейды',
   'craft.allTypes': 'Все типы',
@@ -410,6 +425,9 @@ export const RU = {
   'settings.closeTray': 'Свернуть в трей',
   'settings.closeQuit': 'Закрыть приложение',
   'settings.done': 'Готово',
+  'settings.theme': 'Тема оформления',
+  'settings.themeDark': 'Тёмная',
+  'settings.themeLight': 'Светлая',
 
   // Обновление
   'update.available': 'Доступна новая версия {version}. Скачать и установить?',
@@ -714,6 +732,21 @@ export const UA = {
   'cq.deleteConfirm': 'Видалити заявку?',
   'cq.needRes': 'Потрібно ресурсів (з розгортанням до базових):',
   'cq.error': 'Помилка при створенні заявки',
+
+  // Графіки скарбниці
+  'charts.title': 'Графіки скарбниці',
+  'charts.balance': 'Баланс адени по днях',
+  'charts.contrib': 'Внесок по мемберах (адена)',
+  'charts.noData': 'Немає даних',
+
+  // Аудит-лог
+  'audit.title': 'Аудит-лог',
+  'audit.empty': 'Дій поки немає.',
+  'audit.act.role': 'РОЛЬ',
+  'audit.act.treasury': 'СКАРБНИЦЯ',
+  'audit.act.rb': 'БОС',
+  'audit.rbAdd': 'додав',
+  'audit.rbKill': 'позначив убитим',
   'craft.search': 'Пошук за назвою...',
   'craft.allGrades': 'Всі грейди',
   'craft.allTypes': 'Всі типи',
@@ -831,6 +864,9 @@ export const UA = {
   'settings.closeTray': 'Згорнути в трей',
   'settings.closeQuit': 'Закрити застосунок',
   'settings.done': 'Готово',
+  'settings.theme': 'Тема оформлення',
+  'settings.themeDark': 'Темна',
+  'settings.themeLight': 'Світла',
 
   // Оновлення
   'update.available': 'Доступна нова версія {version}. Завантажити та встановити?',

@@ -141,6 +141,12 @@ service cloud.firestore {
                     && request.resource.data.done is bool;
     }
 
+    // Аудит-лог: читают офицеры+, писать может любой не-гость (только от своего имени), без правок/удаления.
+    match /audit/{entry} {
+      allow read: if isOfficer();
+      allow create: if isNotGuest() && request.resource.data.actorId == request.auth.uid;
+    }
+
     // Таймеры рейд-боссов: читают все (не гости), ведут офицеры+.
     match /raidbosses/{rb} {
       allow read: if isNotGuest();

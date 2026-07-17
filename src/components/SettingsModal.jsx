@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
-import { X, HelpCircle, Minus, LogOut } from 'lucide-react';
+import { X, HelpCircle, Minus, LogOut, Moon, Sun } from 'lucide-react';
 import { useLang } from '../context/LanguageContext';
-import { getCloseAction, setCloseAction } from '../utils/settings';
+import { getCloseAction, setCloseAction, getTheme, setTheme } from '../utils/settings';
 
 export const SettingsModal = ({ open, onClose }) => {
   const { t } = useLang();
   const [action, setAction] = useState(getCloseAction());
+  const [theme, setThemeState] = useState(getTheme());
 
   if (!open) return null;
 
   const choose = (v) => { setAction(v); setCloseAction(v); };
+  const chooseTheme = (v) => { setThemeState(v); setTheme(v); };
 
   const options = [
     { v: 'ask', icon: HelpCircle, label: t('settings.closeAsk') },
@@ -36,6 +38,17 @@ export const SettingsModal = ({ open, onClose }) => {
               >
                 <o.icon size={16} />
                 <span>{o.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="settings-group" style={{ marginTop: '1rem' }}>
+          <span className="settings-label">{t('settings.theme')}</span>
+          <div className="settings-options">
+            {[{ v: 'dark', icon: Moon, label: t('settings.themeDark') }, { v: 'light', icon: Sun, label: t('settings.themeLight') }].map(o => (
+              <button key={o.v} className={`settings-option ${theme === o.v ? 'settings-option--active' : ''}`} onClick={() => chooseTheme(o.v)}>
+                <o.icon size={16} /><span>{o.label}</span>
               </button>
             ))}
           </div>

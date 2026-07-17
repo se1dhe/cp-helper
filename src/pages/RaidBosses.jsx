@@ -3,6 +3,7 @@ import { Skull, Plus, Trash2, Check, Swords, Clock } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useLang } from '../context/LanguageContext';
 import { subscribeToRB, addRB, updateRB, killNow, setNextAt, deleteRB, seedRB } from '../services/rbService';
+import { logAction } from '../services/auditService';
 
 // Стартовый набор RB (уровни 20-40) — офицер грузит одним кликом, дальше правит.
 const DEFAULT_RB = [
@@ -23,7 +24,7 @@ const DEFAULT_RB = [
 const dtLocal = (ms) => { if (!ms) return ''; const d = new Date(ms - new Date().getTimezoneOffset() * 60000); return d.toISOString().slice(0, 16); };
 
 export const RaidBosses = () => {
-  const { isOfficer } = useAuth();
+  const { isOfficer, currentUser, userNickname } = useAuth();
   const { t } = useLang();
   const [list, setList] = useState([]);
   const [now, setNow] = useState(Date.now());
@@ -48,8 +49,11 @@ export const RaidBosses = () => {
   const handleAdd = async (e) => {
     e.preventDefault();
     if (!form.name.trim()) return;
-    try { await addRB(form.name.trim(), form.level, form.respawnH, form.note.trim()); setForm({ name: '', level: '', respawnH: '12', note: '' }); setShowForm(false); }
-    catch { alert(t('rb.error')); }
+    try {
+      await addRB(form.name.trim(), form.level, form.respawnH, form.note.trim());
+      logAction(currentUser?.uid, userNickname, 'rb', `${t('audit.rbAdd')} ${form.name.trim()}`);
+      setForm({ name: '', level: '', respawnH: '12', note: '' }); setShowForm(false);
+    } catch { alert(t('rb.error')); }
   };
 
   return (
@@ -97,7 +101,7 @@ export const RaidBosses = () => {
                       {isOfficer && (
                         <td>
                           <div className="rb-actions">
-                            <button className="btn btn-sm" onClick={() => killNow(rb.id, rb.respawnH)} title={t('rb.killHint')}>{t('rb.kill')}</button>
+                            <button className="btn btn-sm" onClick={() => { killNow(rb.id, rb.respawnH); logAction(currentUser?.uid, userNickname, 'rb', `${t('audit.rbKill')} ${rb.name}`); }} title={t('rb.killHint')}>{t('rb.kill')}</button>
                             <input type="number" className="input-field rb-h" value={rb.respawnH || 0} onChange={e => updateRB(rb.id, { respawnH: Number(e.target.value) || 0 })} title={t('rb.respawnH')} />
                             <input type="datetime-local" className="input-field rb-dt" value={dtLocal(rb.nextAt)} onChange={e => setNextAt(rb.id, e.target.value ? new Date(e.target.value).getTime() : 0)} />
                             <button className="rb-del" onClick={() => { if (window.confirm(t('rb.deleteConfirm'))) deleteRB(rb.id); }}><Trash2 size={14} /></button>

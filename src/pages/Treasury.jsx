@@ -4,9 +4,11 @@ import { useLang } from '../context/LanguageContext';
 import { addTransaction, subscribeToTransactions } from '../services/treasuryService';
 import { subscribeToRoster } from '../services/rosterService';
 import { Coins, Gem, TrendingUp, Plus, ArrowUpCircle, ArrowDownCircle } from 'lucide-react';
+import { TreasuryCharts } from './TreasuryCharts';
+import { logAction } from '../services/auditService';
 
 export const Treasury = () => {
-  const { currentUser, isOfficer } = useAuth();
+  const { currentUser, userNickname, isOfficer } = useAuth();
   const { t } = useLang();
   const [data, setData] = useState({ transactions: [], totalAdena: 0, totalMC: 0 });
   const [roster, setRoster] = useState([]);
@@ -42,6 +44,7 @@ export const Treasury = () => {
         addedBy: currentUser.displayName,
         addedById: currentUser.uid
       });
+      logAction(currentUser.uid, userNickname || currentUser.displayName, 'treasury', `${type === 'income' ? '+' : '−'}${amount} ${currency.toUpperCase()} — ${member}`);
       setAmount('');
       setDescription('');
       setMember('');
@@ -101,6 +104,8 @@ export const Treasury = () => {
           <div className="stat-card-value">{formatNumber(data.totalAdena + (data.totalMC * exchangeRate))}</div>
         </div>
       </div>
+
+      <TreasuryCharts transactions={data.transactions} />
 
       <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1rem' }}>
         <div className="glass-panel">

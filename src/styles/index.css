@@ -2043,3 +2043,60 @@ tbody tr:hover { background: rgba(255,255,255,0.02); }
 .cq-res-name { flex: 1; min-width: 0; color: var(--text-primary); overflow-wrap: anywhere; }
 .cq-res-qty { color: var(--text-muted); font-size: 0.78rem; }
 .cq-res-sub { color: var(--gold-light); font-size: 0.78rem; min-width: 50px; text-align: right; }
+
+/* ===== Графики казны ===== */
+.tc-wrap { margin-bottom: 1.5rem; }
+.tc-body { display: grid; grid-template-columns: 1.4fr 1fr; gap: 1rem; margin-top: 0.5rem; }
+.tc-block { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.85rem; min-width: 0; }
+.tc-h { margin: 0 0 0.6rem; font-size: 0.78rem; color: var(--text-secondary); font-weight: 700; }
+.tc-svg { width: 100%; height: 150px; display: block; }
+.tc-axis { display: flex; justify-content: space-between; font-size: 0.68rem; color: var(--text-muted); margin-top: 0.3rem; }
+.tc-bars { display: flex; flex-direction: column; gap: 0.4rem; }
+.tc-bar-row { display: flex; align-items: center; gap: 0.5rem; }
+.tc-bar-name { width: 90px; font-size: 0.76rem; color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex-shrink: 0; }
+.tc-bar-track { flex: 1; height: 12px; background: rgba(255,255,255,0.04); border-radius: 6px; overflow: hidden; }
+.tc-bar-fill { height: 100%; background: linear-gradient(90deg, var(--gold-dim), var(--gold-light)); border-radius: 6px; }
+.tc-bar-val { font-size: 0.74rem; font-weight: 700; color: var(--gold-light); min-width: 60px; text-align: right; }
+@media (max-width: 780px) { .tc-body { grid-template-columns: 1fr; } }
+
+/* ===== Аудит-лог ===== */
+.audit-list { display: flex; flex-direction: column; gap: 0.35rem; max-height: 340px; overflow-y: auto; }
+.audit-row { display: flex; align-items: center; gap: 0.6rem; padding: 0.35rem 0; border-bottom: 1px solid var(--border); font-size: 0.8rem; }
+.audit-tag { font-size: 0.6rem; font-weight: 800; border-radius: 4px; padding: 1px 5px; flex-shrink: 0; }
+.audit-tag--role { background: var(--primary-glow); color: var(--primary-light); }
+.audit-tag--treasury { background: var(--gold-glow); color: var(--gold-light); }
+.audit-tag--rb { background: rgba(167,139,250,0.15); color: var(--purple); }
+.audit-detail { flex: 1; min-width: 0; color: var(--text-primary); overflow-wrap: anywhere; }
+.audit-by { color: var(--text-secondary); flex-shrink: 0; }
+.audit-ts { color: var(--text-muted); font-size: 0.72rem; flex-shrink: 0; }
+
+/* ===== Светлая тема ===== */
+[data-theme="light"] {
+  --bg-base: #eceef4;
+  --bg-surface: #f6f7fb;
+  --bg-card: rgba(255,255,255,0.94);
+  --bg-card-hover: #ffffff;
+  --bg-sidebar: #ffffff;
+  --bg-sidebar-inner: rgba(255,255,255,0.96);
+  --text-primary: #1a1c24;
+  --text-secondary: #575c6d;
+  --text-muted: #9298a8;
+  --border: rgba(0,0,0,0.09);
+  --border-hover: rgba(0,0,0,0.16);
+  --border-accent: rgba(220,38,38,0.3);
+  --primary-glow: rgba(220,38,38,0.08);
+  --gold-glow: rgba(245,158,11,0.12);
+  --gold-light: #b8790a;
+  --success: #0a9d6e;
+  --success-glow: rgba(16,185,129,0.12);
+  --info-glow: rgba(59,130,246,0.12);
+  --purple-glow: rgba(167,139,250,0.14);
+  --shadow-card: 0 4px 24px rgba(0,0,0,0.07);
+  --shadow-elevated: 0 8px 32px rgba(0,0,0,0.14);
+  --shadow-glow: 0 0 24px rgba(220,38,38,0.05);
+}
+[data-theme="light"] .grade-ng { background: rgba(0,0,0,0.06); color: #555; }
+[data-theme="light"] .item-icon { background: rgba(0,0,0,0.05); }
+[data-theme="light"] .tc-bar-track,
+[data-theme="light"] .rc-item:hover,
+[data-theme="light"] .craft-tabs button { background: rgba(0,0,0,0.03); }
