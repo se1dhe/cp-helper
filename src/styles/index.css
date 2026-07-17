@@ -1986,3 +1986,17 @@ tbody tr:hover { background: rgba(255,255,255,0.02); }
 .reco-list { margin: 0 0 0.5rem; padding-left: 1.1rem; display: flex; flex-direction: column; gap: 0.25rem; }
 .reco-list li { font-size: 0.82rem; color: var(--text-secondary); overflow-wrap: anywhere; }
 .reco-source { font-size: 0.72rem; color: var(--text-muted); font-style: italic; }
+
+/* ===== Статы предмета в калькуляторе ===== */
+.rc-stats { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; }
+.rc-stat { font-size: 0.74rem; color: var(--text-secondary); background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 6px; padding: 2px 8px; }
+.rc-stat b { color: var(--text-muted); font-weight: 600; }
+.rc-wiki-btn { display: inline-flex; align-items: center; gap: 4px; padding: 0.2rem 0.5rem; border-radius: var(--radius-sm); background: rgba(255,255,255,0.03); border: 1px solid var(--border); color: var(--text-secondary); cursor: pointer; font-family: inherit; font-size: 0.74rem; }
+.rc-wiki-btn:hover { color: var(--primary-light); border-color: var(--primary-border); }
+
+/* ===== Спойл-подсказка в базовых ресурсах ===== */
+.rc-res-line { display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap; }
+.rc-wiki { background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 1px; display: inline-flex; flex-shrink: 0; transition: color var(--transition); }
+.rc-wiki:hover { color: var(--primary-light); }
+.rc-spoil { display: inline-flex; align-items: flex-start; gap: 3px; margin-top: 2px; font-size: 0.7rem; color: var(--text-muted); overflow-wrap: anywhere; }
+.rc-spoil svg { color: var(--success); flex-shrink: 0; margin-top: 2px; }

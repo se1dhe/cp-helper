@@ -12,6 +12,9 @@ export const itemName = (id) => (ITEMS[id] ? ITEMS[id][0] : `#${id}`);
 export const itemGrade = (id) => (ITEMS[id] ? ITEMS[id][1] : 'NG');
 export const itemIcon = (id) => { const it = ITEMS[id]; return (it && it[2]) ? ICON_BASE + it[2] + '.png' : null; };
 export const hasRecipe = (id) => !!RECIPES[id];
+export const itemStats = (id) => (RECIPES[id] && RECIPES[id].st) ? RECIPES[id].st : null;
+// Живая страница предмета на вики со спойлом, отсортированным по уровню моба.
+export const wikiUrl = (id) => `https://masterwork.wiki/lu4/item/${id}?spoilSort=npc_level`;
 
 // Разворачивает продукт до базовых ресурсов. buy — Set id, которые считаем «покупными» (не разворачиваем).
 export const flattenBase = (pid, count = 1, buy = null) => {

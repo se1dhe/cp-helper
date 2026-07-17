@@ -1,10 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Hammer, RotateCcw, ChevronRight, ChevronDown, Search, Lightbulb, ShoppingCart } from 'lucide-react';
+import { Hammer, RotateCcw, ChevronRight, ChevronDown, Search, Lightbulb, ShoppingCart, MapPin, ExternalLink } from 'lucide-react';
 import { useLang } from '../context/LanguageContext';
 import {
   listProducts, flattenBase, buildTree, itemName, itemGrade, itemIcon, hasRecipe,
-  RECIPES, PRODUCT_TYPES,
+  itemStats, wikiUrl, RECIPES, PRODUCT_TYPES,
 } from '../utils/recipeCalc';
+import { SPOIL_HINTS } from '../data/spoilHints';
+import { openExternal } from '../utils/openExternal';
 import { LU4_CRAFT } from '../data/lu4Roadmap';
 
 const fmt = (n) => new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 1 }).format(n);
@@ -126,7 +128,14 @@ const RecipeCalc = () => {
               <label className="rc-count">{t('craft.craftCount')}
                 <input type="number" min="1" className="input-field" value={count} onChange={e => setCount(Math.max(1, Number(e.target.value) || 1))} />
               </label>
+              <button className="rc-wiki-btn" onClick={() => openExternal(wikiUrl(selected))}><ExternalLink size={12} /> {t('craft.onWiki')}</button>
             </div>
+
+            {itemStats(selected) && (
+              <div className="rc-stats">
+                {Object.entries(itemStats(selected)).map(([k, v]) => <span key={k} className="rc-stat"><b>{k}:</b> {v}</span>)}
+              </div>
+            )}
 
             <h4 className="rc-section-h">{t('craft.baseRes')}</h4>
             <div style={{ overflowX: 'auto' }}>
@@ -138,12 +147,16 @@ const RecipeCalc = () => {
                   {baseRows.map(r => (
                     <tr key={r.id}>
                       <td>
-                        <span className="rc-res-name"><Icon id={r.id} size={18} /> <span className={gradeClass(r.grade)}>{r.grade}</span> {r.name}</span>
-                        {r.craftable && (
-                          <button className="rc-buy-toggle rc-buy-toggle--inline" onClick={() => toggleBuy(r.id)}>
-                            <Hammer size={10} /> {t('craft.craftIt')}
-                          </button>
-                        )}
+                        <div className="rc-res-line">
+                          <span className="rc-res-name"><Icon id={r.id} size={18} /> <span className={gradeClass(r.grade)}>{r.grade}</span> {r.name}</span>
+                          {r.craftable && (
+                            <button className="rc-buy-toggle rc-buy-toggle--inline" onClick={() => toggleBuy(r.id)}>
+                              <Hammer size={10} /> {t('craft.craftIt')}
+                            </button>
+                          )}
+                          <button className="rc-wiki" onClick={() => openExternal(wikiUrl(r.id))} title={t('craft.whereGet')}><ExternalLink size={11} /></button>
+                        </div>
+                        {SPOIL_HINTS[r.id] && <span className="rc-spoil"><MapPin size={10} /> {SPOIL_HINTS[r.id]}</span>}
                       </td>
                       <td>{fmt(r.qty)}</td>
                       <td><input type="number" className="input-field craft-market" value={prices[r.id] ?? ''} placeholder="0" onChange={e => setPrice(r.id, e.target.value)} /></td>
