@@ -23,6 +23,20 @@ fn notify(app: tauri::AppHandle, title: String, body: String) {
     let _ = app.notification().builder().title(title).body(body).show();
 }
 
+// Открыть внешнюю ссылку в системном браузере.
+#[tauri::command]
+fn open_url(url: String) {
+    if !(url.starts_with("http://") || url.starts_with("https://")) {
+        return;
+    }
+    #[cfg(target_os = "macos")]
+    let _ = std::process::Command::new("open").arg(&url).spawn();
+    #[cfg(target_os = "windows")]
+    let _ = std::process::Command::new("cmd").args(["/C", "start", "", &url]).spawn();
+    #[cfg(target_os = "linux")]
+    let _ = std::process::Command::new("xdg-open").arg(&url).spawn();
+}
+
 fn focus_main(app: &tauri::AppHandle) {
     if let Some(window) = app.get_webview_window("main") {
         let _ = window.show();
@@ -37,7 +51,7 @@ pub fn run() {
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_notification::init())
         .plugin(tauri_plugin_updater::Builder::new().build())
-        .invoke_handler(tauri::generate_handler![quit_app, restart_app, notify])
+        .invoke_handler(tauri::generate_handler![quit_app, restart_app, notify, open_url])
         // Сворачивание (кнопка _) уходит в трей: прячем окно, убирая его из панели задач.
         // В таскбаре приложение появляется только когда его разворачивают из трея.
         .on_window_event(|window, event| {

@@ -141,6 +141,15 @@ service cloud.firestore {
                     && request.resource.data.done is bool;
     }
 
+    // Полезные ссылки: читают все (не гости), публикуют офицеры+.
+    match /links/{link} {
+      allow read: if isNotGuest();
+      allow create: if isOfficer()
+                    && request.resource.data.title is string
+                    && request.resource.data.url is string;
+      allow delete: if isOfficer();
+    }
+
     // Новости: читают все (не гости), публикуют офицеры+.
     match /news/{article} {
       allow read: if isNotGuest();

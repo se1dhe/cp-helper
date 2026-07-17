@@ -5,7 +5,7 @@ import { useLang } from '../context/LanguageContext';
 import { signInWithEmail, registerWithEmail, logOut } from '../firebase';
 import { subscribeToRoster } from '../services/rosterService';
 import { isRegistrationAllowed } from '../services/registrationService';
-import { LayoutDashboard, Users, Wallet, LogIn, LogOut, ShieldAlert, UserPlus, Languages, UserCheck, Newspaper, Map as MapIcon, CalendarClock, Pencil, Settings } from 'lucide-react';
+import { LayoutDashboard, Users, Wallet, LogIn, LogOut, ShieldAlert, UserPlus, Languages, UserCheck, Newspaper, Map as MapIcon, CalendarClock, Pencil, Settings, Hammer, Link2 } from 'lucide-react';
 import { L2_CLASSES } from '../utils/classes';
 import { ClassIcon } from './ClassIcon';
 import { ProfileModal } from './ProfileModal';
@@ -39,6 +39,8 @@ export const Layout = () => {
     { to: '/', icon: LayoutDashboard, label: t('nav.dashboard'), end: true },
     { to: '/roadmap', icon: MapIcon, label: t('nav.roadmap') },
     { to: '/schedule', icon: CalendarClock, label: t('nav.schedule') },
+    { to: '/craft', icon: Hammer, label: t('nav.craft') },
+    { to: '/links', icon: Link2, label: t('nav.links') },
     { to: '/news', icon: Newspaper, label: t('nav.news') },
     { to: '/treasury', icon: Wallet, label: t('nav.treasury') },
   ];

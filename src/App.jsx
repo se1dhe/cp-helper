@@ -13,6 +13,8 @@ import { MemberProgress } from './pages/MemberProgress';
 import { News } from './pages/News';
 import { Roadmap } from './pages/Roadmap';
 import { Schedule } from './pages/Schedule';
+import { Links } from './pages/Links';
+import { Craft } from './pages/Craft';
 
 function App() {
   return (
@@ -26,6 +28,8 @@ function App() {
               <Route index element={<Dashboard />} />
               <Route path="roadmap" element={<Roadmap />} />
               <Route path="schedule" element={<Schedule />} />
+              <Route path="craft" element={<Craft />} />
+              <Route path="links" element={<Links />} />
               <Route path="news" element={<News />} />
               <Route path="treasury" element={<Treasury />} />
               <Route path="roster" element={<Roster />} />

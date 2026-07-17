@@ -216,6 +216,54 @@ export const RU = {
   'dashboard.ready': 'Готовы к фазе: {done}/{total}',
   'dashboard.lagging': 'Отстают',
 
+  // Nav (доп.)
+  'nav.craft': 'Крафт',
+  'nav.links': 'Ссылки',
+
+  // Полезные ссылки
+  'links.title': 'Полезные ссылки',
+  'links.add': 'Добавить',
+  'links.formTitle': 'Название',
+  'links.formCategory': 'Категория',
+  'links.formUrl': 'Ссылка',
+  'links.formDesc': 'Описание',
+  'links.descPlaceholder': 'Коротко о чём это',
+  'links.save': 'Сохранить',
+  'links.saving': 'Сохранение...',
+  'links.saveError': 'Ошибка при сохранении ссылки',
+  'links.deleteConfirm': 'Удалить эту ссылку?',
+  'links.deleteError': 'Ошибка при удалении',
+  'links.delete': 'Удалить',
+  'links.empty': 'Ссылок пока нет.',
+  'links.loadDefaults': 'Загрузить набор полезных ссылок',
+  'links.other': 'Прочее',
+
+  // Калькулятор крафта
+  'craft.title': 'Калькулятор крафта сосок',
+  'craft.reset': 'Сброс',
+  'craft.prices': 'Цены материалов (под текущий рынок)',
+  'craft.dc': 'D-Crystal, цена',
+  'craft.so': 'Soul Ore, цена',
+  'craft.fee': 'Комиссия крафта',
+  'craft.crafts': 'Кол-во крафтов',
+  'craft.hint': 'Цены сохраняются локально. Меняй под текущий рынок сервера.',
+  'craft.recipe': 'Рецепт',
+  'craft.ingredients': 'Ингредиенты',
+  'craft.output': 'Выход',
+  'craft.market': 'Рынок, за шт',
+  'craft.costShot': 'Себест / шт',
+  'craft.profitCraft': 'Профит / крафт',
+  'craft.pct': 'Профит %',
+  'craft.totalProfit': 'Итого профит',
+  'craft.note': 'Данные рецептов — из таблицы «Луч КП Дикей». Профит = (рынок × выход) − (материалы + комиссия).',
+
+  // Роадмап (крафт)
+  'roadmap.craftSpoil': 'Крафт и спойл',
+  'roadmap.craftCalc': 'Калькулятор крафта',
+  'roadmap.craftRecipes': 'Рецепты сосок',
+  'roadmap.spoil': 'Спойл ресурсов',
+  'roadmap.nukeMath': 'Математика нюков (когда соски в плюс)',
+
   // Расписание
   'nav.schedule': 'Расписание',
   'sched.title': 'Расписание прайм-тайма',
@@ -517,6 +565,54 @@ export const UA = {
   'dashboard.phaseDone': 'Фаза виконана — розгортай наступну в Роадмапі.',
   'dashboard.ready': 'Готові до фази: {done}/{total}',
   'dashboard.lagging': 'Відстають',
+
+  // Nav (дод.)
+  'nav.craft': 'Крафт',
+  'nav.links': 'Посилання',
+
+  // Корисні посилання
+  'links.title': 'Корисні посилання',
+  'links.add': 'Додати',
+  'links.formTitle': 'Назва',
+  'links.formCategory': 'Категорія',
+  'links.formUrl': 'Посилання',
+  'links.formDesc': 'Опис',
+  'links.descPlaceholder': 'Коротко про що це',
+  'links.save': 'Зберегти',
+  'links.saving': 'Збереження...',
+  'links.saveError': 'Помилка при збереженні посилання',
+  'links.deleteConfirm': 'Видалити це посилання?',
+  'links.deleteError': 'Помилка при видаленні',
+  'links.delete': 'Видалити',
+  'links.empty': 'Посилань поки немає.',
+  'links.loadDefaults': 'Завантажити набір корисних посилань',
+  'links.other': 'Інше',
+
+  // Калькулятор крафту
+  'craft.title': 'Калькулятор крафту сосок',
+  'craft.reset': 'Скидання',
+  'craft.prices': 'Ціни матеріалів (під поточний ринок)',
+  'craft.dc': 'D-Crystal, ціна',
+  'craft.so': 'Soul Ore, ціна',
+  'craft.fee': 'Комісія крафту',
+  'craft.crafts': 'К-сть крафтів',
+  'craft.hint': 'Ціни зберігаються локально. Змінюй під поточний ринок сервера.',
+  'craft.recipe': 'Рецепт',
+  'craft.ingredients': 'Інгредієнти',
+  'craft.output': 'Вихід',
+  'craft.market': 'Ринок, за шт',
+  'craft.costShot': 'Собів / шт',
+  'craft.profitCraft': 'Профіт / крафт',
+  'craft.pct': 'Профіт %',
+  'craft.totalProfit': 'Разом профіт',
+  'craft.note': 'Дані рецептів — з таблиці «Луч КП Дікей». Профіт = (ринок × вихід) − (матеріали + комісія).',
+
+  // Роадмап (крафт)
+  'roadmap.craftSpoil': 'Крафт і спойл',
+  'roadmap.craftCalc': 'Калькулятор крафту',
+  'roadmap.craftRecipes': 'Рецепти сосок',
+  'roadmap.spoil': 'Спойл ресурсів',
+  'roadmap.nukeMath': 'Математика нюків (коли соски в плюс)',
 
   // Розклад
   'nav.schedule': 'Розклад',

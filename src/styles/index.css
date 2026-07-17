@@ -1872,3 +1872,29 @@ tbody tr:hover { background: rgba(255,255,255,0.02); }
 }
 .dash-ready { color: var(--success); font-weight: 700; flex-shrink: 0; }
 .dash-lagging { color: var(--danger); overflow-wrap: anywhere; min-width: 0; }
+
+/* ===== Полезные ссылки ===== */
+.links-group { margin-bottom: 1.25rem; }
+.links-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 0.75rem; }
+.link-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 0.75rem 0.85rem; cursor: pointer;
+  transition: all var(--transition); min-width: 0;
+}
+.link-card:hover { border-color: var(--border-accent); background: var(--bg-card-hover); }
+.link-card-top { display: flex; align-items: center; gap: 0.4rem; }
+.link-card-icon { color: var(--primary-light); flex-shrink: 0; }
+.link-card-title { flex: 1; min-width: 0; font-weight: 600; font-size: 0.88rem; color: var(--text-primary); overflow-wrap: anywhere; }
+.link-card-del { background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 2px; display: flex; flex-shrink: 0; transition: color var(--transition); }
+.link-card-del:hover { color: var(--danger); }
+.link-card-desc { margin: 0.4rem 0 0.3rem; font-size: 0.8rem; color: var(--text-secondary); overflow-wrap: anywhere; }
+.link-card-host { font-size: 0.72rem; color: var(--text-muted); }
+
+/* ===== Калькулятор крафта ===== */
+.craft-inputs { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.craft-inputs label { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.78rem; color: var(--text-secondary); font-weight: 600; }
+.craft-inputs input { width: 130px; }
+.craft-hint { margin: 0.75rem 0 0; font-size: 0.76rem; color: var(--text-muted); }
+.craft-table { width: 100%; }
+.craft-table th, .craft-table td { white-space: nowrap; }
+.craft-market { width: 80px; padding: 0.2rem 0.4rem; font-size: 0.82rem; }

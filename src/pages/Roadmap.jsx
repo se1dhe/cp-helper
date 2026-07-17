@@ -13,7 +13,9 @@ import {
 import { subscribeToRoster } from '../services/rosterService';
 import { addTask } from '../services/taskService';
 import { getCountdown } from '../utils/countdown';
-import { LU4_PHASES, LU4_MECHANICS, LU4_CHARACTERS, LU4_TENTH, allTaskIds, packLevel, getActivePhaseId } from '../data/lu4Roadmap';
+import { LU4_PHASES, LU4_MECHANICS, LU4_CHARACTERS, LU4_TENTH, LU4_CRAFT, allTaskIds, packLevel, getActivePhaseId } from '../data/lu4Roadmap';
+import { Hammer, Package } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const EXPANDED_KEY = 'roadmapExpanded';
 
@@ -146,6 +148,49 @@ export const Roadmap = () => {
             <div className="rm-section">
               <h4 className="rm-section-h"><Lightbulb size={13} /> {t('roadmap.mechanics')}</h4>
               {renderList(LU4_MECHANICS, 'rm-ul')}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Крафт и спойл */}
+      <div className="rm-phase">
+        <button className="rm-phase-head" onClick={() => toggleExpand('craft')}>
+          <Hammer size={16} className="rm-phase-icon" />
+          <span className="rm-phase-title">{t('roadmap.craftSpoil')}</span>
+          <span style={{ marginLeft: 'auto' }} />
+          {expanded.has('craft') ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+        </button>
+        {expanded.has('craft') && (
+          <div className="rm-phase-body">
+            <Link to="/craft" className="btn btn-sm" style={{ alignSelf: 'flex-start' }}>
+              <Hammer size={13} /> {t('roadmap.craftCalc')}
+            </Link>
+            <div className="rm-goal"><Package size={14} /> {LU4_CRAFT.intro}</div>
+            <div className="rm-section">
+              <h4 className="rm-section-h"><Hammer size={13} /> {t('roadmap.craftRecipes')}</h4>
+              <div className="rm-quests">
+                {LU4_CRAFT.recipes.map((r, i) => (
+                  <div key={i} className="rm-quest">
+                    <div className="rm-quest-main">
+                      <span className="rm-quest-name">{r.name}</span>
+                      <span className="rm-quest-meta">{r.in} → {r.out} шт · себест {r.cost}</span>
+                    </div>
+                    <span className="rm-quest-reward">{r.profit}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="rm-section">
+              <h4 className="rm-section-h"><Package size={13} /> {t('roadmap.spoil')}</h4>
+              {renderList(LU4_CRAFT.spoil, 'rm-ul')}
+            </div>
+            <div className="rm-section">
+              <h4 className="rm-section-h"><Lightbulb size={13} /> {t('roadmap.nukeMath')}</h4>
+              {renderList(LU4_CRAFT.nukeMath, 'rm-ul')}
+            </div>
+            <div className="rm-tips">
+              {LU4_CRAFT.tips.map((tp, i) => <div key={i} className="rm-tip"><Lightbulb size={13} /> {tp}</div>)}
             </div>
           </div>
         )}
