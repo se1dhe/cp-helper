@@ -2,24 +2,31 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, X, LayoutDashboard, Users, Hammer, Skull, Map as MapIcon, ScrollText } from 'lucide-react';
 import { useLang } from '../context/LanguageContext';
+import { useAuth } from '../context/AuthContext';
 import { subscribeToRoster } from '../services/rosterService';
 import { subscribeToRB } from '../services/rbService';
 import { listProducts, itemIcon } from '../utils/recipeCalc';
 
+// role: undefined — всем; 'officer' — офицерам+; 'pl' — только ПЛ.
 const PAGES = [
   { key: 'nav.dashboard', path: '/', icon: LayoutDashboard },
   { key: 'nav.roadmap', path: '/roadmap', icon: MapIcon },
   { key: 'nav.schedule', path: '/schedule', icon: ScrollText },
   { key: 'nav.raidbosses', path: '/raidbosses', icon: Skull },
   { key: 'nav.craft', path: '/craft', icon: Hammer },
-  { key: 'nav.members', path: '/members', icon: Users },
+  { key: 'nav.members', path: '/members', icon: Users, role: 'officer' },
   { key: 'nav.treasury', path: '/treasury', icon: LayoutDashboard },
-  { key: 'nav.roster', path: '/roster', icon: Users },
+  { key: 'nav.roster', path: '/roster', icon: Users, role: 'pl' },
 ];
 
 export const SearchPalette = ({ open, onClose }) => {
   const { t } = useLang();
+  const { isOfficer, isPL } = useAuth();
   const navigate = useNavigate();
+  const pages = useMemo(
+    () => PAGES.filter(p => !p.role || (p.role === 'officer' && isOfficer) || (p.role === 'pl' && isPL)),
+    [isOfficer, isPL],
+  );
   const [q, setQ] = useState('');
   const [roster, setRoster] = useState([]);
   const [bosses, setBosses] = useState([]);
@@ -36,13 +43,16 @@ export const SearchPalette = ({ open, onClose }) => {
 
   const query = q.trim().toLowerCase();
   const results = useMemo(() => {
-    if (!query) return { pages: PAGES.slice(0, 6).map(p => ({ ...p, label: t(p.key) })), members: [], recipes: [], bosses: [] };
-    const pages = PAGES.map(p => ({ ...p, label: t(p.key) })).filter(p => p.label.toLowerCase().includes(query));
-    const members = roster.filter(m => m.name && m.name !== '—' && m.name.toLowerCase().includes(query)).slice(0, 6);
+    if (!query) return { pages: pages.slice(0, 6).map(p => ({ ...p, label: t(p.key) })), members: [], recipes: [], bosses: [] };
+    const pg = pages.map(p => ({ ...p, label: t(p.key) })).filter(p => p.label.toLowerCase().includes(query));
+    // Ники ведут на страницу мемберов — она доступна только офицерам+.
+    const members = isOfficer
+      ? roster.filter(m => m.name && m.name !== '—' && m.name.toLowerCase().includes(query)).slice(0, 6)
+      : [];
     const recipes = listProducts({ q: query }).slice(0, 6);
     const bs = bosses.filter(b => (b.name || '').toLowerCase().includes(query)).slice(0, 6);
-    return { pages, members, recipes, bosses: bs };
-  }, [query, roster, bosses, t]);
+    return { pages: pg, members, recipes, bosses: bs };
+  }, [query, roster, bosses, t, pages, isOfficer]);
 
   if (!open) return null;
 

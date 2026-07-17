@@ -105,19 +105,6 @@ service cloud.firestore {
       allow delete: if isOfficer();
     }
 
-    // Роадмап развития пака: офицеры управляют пунктами, любой не-гость
-    // может отмечать выполнение (общий прогресс).
-    match /roadmap/{item} {
-      allow read: if isNotGuest();
-      allow create: if isOfficer()
-                    && request.resource.data.text is string
-                    && request.resource.data.text.size() > 0;
-      allow update: if isOfficer()
-                     || (isNotGuest()
-                        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['done']));
-      allow delete: if isOfficer();
-    }
-
     // Расписание прайм-тайма: офицеры управляют событиями.
     match /schedule/{event} {
       allow read: if isNotGuest();

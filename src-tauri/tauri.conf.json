@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "CP-Helper",
-  "version": "1.22.5",
+  "version": "1.22.6",
   "identifier": "com.outlaw.cphelper",
   "build": {
     "frontendDist": "../dist",
