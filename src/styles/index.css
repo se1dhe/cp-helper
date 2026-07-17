@@ -1898,3 +1898,65 @@ tbody tr:hover { background: rgba(255,255,255,0.02); }
 .craft-table { width: 100%; }
 .craft-table th, .craft-table td { white-space: nowrap; }
 .craft-market { width: 80px; padding: 0.2rem 0.4rem; font-size: 0.82rem; }
+
+/* ===== Вкладки крафта ===== */
+.craft-tabs { display: flex; gap: 0.4rem; margin-bottom: 1rem; }
+.craft-tabs button {
+  padding: 0.45rem 0.9rem; border-radius: var(--radius-sm); cursor: pointer;
+  background: rgba(255,255,255,0.02); border: 1px solid var(--border);
+  color: var(--text-secondary); font-family: inherit; font-size: 0.85rem; font-weight: 600; transition: all var(--transition);
+}
+.craft-tabs button:hover { color: var(--text-primary); border-color: var(--border-hover); }
+.craft-tabs button.active { background: var(--primary-glow); border-color: var(--primary-border); color: var(--text-primary); }
+
+/* ===== Грейд-бейджи ===== */
+.grade-badge { font-size: 0.62rem; font-weight: 800; border-radius: 4px; padding: 1px 5px; flex-shrink: 0; }
+.grade-ng { background: rgba(255,255,255,0.08); color: var(--text-secondary); }
+.grade-d { background: rgba(96,165,250,0.15); color: #60a5fa; }
+.grade-c { background: rgba(16,185,129,0.15); color: #34d399; }
+.grade-b { background: rgba(167,139,250,0.15); color: #a78bfa; }
+.grade-a { background: rgba(245,158,11,0.15); color: var(--gold-light); }
+.grade-s { background: rgba(239,68,68,0.15); color: var(--primary-light); }
+
+/* ===== Полный калькулятор рецептов ===== */
+.rc-grid { display: grid; grid-template-columns: minmax(240px, 1fr) 1.4fr; gap: 1rem; align-items: start; }
+.rc-list-col { padding: 0.75rem; }
+.rc-filters { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 0.6rem; }
+.rc-search { display: flex; align-items: center; gap: 0.4rem; }
+.rc-search svg { color: var(--text-muted); flex-shrink: 0; }
+.rc-count-label { font-size: 0.72rem; color: var(--text-muted); }
+.rc-list { display: flex; flex-direction: column; gap: 2px; max-height: 60vh; overflow-y: auto; }
+.rc-item {
+  display: flex; align-items: center; gap: 0.4rem; width: 100%;
+  padding: 0.4rem 0.5rem; border-radius: 6px; background: none; border: 1px solid transparent;
+  cursor: pointer; color: var(--text-secondary); font-family: inherit; text-align: left; font-size: 0.82rem;
+}
+.rc-item:hover { background: rgba(255,255,255,0.03); color: var(--text-primary); }
+.rc-item--active { background: var(--primary-glow); border-color: var(--primary-border); color: var(--text-primary); }
+.rc-item-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rc-empty { color: var(--text-muted); font-size: 0.85rem; text-align: center; padding: 1rem; }
+
+.rc-detail-col { padding: 1rem; }
+.rc-detail-head { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem; }
+.rc-detail-title { margin: 0; font-size: 1.05rem; color: var(--text-primary); overflow-wrap: anywhere; }
+.rc-detail-meta { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1rem; }
+.rc-count { display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 600; }
+.rc-count input { width: 80px; padding: 0.25rem 0.4rem; }
+.rc-section-h { margin: 0 0 0.5rem; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-secondary); font-weight: 700; }
+
+.rc-totals { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 0.85rem; padding-top: 0.75rem; border-top: 1px solid var(--border); }
+.rc-totals > div { display: flex; flex-direction: column; }
+.rc-total-label { font-size: 0.72rem; color: var(--text-muted); }
+.rc-total-val { font-size: 1.15rem; font-weight: 800; color: var(--text-primary); }
+.text-gold { color: var(--gold-light); }
+
+.rc-tree { margin-top: 0.6rem; border-left: 1px solid var(--border); padding-left: 0.5rem; }
+.rc-node-row { display: flex; align-items: center; gap: 0.4rem; padding: 2px 0; font-size: 0.82rem; }
+.rc-node-toggle { background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 0; display: flex; }
+.rc-node-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text-muted); opacity: 0.4; flex-shrink: 0; margin: 0 3px; }
+.rc-node-name { color: var(--text-primary); overflow-wrap: anywhere; }
+.rc-node-qty { color: var(--text-muted); font-size: 0.76rem; }
+.rc-node-price { color: var(--gold-light); font-size: 0.74rem; }
+.rc-node-children { border-left: 1px solid var(--border); margin-left: 0.55rem; padding-left: 0.4rem; }
+
+@media (max-width: 780px) { .rc-grid { grid-template-columns: 1fr; } }

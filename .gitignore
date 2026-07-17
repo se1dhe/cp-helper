@@ -42,3 +42,6 @@ Thumbs.db
 # Leftover / temp
 temp.html
 *.tmp
+
+# Build-time источник рецептов (данные уже экспортированы в src/data/recipes.json)
+wiki_items.db
