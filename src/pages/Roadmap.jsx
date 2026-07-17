@@ -244,7 +244,7 @@ export const Roadmap = () => {
                             </button>
                           )}
                         </div>
-                        {task.tip && <div className="rm-tip rm-tip--inline"><Lightbulb size={11} /> {task.tip}</div>}
+                        {isOfficer && task.tip && <div className="rm-tip rm-tip--inline"><Lightbulb size={11} /> {task.tip}</div>}
                         {task.sub && task.sub.map(s => (
                           <div key={s.id} className="rm-subtask">
                             <button className="rm-check rm-check--sm" onClick={() => handleToggle(s.id)} disabled={!isOfficer}>
@@ -258,7 +258,7 @@ export const Roadmap = () => {
                   </div>
                 </div>
 
-                {phase.tips.length > 0 && (
+                {isOfficer && phase.tips.length > 0 && (
                   <div className="rm-tips">
                     {phase.tips.map((tp, i) => <div key={i} className="rm-tip"><Lightbulb size={13} /> {tp}</div>)}
                   </div>
