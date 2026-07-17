@@ -71,6 +71,25 @@ export const MemberProgress = () => {
     }
   });
 
+  // Стрик дисциплины по мемберам: подряд дней с аденой >= минимума.
+  const dk = (d) => d.toISOString().slice(0, 10);
+  const streakByMember = {};
+  if (minAdena > 0) {
+    const perDay = {};
+    transactions.forEach(tx => {
+      const d = tx.timestamp?.toDate?.();
+      if (d && tx.type === 'income' && tx.currency === 'adena') {
+        (perDay[tx.member] ??= {})[dk(d)] = (perDay[tx.member]?.[dk(d)] || 0) + (Number(tx.amount) || 0);
+      }
+    });
+    for (const name in perDay) {
+      let s = 0; const day = new Date(); day.setHours(0, 0, 0, 0);
+      if ((perDay[name][dk(day)] || 0) < minAdena) day.setDate(day.getDate() - 1);
+      for (let i = 0; i < 60; i++) { if ((perDay[name][dk(day)] || 0) >= minAdena) { s++; day.setDate(day.getDate() - 1); } else break; }
+      streakByMember[name] = s;
+    }
+  }
+
   const getQuestProgress = (member) => {
     if (!questData || !questLog) return null;
     const universal = getUniversalQuests(questData);
@@ -142,6 +161,7 @@ export const MemberProgress = () => {
                 <th>{t('members.member')}</th>
                 <th>{t('members.quests')}</th>
                 <th>{t('members.adena')}</th>
+                <th>{t('members.streak')}</th>
                 <th>{t('members.status')}</th>
               </tr>
             </thead>
@@ -208,12 +228,17 @@ export const MemberProgress = () => {
                         )}
                       </td>
                       <td>
+                        {streakByMember[m.name] > 0
+                          ? <span className="member-streak">🔥 {t('members.daysN', { n: streakByMember[m.name] })}</span>
+                          : <span className="text-muted">—</span>}
+                      </td>
+                      <td>
                         <span className={`status-badge ${statusClass}`}>{statusLabel}</span>
                       </td>
                     </tr>
                     {isExpanded && (
                       <tr className="member-detail-row">
-                        <td colSpan={4}>
+                        <td colSpan={5}>
                           <div className="member-detail">
                             <div className="member-detail-section">
                               <h4><Medal size={13} /> {t('members.quests')}</h4>

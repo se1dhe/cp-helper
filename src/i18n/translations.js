@@ -400,6 +400,8 @@ export const RU = {
   'members.needLabel': 'Нужно докинуть',
   'members.online': 'В сети',
   'members.offline': 'Не в сети',
+  'members.streak': 'Стрик',
+  'members.daysN': '{n} дн.',
   'members.clickToSet': 'Нажмите чтобы задать минимум',
 
   // Профиль
@@ -417,6 +419,14 @@ export const RU = {
   'profile.saveError': 'Ошибка при сохранении профиля',
   'profile.imageOnly': 'Выберите файл изображения',
   'profile.imageError': 'Не удалось обработать изображение',
+  'nav.profile': 'Профиль',
+  'profile.pageTitle': 'Мой профиль',
+  'profile.contribution': 'Вклад в казну (адена)',
+  'profile.quests': 'Квесты',
+  'profile.streak': 'Дисциплина (стрик)',
+  'profile.days': '{n} дн.',
+  'profile.roadmapPhase': 'Моя фаза роадмапа',
+  'profile.myQuests': 'Мои квесты',
 
   // Настройки
   'settings.title': 'Настройки',
@@ -839,6 +849,8 @@ export const UA = {
   'members.needLabel': 'Треба докинути',
   'members.online': 'У мережі',
   'members.offline': 'Не в мережі',
+  'members.streak': 'Стрик',
+  'members.daysN': '{n} дн.',
   'members.clickToSet': 'Натисніть щоб задати мінімум',
 
   // Профіль
@@ -856,6 +868,14 @@ export const UA = {
   'profile.saveError': 'Помилка при збереженні профілю',
   'profile.imageOnly': 'Оберіть файл зображення',
   'profile.imageError': 'Не вдалося обробити зображення',
+  'nav.profile': 'Профіль',
+  'profile.pageTitle': 'Мій профіль',
+  'profile.contribution': 'Внесок у скарбницю (адена)',
+  'profile.quests': 'Квести',
+  'profile.streak': 'Дисципліна (стрик)',
+  'profile.days': '{n} дн.',
+  'profile.roadmapPhase': 'Моя фаза роадмапу',
+  'profile.myQuests': 'Мої квести',
 
   // Налаштування
   'settings.title': 'Налаштування',
