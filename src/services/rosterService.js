@@ -84,6 +84,13 @@ export const updateRosterNameByUserId = async (userId, newName) => {
   }
 };
 
+// Перестановка слотов: назначает position по порядку id (drag-n-drop).
+export const reorderRoster = async (orderedIds) => {
+  const batch = writeBatch(db);
+  orderedIds.forEach((id, i) => { batch.update(doc(db, COLLECTION, id), { position: i + 1 }); });
+  await batch.commit();
+};
+
 // Обновляет поля (name/lvl/avatar) во всех слотах ростера, привязанных к игроку.
 export const updateRosterByUserId = async (userId, data) => {
   if (!userId) return;

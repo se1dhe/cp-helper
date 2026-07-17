@@ -2120,3 +2120,65 @@ tbody tr:hover { background: rgba(255,255,255,0.02); }
 
 /* ===== Стрик дисциплины в мемберах ===== */
 .member-streak { font-size: 0.8rem; font-weight: 700; color: var(--gold-light); white-space: nowrap; }
+
+/* ===== Глобальный поиск ===== */
+.sidebar-search-btn {
+  display: flex; align-items: center; gap: 0.5rem; width: 100%; margin: 0 0 0.5rem;
+  padding: 0.5rem 0.75rem; border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+  color: var(--text-muted); cursor: pointer; font-family: inherit; font-size: 0.82rem; transition: all var(--transition);
+}
+.sidebar-search-btn:hover { border-color: var(--border-hover); color: var(--text-secondary); }
+.sidebar-search-btn span { flex: 1; text-align: left; }
+.sidebar-search-btn kbd { font-size: 0.62rem; background: rgba(255,255,255,0.06); border: 1px solid var(--border); border-radius: 4px; padding: 1px 5px; color: var(--text-muted); }
+.search-overlay { align-items: flex-start; padding-top: 12vh; }
+.search-card { width: 100%; max-width: 520px; background: var(--bg-surface); border: 1px solid var(--border-hover); border-radius: var(--radius-lg); box-shadow: var(--shadow-elevated); overflow: hidden; }
+.search-input { display: flex; align-items: center; gap: 0.6rem; padding: 0.85rem 1rem; border-bottom: 1px solid var(--border); }
+.search-input svg { color: var(--text-muted); flex-shrink: 0; }
+.search-input input { flex: 1; background: none; border: none; outline: none; color: var(--text-primary); font-family: inherit; font-size: 0.95rem; }
+.search-results { max-height: 56vh; overflow-y: auto; padding: 0.4rem; }
+.search-group { margin-bottom: 0.4rem; }
+.search-group-h { font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 700; padding: 0.4rem 0.6rem 0.2rem; }
+.search-item { display: flex; align-items: center; gap: 0.5rem; width: 100%; padding: 0.5rem 0.6rem; border-radius: var(--radius-sm); background: none; border: none; cursor: pointer; color: var(--text-primary); font-family: inherit; font-size: 0.86rem; text-align: left; }
+.search-item:hover { background: var(--primary-glow); }
+.search-item svg { color: var(--text-muted); flex-shrink: 0; }
+.search-meta { margin-left: auto; font-size: 0.72rem; color: var(--text-muted); }
+.search-empty { padding: 1.5rem; text-align: center; color: var(--text-muted); font-size: 0.88rem; }
+.search-hint { padding: 0.5rem 1rem; border-top: 1px solid var(--border); font-size: 0.7rem; color: var(--text-muted); }
+
+/* ===== Drag-n-drop ростера ===== */
+.roster-card { transition: box-shadow var(--transition), transform var(--transition), opacity var(--transition), border-color var(--transition); }
+.roster-card[draggable="true"] { cursor: grab; }
+.roster-card--drag { opacity: 0.4 !important; }
+.roster-card--over { border-color: var(--primary-light); box-shadow: 0 0 0 2px var(--primary-border); transform: translateY(-2px); }
+.roster-drag-hint { font-size: 0.76rem; color: var(--text-muted); margin: -0.5rem 0 1rem; display: flex; align-items: center; gap: 0.35rem; }
+
+/* ===== Полировка: скроллбары, фокус, консистентность ===== */
+* { scrollbar-width: thin; scrollbar-color: var(--border-hover) transparent; }
+*::-webkit-scrollbar { width: 8px; height: 8px; }
+*::-webkit-scrollbar-thumb { background: var(--border-hover); border-radius: 6px; }
+*::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+*::-webkit-scrollbar-track { background: transparent; }
+.input-field:focus, input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary-border); box-shadow: 0 0 0 2px var(--primary-glow); }
+.btn { transition: all var(--transition); }
+.btn:active { transform: translateY(1px); }
+.glass-panel, .stat-card, .rm-phase, .link-card, .cq-req { transition: border-color var(--transition), background var(--transition), box-shadow var(--transition); }
+
+/* ===== Светлая тема: поверхности и инпуты ===== */
+[data-theme="light"] .input-field { background: #ffffff; }
+[data-theme="light"] tbody tr:hover { background: rgba(0,0,0,0.03); }
+[data-theme="light"] .rc-item:hover,
+[data-theme="light"] .search-item:hover,
+[data-theme="light"] .settings-option--active { background: rgba(220,38,38,0.07); }
+[data-theme="light"] .settings-option,
+[data-theme="light"] .rc-item,
+[data-theme="light"] .rc-quest,
+[data-theme="light"] .sched-event,
+[data-theme="light"] .rb-h,
+[data-theme="light"] .sidebar-search-btn,
+[data-theme="light"] .rm-chip,
+[data-theme="light"] .stat-online-chip { background: rgba(0,0,0,0.03); }
+[data-theme="light"] .sidebar-search-btn kbd,
+[data-theme="light"] .rm-tag--prime { background: rgba(0,0,0,0.05); }
+[data-theme="light"] .login-screen,
+[data-theme="light"] .access-denied { background: var(--bg-base); }

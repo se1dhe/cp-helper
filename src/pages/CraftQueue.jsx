@@ -8,7 +8,7 @@ import { subscribeToCraftRequests, addCraftRequest, setRequestStatus, deleteCraf
 
 const fmt = (n) => new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 1 }).format(n);
 const gradeClass = (g) => `grade-badge grade-${(g || 'NG').toLowerCase()}`;
-const Ic = ({ id, size = 18 }) => { const s = itemIcon(id); return s ? <img className="item-icon" src={s} alt="" width={size} height={size} loading="lazy" onError={e => { e.target.style.visibility = 'hidden'; }} /> : <span className="item-icon item-icon--none" style={{ width: size, height: size }} />; };
+const Ic = ({ id, size = 18 }) => { const s = itemIcon(id); return s ? <img className="item-icon" src={s} alt="" title={itemName(id)} width={size} height={size} loading="lazy" onError={e => { e.target.style.visibility = 'hidden'; }} /> : <span className="item-icon item-icon--none" style={{ width: size, height: size }} />; };
 
 export const CraftQueue = () => {
   const { currentUser, userNickname, isOfficer } = useAuth();

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Shield, Edit2, Check, X, Plus, Trash2, Users } from 'lucide-react';
 import { doc, runTransaction } from 'firebase/firestore';
 import { db } from '../firebase';
-import { subscribeToRoster, addRosterSlot, deleteRosterSlot } from '../services/rosterService';
+import { subscribeToRoster, addRosterSlot, deleteRosterSlot, reorderRoster } from '../services/rosterService';
 import { subscribeToUsers, updateUserClass, clearUserClass } from '../services/adminService';
 import { subscribeToPresence, isUserOnline } from '../services/presenceService';
 import { useAuth } from '../context/AuthContext';
@@ -21,6 +21,18 @@ export const Roster = () => {
   const [editForm, setEditForm] = useState({});
   const [saving, setSaving] = useState(false);
   const [presence, setPresence] = useState({});
+  const [dragId, setDragId] = useState(null);
+  const [overId, setOverId] = useState(null);
+
+  const handleDrop = (targetId) => {
+    if (!dragId || dragId === targetId) { setDragId(null); setOverId(null); return; }
+    const ordered = [...roster].sort((a, b) => (a.position || 0) - (b.position || 0)).map(s => s.id);
+    const from = ordered.indexOf(dragId), to = ordered.indexOf(targetId);
+    if (from < 0 || to < 0) return;
+    ordered.splice(to, 0, ordered.splice(from, 1)[0]);
+    reorderRoster(ordered).catch(() => alert(t('roster.error')));
+    setDragId(null); setOverId(null);
+  };
 
   useEffect(() => {
     const unsubRoster = subscribeToRoster(setRoster);
@@ -138,8 +150,14 @@ export const Roster = () => {
     return (
       <div
         key={m.id}
-        className={`roster-card roster-card--${cls.type}${isExtra ? ' roster-card--extra' : ''}`}
+        className={`roster-card roster-card--${cls.type}${isExtra ? ' roster-card--extra' : ''}${overId === m.id ? ' roster-card--over' : ''}${dragId === m.id ? ' roster-card--drag' : ''}`}
         style={{ opacity: isEmpty ? 0.75 : 1 }}
+        draggable={isPL && !isEditing}
+        onDragStart={() => setDragId(m.id)}
+        onDragOver={(e) => { if (isPL) { e.preventDefault(); if (overId !== m.id) setOverId(m.id); } }}
+        onDragLeave={() => { if (overId === m.id) setOverId(null); }}
+        onDrop={() => handleDrop(m.id)}
+        onDragEnd={() => { setDragId(null); setOverId(null); }}
       >
         {isExtra && <div className="roster-card-extra-badge">10-я</div>}
 
@@ -272,6 +290,7 @@ export const Roster = () => {
         )}
       </div>
 
+      {isPL && <p className="roster-drag-hint"><Users size={12} /> {t('roster.dragHint')}</p>}
       <h3 className="section-header"><Users size={15} /> {t('roster.mainSquad')}</h3>
       <div className="members-grid mb-4">
         {mainSlots.map(m => renderSlot(m, false))}

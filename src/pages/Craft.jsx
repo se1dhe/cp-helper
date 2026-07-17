@@ -17,7 +17,7 @@ const gradeClass = (g) => `grade-badge grade-${(g || 'NG').toLowerCase()}`;
 const Icon = ({ id, size = 20 }) => {
   const src = itemIcon(id);
   if (!src) return <span className="item-icon item-icon--none" style={{ width: size, height: size }} />;
-  return <img className="item-icon" src={src} alt="" width={size} height={size} loading="lazy" onError={e => { e.target.style.visibility = 'hidden'; }} />;
+  return <img className="item-icon" src={src} alt="" title={itemName(id)} width={size} height={size} loading="lazy" onError={e => { e.target.style.visibility = 'hidden'; }} />;
 };
 
 // Инпут цены: у офицеров редактируемый (коммит по blur), у мемберов только чтение.

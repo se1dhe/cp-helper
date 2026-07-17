@@ -49,7 +49,7 @@ export const ClassIcon = ({ className, type, size = 48 }) => {
 
   if (iconId && !useSvg) {
     return (
-      <div style={{
+      <div title={className} style={{
         width: size,
         height: size,
         borderRadius: '12px',
@@ -69,7 +69,7 @@ export const ClassIcon = ({ className, type, size = 48 }) => {
   }
 
   return (
-    <div style={{
+    <div title={className} style={{
       width: size,
       height: size,
       borderRadius: '12px',

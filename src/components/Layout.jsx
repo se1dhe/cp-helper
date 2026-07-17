@@ -5,11 +5,12 @@ import { useLang } from '../context/LanguageContext';
 import { signInWithEmail, registerWithEmail, logOut } from '../firebase';
 import { subscribeToRoster } from '../services/rosterService';
 import { isRegistrationAllowed } from '../services/registrationService';
-import { LayoutDashboard, Users, Wallet, LogIn, LogOut, ShieldAlert, UserPlus, Languages, UserCheck, Newspaper, Map as MapIcon, CalendarClock, Pencil, Settings, Hammer, Link2, Skull, User } from 'lucide-react';
+import { LayoutDashboard, Users, Wallet, LogIn, LogOut, ShieldAlert, UserPlus, Languages, UserCheck, Newspaper, Map as MapIcon, CalendarClock, Pencil, Settings, Hammer, Link2, Skull, User, Search } from 'lucide-react';
 import { L2_CLASSES } from '../utils/classes';
 import { ClassIcon } from './ClassIcon';
 import { ProfileModal } from './ProfileModal';
 import { SettingsModal } from './SettingsModal';
+import { SearchPalette } from './SearchPalette';
 
 const getRoleBadgeClass = (role) => {
   switch (role) {
@@ -33,7 +34,16 @@ export const Layout = () => {
   const [loading, setLoading] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const [roster, setRoster] = useState([]);
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) { e.preventDefault(); setSearchOpen(true); }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
 
   const navItems = [
     { to: '/', icon: LayoutDashboard, label: t('nav.dashboard'), end: true },
@@ -188,6 +198,10 @@ export const Layout = () => {
           </div>
         </div>
 
+        <button className="sidebar-search-btn" onClick={() => setSearchOpen(true)}>
+          <Search size={15} /> <span>{t('search.open')}</span> <kbd>Ctrl K</kbd>
+        </button>
+
         <nav className="sidebar-nav">
           {navItems.map(({ to, icon: Icon, label, end }) => (
             <NavLink
@@ -282,6 +296,7 @@ export const Layout = () => {
 
       <ProfileModal open={profileOpen} onClose={() => setProfileOpen(false)} />
       <SettingsModal open={settingsOpen} onClose={() => setSettingsOpen(false)} />
+      <SearchPalette open={searchOpen} onClose={() => setSearchOpen(false)} />
 
 
       <main className="main-content">

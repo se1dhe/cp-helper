@@ -100,6 +100,7 @@ export const RU = {
   'roster.addError': 'Ошибка при добавлении слота',
   'roster.deleteError': 'Ошибка при удалении слота',
   'roster.alreadyAssigned': 'Этот пользователь уже назначен на другой слот',
+  'roster.dragHint': 'Перетаскивай карточки, чтобы менять порядок слотов',
 
   // Treasury
   'treasury.title': 'Казна',
@@ -308,6 +309,16 @@ export const RU = {
   'audit.act.rb': 'БОСС',
   'audit.rbAdd': 'добавил',
   'audit.rbKill': 'отметил убитым',
+
+  // Глобальный поиск
+  'search.open': 'Поиск',
+  'search.placeholder': 'Страницы, мемберы, рецепты, боссы...',
+  'search.pages': 'Страницы',
+  'search.members': 'Мемберы',
+  'search.recipes': 'Рецепты',
+  'search.bosses': 'Боссы',
+  'search.nothing': 'Ничего не найдено',
+  'search.hint': 'Enter — перейти к первому, Esc — закрыть',
   'craft.search': 'Поиск по названию...',
   'craft.allGrades': 'Все грейды',
   'craft.allTypes': 'Все типы',
@@ -552,6 +563,7 @@ export const UA = {
   'roster.addError': 'Помилка при додаванні слоту',
   'roster.deleteError': 'Помилка при видаленні слоту',
   'roster.alreadyAssigned': 'Цей користувач вже призначений на інший слот',
+  'roster.dragHint': 'Перетягуй картки, щоб змінювати порядок слотів',
 
   'treasury.title': 'Скарбниця',
   'treasury.rate': 'Курс MC:',
@@ -757,6 +769,16 @@ export const UA = {
   'audit.act.rb': 'БОС',
   'audit.rbAdd': 'додав',
   'audit.rbKill': 'позначив убитим',
+
+  // Глобальний пошук
+  'search.open': 'Пошук',
+  'search.placeholder': 'Сторінки, мембери, рецепти, боси...',
+  'search.pages': 'Сторінки',
+  'search.members': 'Мембери',
+  'search.recipes': 'Рецепти',
+  'search.bosses': 'Боси',
+  'search.nothing': 'Нічого не знайдено',
+  'search.hint': 'Enter — перейти до першого, Esc — закрити',
   'craft.search': 'Пошук за назвою...',
   'craft.allGrades': 'Всі грейди',
   'craft.allTypes': 'Всі типи',
