@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Coins, Gem, Swords, Target, Circle, CheckCircle2, Plus, Trash2, ChevronDown, ChevronRight, MapPin, Medal, Pin, Users, User } from 'lucide-react';
 import { subscribeToRoster } from '../services/rosterService';
-import { subscribeToTasks, addTask, toggleTask, deleteTask } from '../services/taskService';
+import { subscribeToTasks, addTask, toggleTask, deleteTask, seedTasks } from '../services/taskService';
 import { subscribeToTransactions } from '../services/treasuryService';
 import { subscribeToQuestData } from '../services/questService';
 import { subscribeToQuestLog, toggleQuestCompletion } from '../services/questLogService';
-import { subscribeToNotes, addNote, deleteNote } from '../services/notesService';
+import { subscribeToNotes, addNote, deleteNote, seedNotes } from '../services/notesService';
 import { subscribeToPresence, isUserOnline } from '../services/presenceService';
 import { subscribeToServerInfo, subscribeToRoadmapProgress, toggleRoadmapProgress } from '../services/roadmapService';
 import { getCountdown } from '../utils/countdown';
@@ -19,6 +19,22 @@ import { ClassIcon } from '../components/ClassIcon';
 import { getUniversalQuests, getRaceQuestsForClass, getRaceLabel, getRaceForClass } from '../data/quests';
 
 const getClassDetails = (name) => L2_CLASSES.find(c => c.name === name) || { type: 'unknown', color: '#888' };
+
+const DEFAULT_NOTES = [
+  'Bulk turn-in: сдавай только 100+ (на 40+ цель 300/600). Мелкая сдача = потеря бонуса.',
+  'AoE-бёрст толпы Сорками — не воюем за тэг, кредитим всю пачку с каждого килла.',
+  'У каждого личный запас Blessed Scroll of Resurrection.',
+  'Мега-квесты (Dragon Fangs, Red-Eyed, цепочка Temple) бить в оффпрайм — меньше конкуренции.',
+  '1-я профа (20) и 2-я (40) — сдаём синхронно всей пачкой.',
+];
+const DEFAULT_TASKS = [
+  { text: 'Обновить свой уровень в профиле', tag: 'prime' },
+  { text: 'Сдать дневную норму адены в казну', tag: 'prime' },
+  { text: 'Отметить выполненные квесты (дашборд/роадмап)', tag: 'prime' },
+  { text: 'Прогнать донорский квест по текущей фазе (bulk 100+)', tag: 'prime' },
+  { text: 'Проверить таймеры боссов перед выходом', tag: 'offprime' },
+  { text: 'Держать заряды (соски) в запасе', tag: 'offprime' },
+];
 
 export const Dashboard = () => {
   const { currentUser, userNickname, isPL, isOfficer } = useAuth();
@@ -104,6 +120,13 @@ export const Dashboard = () => {
 
   const handleDeleteNote = async (id) => {
     try { await deleteNote(id); } catch { alert(t('notes.deleteError')); }
+  };
+
+  const handleSeedNotes = async () => {
+    try { await seedNotes(DEFAULT_NOTES, userNickname || currentUser?.email, currentUser?.uid); } catch { alert(t('notes.addError')); }
+  };
+  const handleSeedTasks = async () => {
+    try { await seedTasks(DEFAULT_TASKS); } catch { alert(t('alert.addTaskError')); }
   };
 
   const toggleQuest = (questId) => {
@@ -254,7 +277,8 @@ export const Dashboard = () => {
                 ))}
                 {notes.length === 0 && (
                   <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '1rem', fontSize: '0.85rem', gridColumn: '1 / -1' }}>
-                    {t('notes.empty')}
+                    <div style={{ marginBottom: isOfficer ? '0.75rem' : 0 }}>{t('notes.empty')}</div>
+                    {isOfficer && <button className="btn btn-sm" onClick={handleSeedNotes}><Plus size={14} /> {t('notes.loadDefaults')}</button>}
                   </div>
                 )}
               </div>
@@ -347,7 +371,8 @@ export const Dashboard = () => {
           ))}
           {visibleTasks.length === 0 && (
             <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '2rem', fontSize: '0.85rem' }}>
-              {t('dashboard.noTasks', { extra: (isPL || isOfficer) ? t('dashboard.noTasksExtra') : '' })}
+              <div style={{ marginBottom: (isPL || isOfficer) ? '0.75rem' : 0 }}>{t('dashboard.noTasks', { extra: (isPL || isOfficer) ? t('dashboard.noTasksExtra') : '' })}</div>
+              {(isPL || isOfficer) && <button className="btn btn-sm" onClick={handleSeedTasks}><Plus size={14} /> {t('dashboard.loadDefaultTasks')}</button>}
             </div>
           )}
         </div>

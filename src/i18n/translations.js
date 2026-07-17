@@ -51,6 +51,7 @@ export const RU = {
   'dashboard.offprime': 'Оффпрайм',
   'dashboard.noTasks': 'Нет активных задач{extra}.',
   'dashboard.noTasksExtra': '. Добавьте первую задачу выше',
+  'dashboard.loadDefaultTasks': 'Загрузить полезные задачи',
   'dashboard.vacant': 'Вакантно',
   'dashboard.occupied': 'Занято',
   'dashboard.notAssigned': 'Не назначен',
@@ -158,6 +159,7 @@ export const RU = {
   'notes.placeholder': 'Заметка для всей пати...',
   'notes.delete': 'Удалить заметку',
   'notes.empty': 'Пока нет заметок.',
+  'notes.loadDefaults': 'Загрузить полезные заметки',
   'notes.addError': 'Ошибка при добавлении заметки',
   'notes.deleteError': 'Ошибка при удалении заметки',
 
@@ -521,6 +523,7 @@ export const UA = {
   'dashboard.offprime': 'Офпрайм',
   'dashboard.noTasks': 'Немає активних завдань{extra}.',
   'dashboard.noTasksExtra': '. Додайте перше завдання вище',
+  'dashboard.loadDefaultTasks': 'Завантажити корисні завдання',
   'dashboard.vacant': 'Вакантно',
   'dashboard.occupied': 'Зайнято',
   'dashboard.notAssigned': 'Не призначено',
@@ -624,6 +627,7 @@ export const UA = {
   'notes.placeholder': 'Нотатка для всієї паті...',
   'notes.delete': 'Видалити нотатку',
   'notes.empty': 'Поки немає нотаток.',
+  'notes.loadDefaults': 'Завантажити корисні нотатки',
   'notes.addError': 'Помилка при додаванні нотатки',
   'notes.deleteError': 'Помилка при видаленні нотатки',
 

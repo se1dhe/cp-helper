@@ -1,4 +1,4 @@
-import { collection, doc, updateDoc, onSnapshot, query, orderBy, addDoc, deleteDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, doc, updateDoc, onSnapshot, query, orderBy, addDoc, deleteDoc, serverTimestamp, writeBatch } from 'firebase/firestore';
 import { db } from '../firebase';
 
 const COLLECTION = 'tasks';
@@ -31,4 +31,13 @@ export const toggleTask = async (taskId, currentStatus) => {
 export const deleteTask = async (taskId) => {
   const taskRef = doc(db, COLLECTION, taskId);
   await deleteDoc(taskRef);
+};
+
+export const seedTasks = async (list) => {
+  const batch = writeBatch(db);
+  list.forEach(({ text, tag }) => {
+    const ref = doc(collection(db, COLLECTION));
+    batch.set(ref, { text, tag: tag || 'prime', done: false, assignedTo: '', assignedToName: '', createdAt: serverTimestamp() });
+  });
+  await batch.commit();
 };

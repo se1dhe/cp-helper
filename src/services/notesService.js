@@ -1,4 +1,4 @@
-import { collection, doc, addDoc, updateDoc, deleteDoc, onSnapshot, query, orderBy, serverTimestamp } from 'firebase/firestore';
+import { collection, doc, addDoc, updateDoc, deleteDoc, onSnapshot, query, orderBy, serverTimestamp, writeBatch } from 'firebase/firestore';
 import { db } from '../firebase';
 
 // Заметки офицеров/ПЛ, отображаемые всем на дашборде.
@@ -22,3 +22,12 @@ export const addNote = (text, author, authorId) =>
 export const updateNote = (id, text) => updateDoc(doc(db, COLLECTION, id), { text });
 
 export const deleteNote = (id) => deleteDoc(doc(db, COLLECTION, id));
+
+export const seedNotes = async (texts, author, authorId) => {
+  const batch = writeBatch(db);
+  texts.forEach((text) => {
+    const ref = doc(collection(db, COLLECTION));
+    batch.set(ref, { text, author: author || '', authorId: authorId || '', createdAt: serverTimestamp() });
+  });
+  await batch.commit();
+};
