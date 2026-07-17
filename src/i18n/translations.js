@@ -251,6 +251,7 @@ export const RU = {
   'rb.notifySoonBody': 'Респ через {n} мин',
   'rb.notifyUp': 'RB {name} заспавнился!',
   'rb.byLevel': 'по уровню',
+  'presence.online': '{name} в онлайне',
 
   // Полезные ссылки
   'links.title': 'Полезные ссылки',
@@ -719,6 +720,7 @@ export const UA = {
   'rb.notifySoonBody': 'Респ через {n} хв',
   'rb.notifyUp': 'RB {name} заспавнився!',
   'rb.byLevel': 'по рівню',
+  'presence.online': '{name} у мережі',
 
   // Корисні посилання
   'links.title': 'Корисні посилання',

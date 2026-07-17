@@ -7,6 +7,8 @@ import { RefreshCw, Download, AlertTriangle } from 'lucide-react';
 import { useLang } from '../context/LanguageContext';
 import { subscribeToNews } from '../services/newsService';
 import { subscribeToRB } from '../services/rbService';
+import { subscribeToPresence, isUserOnline } from '../services/presenceService';
+import { useAuth } from '../context/AuthContext';
 import { getCloseAction } from '../utils/settings';
 
 const isTauri = typeof window !== 'undefined' && '__TAURI_INTERNALS__' in window;
@@ -15,10 +17,12 @@ const isTauri = typeof window !== 'undefined' && '__TAURI_INTERNALS__' in window
 // уведомления о новых новостях. Работает только внутри Tauri (в браузере — no-op).
 export const DesktopIntegration = () => {
   const { t } = useLang();
+  const { currentUser } = useAuth();
   const seenNewsRef = useRef(null);
   const updateRef = useRef(null);
   const rbListRef = useRef([]);
   const rbNotifiedRef = useRef(new Set());
+  const presencePrevRef = useRef(null);
   // status: 'idle' | 'available' | 'downloading' | 'installing' | 'error'
   const [upd, setUpd] = useState({ status: 'idle', version: '', progress: 0, indeterminate: false });
 
@@ -137,6 +141,23 @@ export const DesktopIntegration = () => {
     }, 30000);
     return () => { unsub(); clearInterval(timer); };
   }, [t]);
+
+  // Тихое уведомление: кто-то из пачки зашёл в онлайн (только когда окно не в фокусе).
+  useEffect(() => {
+    if (!isTauri) return;
+    const unsub = subscribeToPresence((map) => {
+      const online = new Set(Object.entries(map).filter(([, d]) => isUserOnline(d)).map(([uid]) => uid));
+      if (presencePrevRef.current === null) { presencePrevRef.current = online; return; }
+      for (const uid of online) {
+        if (!presencePrevRef.current.has(uid) && uid !== currentUser?.uid && !document.hasFocus()) {
+          const name = map[uid]?.nickname || '';
+          if (name) invoke('notify', { title: t('presence.online', { name }), body: '' }).catch(() => {});
+        }
+      }
+      presencePrevRef.current = online;
+    });
+    return () => unsub();
+  }, [t, currentUser]);
 
   if (!isTauri || upd.status === 'idle') return null;
 
