@@ -48,6 +48,11 @@ fn focus_main(app: &tauri::AppHandle) {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        // Single-instance: повторный запуск ярлыка разворачивает уже открытое окно,
+        // а не запускает вторую копию. Регистрируется ПЕРВЫМ плагином.
+        .plugin(tauri_plugin_single_instance::init(|app, _argv, _cwd| {
+            focus_main(app);
+        }))
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_notification::init())
         .plugin(tauri_plugin_updater::Builder::new().build())
