@@ -5,6 +5,7 @@ import { LanguageProvider } from './context/LanguageContext';
 import { Layout } from './components/Layout';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { DesktopIntegration } from './components/DesktopIntegration';
+import { Titlebar } from './components/Titlebar';
 import { Dashboard } from './pages/Dashboard';
 import { Treasury } from './pages/Treasury';
 import { Roster } from './pages/Roster';
@@ -24,24 +25,29 @@ function App() {
     <LanguageProvider>
       <AuthProvider>
         <DesktopIntegration />
-        <HashRouter>
-          <Routes>
-            <Route path="/" element={<Layout />}>
-              <Route index element={<Dashboard />} />
-              <Route path="roadmap" element={<Roadmap />} />
-              <Route path="schedule" element={<Schedule />} />
-              <Route path="raidbosses" element={<RaidBosses />} />
-              <Route path="me" element={<Profile />} />
-              <Route path="craft" element={<Craft />} />
-              <Route path="links" element={<Links />} />
-              <Route path="news" element={<News />} />
-              <Route path="treasury" element={<Treasury />} />
-              <Route path="roster" element={<Roster />} />
-              <Route path="admin" element={<Admin />} />
-              <Route path="members" element={<MemberProgress />} />
-            </Route>
-          </Routes>
-        </HashRouter>
+        <div className="app-shell">
+          <Titlebar />
+          <div className="app-body">
+            <HashRouter>
+              <Routes>
+                <Route path="/" element={<Layout />}>
+                  <Route index element={<Dashboard />} />
+                  <Route path="roadmap" element={<Roadmap />} />
+                  <Route path="schedule" element={<Schedule />} />
+                  <Route path="raidbosses" element={<RaidBosses />} />
+                  <Route path="me" element={<Profile />} />
+                  <Route path="craft" element={<Craft />} />
+                  <Route path="links" element={<Links />} />
+                  <Route path="news" element={<News />} />
+                  <Route path="treasury" element={<Treasury />} />
+                  <Route path="roster" element={<Roster />} />
+                  <Route path="admin" element={<Admin />} />
+                  <Route path="members" element={<MemberProgress />} />
+                </Route>
+              </Routes>
+            </HashRouter>
+          </div>
+        </div>
       </AuthProvider>
     </LanguageProvider>
     </ErrorBoundary>

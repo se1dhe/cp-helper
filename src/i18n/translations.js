@@ -252,6 +252,9 @@ export const RU = {
   'rb.notifyUp': 'RB {name} заспавнился!',
   'rb.byLevel': 'по уровню',
   'presence.online': '{name} в онлайне',
+  'win.minimize': 'Свернуть',
+  'win.maximize': 'Развернуть',
+  'win.close': 'Закрыть',
 
   // Полезные ссылки
   'links.title': 'Полезные ссылки',
@@ -721,6 +724,9 @@ export const UA = {
   'rb.notifyUp': 'RB {name} заспавнився!',
   'rb.byLevel': 'по рівню',
   'presence.online': '{name} у мережі',
+  'win.minimize': 'Згорнути',
+  'win.maximize': 'Розгорнути',
+  'win.close': 'Закрити',
 
   // Корисні посилання
   'links.title': 'Корисні посилання',
