@@ -4,6 +4,8 @@ import { useAuth } from '../context/AuthContext';
 import { useLang } from '../context/LanguageContext';
 import { subscribeToRB, addRB, updateRB, killNow, setNextAt, deleteRB, seedRB } from '../services/rbService';
 import { logAction } from '../services/auditService';
+import { subscribeToRoster } from '../services/rosterService';
+import { packLevel } from '../data/lu4Roadmap';
 
 // Стартовый набор RB (уровни 20-40) — офицер грузит одним кликом, дальше правит.
 const DEFAULT_RB = [
@@ -30,12 +32,17 @@ export const RaidBosses = () => {
   const [now, setNow] = useState(Date.now());
   const [form, setForm] = useState({ name: '', level: '', respawnH: '12', note: '' });
   const [showForm, setShowForm] = useState(false);
+  const [roster, setRoster] = useState([]);
 
   useEffect(() => {
     const unsub = subscribeToRB(setList);
+    const unsubR = subscribeToRoster(setRoster);
     const timer = setInterval(() => setNow(Date.now()), 1000);
-    return () => { unsub(); clearInterval(timer); };
+    return () => { unsub(); unsubR(); clearInterval(timer); };
   }, []);
+
+  const pLvl = packLevel(roster.filter(m => m.name && m.name !== '—' && m.userId && m.userId !== '__occupied__'));
+  const isCurrent = (rb) => rb.level && rb.level >= pLvl - 4 && rb.level <= pLvl + 3;
 
   const countdown = (rb) => {
     if (!rb.nextAt) return { label: '—', cls: 'rb-cd--none' };
@@ -91,10 +98,11 @@ export const RaidBosses = () => {
               <tbody>
                 {list.map(rb => {
                   const cd = countdown(rb);
+                  const cur = isCurrent(rb);
                   return (
-                    <tr key={rb.id}>
+                    <tr key={rb.id} className={cur ? 'rb-row--current' : ''}>
                       <td>
-                        <span className="rb-name"><Swords size={13} /> {rb.name} {rb.level ? <span className="rb-lvl">Ур. {rb.level}</span> : null}</span>
+                        <span className="rb-name"><Swords size={13} /> {rb.name} {rb.level ? <span className="rb-lvl">Ур. {rb.level}</span> : null} {cur && <span className="rb-current-badge">{t('rb.byLevel')}</span>}</span>
                         {rb.note && <span className="rb-note">{rb.note}</span>}
                       </td>
                       <td><span className={`rb-cd ${cd.cls}`}>{cd.label}</span></td>

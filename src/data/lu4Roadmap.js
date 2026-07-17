@@ -275,6 +275,85 @@ export const getActivePhaseId = (level, started = true) => {
   return 'p6';
 };
 
+// Линейный пошаговый старт-чеклист (1 → 19). Строго по порядку, отмечают офицеры.
+export const LU4_START_STEPS = [
+  { id: 'start-1', text: 'Все создают чаров и занимают слоты: Люди → Talking Island, Эльфы → Elven, Т.Эльфы → Dark Elven, Орк → Orc' },
+  { id: 'start-2', text: 'Каждый гонит свой расовый старт-маршрут (см. ниже) до 5-6 lvl' },
+  { id: 'start-3', text: 'Люди на 3 lvl: Find Sir Windawood → зелья скорости' },
+  { id: 'start-4', text: 'Каждый закрывает оружейный квест (маги — Wand of Adept / Red Sunset Staff)' },
+  { id: 'start-5', text: 'Каждый прогоняет 1-й раз зарядный квест (единоразовый пакет сосок)' },
+  { id: 'start-6', text: 'Overlord начинает марш к Глудио строго на 12-15 lvl' },
+  { id: 'start-7', text: 'Вся пачка собирается в Gludin к 12-15 lvl' },
+  { id: 'start-8', text: 'Стэк-фарм лагерей Lizardmen/Orcs: у ВСЕХ The Guard is Busy + Orc Subjugation' },
+  { id: 'start-9', text: 'На 15: Cure for Fever (Bone Shield) + Offspring of Nightmares (15k аден)' },
+  { id: 'start-10', text: 'На 16: Will the Seal be Broken? — сохранить D-Enchant Scrolls; тянуть к 19 под Dragon Fangs' },
+];
+
+const L2 = 'https://l2hub.info';
+// Расовые старт-маршруты 1-15 (порядок квестов + ссылки l2hub).
+export const LU4_RACE_ROUTES = [
+  { race: 'Люди', where: 'Talking Island', steps: [
+    { q: 'Letters of Love', lvl: '2-5', note: 'неку', url: `${L2}/c1-ru/quests/1-letters-of-love` },
+    { q: 'Deliver Goods', lvl: '2-7', note: '2 кольца', url: `${L2}/quests/153-deliver-goods` },
+    { q: 'Sacrifice to the Sea', lvl: '2-7', note: 'серьга', url: `${L2}/c4-ru/quests/154-sacrifice-to-the-sea` },
+    { q: 'Find Sir Windawood', lvl: '3', note: 'зелья скорости', url: `${L2}/c1-ru/quests/155-find-sir-windawood` },
+    { q: 'Recover Smuggled Goods', lvl: '5', note: 'щит + 5k EXP', url: `${L2}/c1/quests/157-recover-smuggled-goods` },
+    { q: 'The Guard is Busy 🔁', lvl: '6', note: 'соски', url: `${L2}/quests/257-the-guard-is-busy` },
+    { q: 'Sword of Solidarity', lvl: '9', note: 'NG оружие + соски', url: `${L2}/c4-ru/quests/101-sword-of-solidarity` },
+    { q: 'Spirit of Mirrors', lvl: '10', note: 'Wand of Adept (маги)', url: `${L2}/c1-ru/quests/104-spirit-of-mirrors` },
+    { q: 'Shards of Golem', lvl: '10', note: '8k аден', url: `${L2}/quests/152-shards-of-golem` },
+    { q: 'Millennium Love', lvl: '15', note: 'опыт', url: `${L2}/c2-ru/quests/156-millennium-love` },
+  ] },
+  { race: 'Эльфы', where: 'Elven Village', steps: [
+    { q: 'What Women Want', lvl: '2-5', note: 'серьга / адена', url: `${L2}/c4/quests/2-what-women-want` },
+    { q: 'Fruit of the Mother Tree', lvl: '3-7', note: 'зелья / адена' },
+    { q: 'Pleas of Pixies 🔁', lvl: '3', note: 'адена', url: `${L2}/c1/quests/266-pleas-of-pixies` },
+    { q: 'Hunt the Orcs 🔁', lvl: '6', note: 'соски', url: `${L2}/c1/quests/260-hunt-the-orcs` },
+    { q: 'Collect Spores 🔁', lvl: '8', note: 'адена', url: `${L2}/c4/quests/313-collect-spores` },
+    { q: 'Skirmish with the Orcs', lvl: '10', note: 'Red Sunset Staff', url: `${L2}/c3/quests/105-skirmish-with-the-orcs` },
+    { q: 'Legacy of the Poet 🔁', lvl: '11', note: 'заряды', url: `${L2}/c3-ru/quests/163-legacy-of-the-poet` },
+    { q: 'Dwarven Kinship', lvl: '15', note: '10k EXP', url: `${L2}/c2-ru/quests/167-dwarven-kinship` },
+  ] },
+  { race: 'Тёмные эльфы', where: 'Dark Elven Village', steps: [
+    { q: 'Mass of Darkness', lvl: '2-5', note: 'адена' },
+    { q: 'Deliver Supplies', lvl: '3-6', note: 'адена' },
+    { q: 'Bonds of Slavery 🔁', lvl: '6', note: 'заряды (1 раз)', url: `${L2}/c4-ru/quests/265-chains-of-slavery` },
+    { q: 'Orc Subjugation 🔁', lvl: '8', note: 'адена', url: `${L2}/c4/quests/263-orc-subjugation` },
+    { q: 'Forgotten Truth', lvl: '10', note: 'NG оружие' },
+    { q: 'Spirit of Craftsman', lvl: '10', note: 'оружие', url: `${L2}/quests/103-spirit-of-craftsman` },
+    { q: 'Bones Tell the Future 🔁', lvl: '10', note: 'адена', url: `${L2}/c1-ru/quests/320-bones-tell-the-future` },
+    { q: 'Scent of Death 🔁', lvl: '11', note: 'адена', url: `${L2}/c4/quests/319-scent-of-death` },
+    { q: 'Sweetest Venom 🔁', lvl: '18', note: 'адена', url: `${L2}/c4-ru/quests/324-sweetest-venom` },
+  ] },
+  { race: 'Орки (Overlord)', where: 'Orc Village', steps: [
+    { q: 'Long live the Pa\'agrio Lord!', lvl: '2-5', note: 'NG оружие (Club)', url: `${L2}/quests/4-long-live-the-paagrio-lord` },
+    { q: 'Invaders of the Holy Land 🔁', lvl: '6', note: 'заряды + адена', url: `${L2}/c2/quests/273-invaders-of-the-holy-land` },
+    { q: 'Wrath of Ancestors 🔁', lvl: '5', note: 'адена (50+ бонус)', url: `${L2}/il-ru/quests/272-wrath-of-ancestors` },
+    { q: 'Merciless Punishment', lvl: '10', note: 'оружие + соски', url: `${L2}/c4/quests/107-merciless-punishment` },
+    { q: 'Dark Winged Spies 🔁', lvl: '11', note: 'адена', url: `${L2}/c4/quests/275-dark-winged-spies` },
+    { q: 'Totem of the Hestui 🔁', lvl: '15', note: 'адена', url: `${L2}/c2/quests/276-totem-of-the-hestui` },
+    { q: 'Марш к Глудио', lvl: '12-15', note: 'сбор с пачкой' },
+  ] },
+  { race: 'Гномы (10-е)', where: 'Dwarven Village', steps: [
+    { q: 'Miner\'s Favor', lvl: '2-5', note: 'адена', url: `${L2}/c1-ru/quests/5-miners-favor` },
+    { q: 'Brigands Sweep 🔁', lvl: '5', note: 'адена', url: `${L2}/c1-ru/quests/292-brigands-sweep` },
+    { q: 'The Hidden Veins 🔁', lvl: '6', note: 'заряды', url: `${L2}/c1/quests/293-the-hidden-veins` },
+    { q: 'Jumble, Tumble, Diamond Fuss', lvl: '10', note: 'оружие + соски', url: `${L2}/c4/quests/108-jumble-tumble-diamond-fuss` },
+    { q: 'Covert Business 🔁', lvl: '10', note: 'адена + кольцо', url: `${L2}/c2-ru/quests/294-covert-business` },
+    { q: 'Dreaming of the Skies 🔁', lvl: '11', note: 'адена + кольцо', url: `${L2}/c2-ru/quests/295-dreaming-of-the-skies` },
+  ] },
+];
+
+// Микро-таргеты по уровням внутри фаз: «на этом уровне сделай ровно это».
+export const PHASE_LEVEL_STEPS = {
+  p1: [{ lvl: '2-5', a: 'Расовые старт-квесты (бижа/оружие)' }, { lvl: '5-6', a: 'Выйти из деревни' }],
+  p2: [{ lvl: '6', a: 'Зарядные квесты (1 раз)' }, { lvl: '9-10', a: 'Оружейный квест: маги — Wand of Adept / Red Sunset Staff' }, { lvl: '12-15', a: 'Марш Overlord + сбор в Gludin' }],
+  p3: [{ lvl: '15', a: 'Cure for Fever (Bone Shield) + Offspring (15k)' }, { lvl: '16', a: 'Will the Seal — сохранить D-скроллы' }, { lvl: '19', a: 'Готовься к Dragon Fangs' }],
+  p4: [{ lvl: '19', a: 'Dragon Fangs (350k EXP)' }, { lvl: '20', a: '1-я профа + обмен NG→D + Red-Eyed Invaders' }, { lvl: '21', a: 'Blood Fiend / Dangerous Seduction / Seed of Evil' }, { lvl: '26', a: 'Закрыть фазу' }],
+  p5: [{ lvl: '27', a: 'Acts of Evil (200k)' }, { lvl: '30', a: 'Донор: Fairy Breath / Aiding Floran' }, { lvl: '32', a: 'Arrow of Vengeance' }, { lvl: '35', a: 'Готовься к цепочке Temple' }],
+  p6: [{ lvl: '35', a: 'Temple: Missionary → Champion 2 (Дион)' }, { lvl: '37-38', a: 'Shadow Fox 1-3 → Fallen Angel (Хейн)' }, { lvl: '40', a: '2-я профа синхронно' }],
+};
+
 // Плоский список всех id задач и подзадач (для расчёта прогресса).
 export const allTaskIds = () => {
   const ids = [];

@@ -13,9 +13,10 @@ import {
 import { subscribeToRoster } from '../services/rosterService';
 import { addTask } from '../services/taskService';
 import { getCountdown } from '../utils/countdown';
-import { LU4_PHASES, LU4_MECHANICS, LU4_CHARACTERS, LU4_TENTH, LU4_CRAFT, allTaskIds, packLevel, getActivePhaseId } from '../data/lu4Roadmap';
-import { Hammer, Package } from 'lucide-react';
+import { LU4_PHASES, LU4_MECHANICS, LU4_CHARACTERS, LU4_TENTH, LU4_CRAFT, LU4_START_STEPS, LU4_RACE_ROUTES, PHASE_LEVEL_STEPS, allTaskIds, packLevel, getActivePhaseId } from '../data/lu4Roadmap';
+import { Hammer, Package, ListChecks, Flag, Download, ExternalLink } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { openExternal } from '../utils/openExternal';
 
 const EXPANDED_KEY = 'roadmapExpanded';
 
@@ -52,6 +53,24 @@ export const Roadmap = () => {
   const handleToggle = async (id) => {
     if (!isOfficer) return;
     try { await toggleRoadmapProgress(id, !progress[id]); } catch { alert(t('roadmap.saveError')); }
+  };
+
+  const exportRoadmap = async () => {
+    const lines = ['# Роадмап КП «0utLaw» — Lu4', ''];
+    lines.push('## Пошаговый старт');
+    LU4_START_STEPS.forEach((s, i) => lines.push(`${i + 1}. [${progress[s.id] ? 'x' : ' '}] ${s.text}`));
+    lines.push('');
+    LU4_PHASES.forEach(ph => {
+      const st = phaseStats(ph);
+      lines.push(`## ${ph.title} (${ph.levels}) — ${st.done}/${st.total}`);
+      ph.tasks.forEach(tk => {
+        lines.push(`- [${progress[tk.id] ? 'x' : ' '}] ${tk.text}`);
+        (tk.sub || []).forEach(s => lines.push(`  - [${progress[s.id] ? 'x' : ' '}] ${s.text}`));
+      });
+      lines.push('');
+    });
+    try { await navigator.clipboard.writeText(lines.join('\n')); alert(t('roadmap.exported')); }
+    catch { alert(t('roadmap.exportFail')); }
   };
 
   const cd = getCountdown(launchDate);
@@ -116,6 +135,7 @@ export const Roadmap = () => {
                 style={{ padding: '0.25rem 0.4rem', fontSize: '0.8rem', width: 'auto' }} />
             </label>
           )}
+          <button className="btn btn-sm" onClick={exportRoadmap} title={t('roadmap.export')}><Download size={14} /> {t('roadmap.export')}</button>
         </div>
       </div>
 
@@ -149,6 +169,59 @@ export const Roadmap = () => {
               <h4 className="rm-section-h"><Lightbulb size={13} /> {t('roadmap.mechanics')}</h4>
               {renderList(LU4_MECHANICS, 'rm-ul')}
             </div>
+          </div>
+        )}
+      </div>
+
+      {/* Пошаговый старт */}
+      <div className="rm-phase">
+        <button className="rm-phase-head" onClick={() => toggleExpand('start')}>
+          <ListChecks size={16} className="rm-phase-icon" />
+          <span className="rm-phase-title">{t('roadmap.startSteps')}</span>
+          <span style={{ marginLeft: 'auto' }} />
+          {expanded.has('start') ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+        </button>
+        {expanded.has('start') && (
+          <div className="rm-phase-body">
+            <ol className="rm-start">
+              {LU4_START_STEPS.map(s => (
+                <li key={s.id} className="rm-start-item">
+                  <button className="rm-check" onClick={() => handleToggle(s.id)} disabled={!isOfficer}>
+                    {progress[s.id] ? <CheckCircle2 size={16} color="var(--success)" /> : <Circle size={16} color="var(--text-muted)" />}
+                  </button>
+                  <span className={progress[s.id] ? 'rm-done' : ''}>{s.text}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        )}
+      </div>
+
+      {/* Расовые маршруты 1-15 */}
+      <div className="rm-phase">
+        <button className="rm-phase-head" onClick={() => toggleExpand('races')}>
+          <Flag size={16} className="rm-phase-icon" />
+          <span className="rm-phase-title">{t('roadmap.raceRoutes')}</span>
+          <span style={{ marginLeft: 'auto' }} />
+          {expanded.has('races') ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+        </button>
+        {expanded.has('races') && (
+          <div className="rm-phase-body">
+            {LU4_RACE_ROUTES.map(r => (
+              <div key={r.race} className="rm-race">
+                <h4 className="rm-race-h">{r.race} <span className="rm-race-where">· {r.where}</span></h4>
+                <ol className="rm-race-steps">
+                  {r.steps.map((s, i) => (
+                    <li key={i} className="rm-race-step">
+                      <span className="rm-race-q">{s.q}</span>
+                      <span className="rm-race-lvl">{s.lvl}</span>
+                      {s.note && <span className="rm-race-note">{s.note}</span>}
+                      {s.url && <button className="rc-wiki" onClick={() => openExternal(s.url)} title="l2hub"><ExternalLink size={11} /></button>}
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            ))}
           </div>
         )}
       </div>
@@ -213,6 +286,14 @@ export const Roadmap = () => {
             {isOpen && (
               <div className="rm-phase-body">
                 <div className="rm-goal"><Target size={14} /> {phase.goal}</div>
+
+                {PHASE_LEVEL_STEPS[phase.id] && (
+                  <div className="rm-levelsteps">
+                    {PHASE_LEVEL_STEPS[phase.id].map((ls, i) => (
+                      <div key={i} className="rm-levelstep"><span className="rm-ls-lvl">{ls.lvl}</span><span>{ls.a}</span></div>
+                    ))}
+                  </div>
+                )}
 
                 {(phase.prime.length > 0 || phase.offprime.length > 0) && (
                   <div className="rm-primeoff">

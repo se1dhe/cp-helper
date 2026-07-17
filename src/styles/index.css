@@ -2182,3 +2182,28 @@ tbody tr:hover { background: rgba(255,255,255,0.02); }
 [data-theme="light"] .rm-tag--prime { background: rgba(0,0,0,0.05); }
 [data-theme="light"] .login-screen,
 [data-theme="light"] .access-denied { background: var(--bg-base); }
+
+/* ===== Пошаговый старт ===== */
+.rm-start { margin: 0; padding-left: 1.6rem; display: flex; flex-direction: column; gap: 0.4rem; }
+.rm-start-item { padding-left: 0.3rem; }
+.rm-start-item > span { display: inline-flex; align-items: center; gap: 0.4rem; }
+.rm-start-item .rm-check { vertical-align: middle; margin-right: 0.3rem; }
+
+/* ===== Микро-таргеты по уровням ===== */
+.rm-levelsteps { display: flex; flex-direction: column; gap: 0.3rem; border-left: 2px solid var(--info); padding-left: 0.7rem; }
+.rm-levelstep { display: flex; align-items: baseline; gap: 0.5rem; font-size: 0.84rem; color: var(--text-secondary); }
+.rm-ls-lvl { flex-shrink: 0; min-width: 46px; font-weight: 800; font-size: 0.74rem; color: var(--info); background: var(--info-glow); border-radius: 5px; padding: 1px 6px; text-align: center; }
+
+/* ===== Расовые маршруты ===== */
+.rm-race { margin-bottom: 0.9rem; }
+.rm-race-h { margin: 0 0 0.4rem; font-size: 0.92rem; color: var(--text-primary); }
+.rm-race-where { font-size: 0.74rem; color: var(--text-muted); font-weight: 400; }
+.rm-race-steps { margin: 0; padding-left: 1.4rem; display: flex; flex-direction: column; gap: 0.3rem; }
+.rm-race-step { font-size: 0.84rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+.rm-race-q { color: var(--text-primary); font-weight: 600; }
+.rm-race-lvl { font-size: 0.68rem; font-weight: 700; color: var(--gold-light); background: var(--gold-glow); border-radius: 5px; padding: 1px 6px; }
+.rm-race-note { font-size: 0.76rem; color: var(--text-muted); }
+
+/* ===== RB актуальные по уровню ===== */
+.rb-row--current { background: var(--primary-glow); }
+.rb-current-badge { font-size: 0.6rem; font-weight: 800; text-transform: uppercase; color: var(--primary-light); background: var(--primary-glow); border: 1px solid var(--primary-border); border-radius: 5px; padding: 1px 5px; }

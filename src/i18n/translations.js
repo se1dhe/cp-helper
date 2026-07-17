@@ -211,6 +211,11 @@ export const RU = {
   'roadmap.assignError': 'Ошибка при выдаче задачи',
   'roadmap.cancel': 'Отмена',
   'roadmap.current': 'текущая',
+  'roadmap.startSteps': 'Пошаговый старт (1→19)',
+  'roadmap.raceRoutes': 'Расовые маршруты 1-15',
+  'roadmap.export': 'Экспорт',
+  'roadmap.exported': 'Роадмап с прогрессом скопирован в буфер обмена',
+  'roadmap.exportFail': 'Не удалось скопировать',
   'dashboard.nowPhase': 'Сейчас по роадмапу',
   'dashboard.fullRoadmap': 'весь роадмап',
   'dashboard.phaseDone': 'Фаза выполнена — разворачивай следующую в Роадмапе.',
@@ -243,6 +248,7 @@ export const RU = {
   'rb.notifySoon': 'RB {name} скоро!',
   'rb.notifySoonBody': 'Респ через {n} мин',
   'rb.notifyUp': 'RB {name} заспавнился!',
+  'rb.byLevel': 'по уровню',
 
   // Полезные ссылки
   'links.title': 'Полезные ссылки',
@@ -671,6 +677,11 @@ export const UA = {
   'roadmap.assignError': 'Помилка при видачі завдання',
   'roadmap.cancel': 'Скасувати',
   'roadmap.current': 'поточна',
+  'roadmap.startSteps': 'Покроковий старт (1→19)',
+  'roadmap.raceRoutes': 'Расові маршрути 1-15',
+  'roadmap.export': 'Експорт',
+  'roadmap.exported': 'Роадмап з прогресом скопійовано в буфер обміну',
+  'roadmap.exportFail': 'Не вдалося скопіювати',
   'dashboard.nowPhase': 'Зараз по роадмапу',
   'dashboard.fullRoadmap': 'весь роадмап',
   'dashboard.phaseDone': 'Фаза виконана — розгортай наступну в Роадмапі.',
@@ -703,6 +714,7 @@ export const UA = {
   'rb.notifySoon': 'RB {name} скоро!',
   'rb.notifySoonBody': 'Респ через {n} хв',
   'rb.notifyUp': 'RB {name} заспавнився!',
+  'rb.byLevel': 'по рівню',
 
   // Корисні посилання
   'links.title': 'Корисні посилання',
