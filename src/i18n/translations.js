@@ -280,6 +280,12 @@ export const RU = {
   'craft.type.Armor': 'Броня',
   'craft.type.Accessory': 'Бижутерия',
   'craft.type.Other': 'Прочее',
+  'craft.buyIt': 'купить',
+  'craft.craftIt': 'крафтить',
+  'craft.doBuy': 'Считать покупным (не разворачивать)',
+  'craft.doCraft': 'Разворачивать в базовые ресурсы',
+  'craft.recoTitle': 'Рекомендация по соскам',
+  'craft.recoSource': 'Источник: КП Дикей (рекомендация, не догма — сверяй под свой рынок)',
 
   // Роадмап (крафт)
   'roadmap.craftSpoil': 'Крафт и спойл',
@@ -654,6 +660,12 @@ export const UA = {
   'craft.type.Armor': 'Броня',
   'craft.type.Accessory': 'Біжутерія',
   'craft.type.Other': 'Інше',
+  'craft.buyIt': 'купити',
+  'craft.craftIt': 'крафтити',
+  'craft.doBuy': 'Вважати покупним (не розгортати)',
+  'craft.doCraft': 'Розгортати в базові ресурси',
+  'craft.recoTitle': 'Рекомендація по сосках',
+  'craft.recoSource': 'Джерело: КП Дікей (рекомендація, не догма — звіряй під свій ринок)',
 
   // Роадмап (крафт)
   'roadmap.craftSpoil': 'Крафт і спойл',

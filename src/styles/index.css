@@ -1960,3 +1960,29 @@ tbody tr:hover { background: rgba(255,255,255,0.02); }
 .rc-node-children { border-left: 1px solid var(--border); margin-left: 0.55rem; padding-left: 0.4rem; }
 
 @media (max-width: 780px) { .rc-grid { grid-template-columns: 1fr; } }
+
+/* ===== Иконки предметов ===== */
+.item-icon { border-radius: 4px; object-fit: contain; flex-shrink: 0; vertical-align: middle; background: rgba(0,0,0,0.2); }
+.item-icon--none { display: inline-block; border-radius: 4px; background: rgba(255,255,255,0.04); }
+.rc-res-name { display: inline-flex; align-items: center; gap: 0.35rem; }
+
+/* ===== Купить / крафтить ===== */
+.rc-buy-toggle {
+  display: inline-flex; align-items: center; gap: 3px; margin-left: 0.4rem;
+  padding: 1px 6px; border-radius: 5px; cursor: pointer; flex-shrink: 0;
+  background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+  color: var(--text-muted); font-family: inherit; font-size: 0.66rem; font-weight: 600; transition: all var(--transition);
+}
+.rc-buy-toggle:hover { color: var(--text-primary); border-color: var(--border-hover); }
+.rc-buy-toggle--inline { font-size: 0.6rem; }
+
+/* ===== Карточка рекомендации ===== */
+.reco-card {
+  background: var(--gold-glow); border: 1px solid var(--gold-border);
+  border-radius: var(--radius); padding: 0.9rem 1rem;
+}
+.reco-head { display: flex; align-items: center; gap: 0.4rem; font-weight: 800; font-size: 0.9rem; color: var(--gold-light); text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 0.5rem; }
+.reco-intro { margin: 0 0 0.5rem; font-size: 0.86rem; color: var(--text-primary); line-height: 1.5; }
+.reco-list { margin: 0 0 0.5rem; padding-left: 1.1rem; display: flex; flex-direction: column; gap: 0.25rem; }
+.reco-list li { font-size: 0.82rem; color: var(--text-secondary); overflow-wrap: anywhere; }
+.reco-source { font-size: 0.72rem; color: var(--text-muted); font-style: italic; }

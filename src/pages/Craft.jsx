@@ -1,37 +1,49 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Hammer, RotateCcw, ChevronRight, ChevronDown, Search } from 'lucide-react';
+import { Hammer, RotateCcw, ChevronRight, ChevronDown, Search, Lightbulb, ShoppingCart } from 'lucide-react';
 import { useLang } from '../context/LanguageContext';
 import {
-  listProducts, flattenBase, buildTree, itemName, itemGrade, hasRecipe,
+  listProducts, flattenBase, buildTree, itemName, itemGrade, itemIcon, hasRecipe,
   RECIPES, PRODUCT_TYPES,
 } from '../utils/recipeCalc';
+import { LU4_CRAFT } from '../data/lu4Roadmap';
 
 const fmt = (n) => new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 1 }).format(n);
 const gradeClass = (g) => `grade-badge grade-${(g || 'NG').toLowerCase()}`;
 
+const Icon = ({ id, size = 20 }) => {
+  const src = itemIcon(id);
+  if (!src) return <span className="item-icon item-icon--none" style={{ width: size, height: size }} />;
+  return <img className="item-icon" src={src} alt="" width={size} height={size} loading="lazy" onError={e => { e.target.style.visibility = 'hidden'; }} />;
+};
+
 // ---------- Полный калькулятор рецептов ----------
 const PRICES_KEY = 'matPrices';
-const loadPrices = () => { try { return JSON.parse(localStorage.getItem(PRICES_KEY) || '{}'); } catch { return {}; } };
+const BUY_KEY = 'craftBuy';
+const loadJSON = (k, d) => { try { return JSON.parse(localStorage.getItem(k) || d); } catch { return JSON.parse(d); } };
 
-const RecipeNode = ({ node, prices }) => {
+const RecipeNode = ({ node, prices, buy, toggleBuy, t }) => {
   const [open, setOpen] = useState(false);
-  const craftable = node.crafted && node.children;
+  const inBuy = buy.has(String(node.id));
+  const expandable = node.crafted && !inBuy && node.children;
   return (
     <div className="rc-node">
       <div className="rc-node-row">
-        {craftable ? (
-          <button className="rc-node-toggle" onClick={() => setOpen(o => !o)}>
-            {open ? <ChevronDown size={13} /> : <ChevronRight size={13} />}
-          </button>
+        {expandable ? (
+          <button className="rc-node-toggle" onClick={() => setOpen(o => !o)}>{open ? <ChevronDown size={13} /> : <ChevronRight size={13} />}</button>
         ) : <span className="rc-node-dot" />}
+        <Icon id={node.id} size={18} />
         <span className={gradeClass(node.grade)}>{node.grade}</span>
         <span className="rc-node-name">{node.name}</span>
         <span className="rc-node-qty">×{fmt(node.count)}</span>
-        {!craftable && (prices[node.id] ? <span className="rc-node-price">{fmt(prices[node.id])}</span> : null)}
+        {node.crafted && (
+          <button className="rc-buy-toggle" onClick={() => toggleBuy(node.id)} title={inBuy ? t('craft.doCraft') : t('craft.doBuy')}>
+            {inBuy ? <><Hammer size={11} /> {t('craft.craftIt')}</> : <><ShoppingCart size={11} /> {t('craft.buyIt')}</>}
+          </button>
+        )}
       </div>
-      {craftable && open && (
+      {expandable && open && (
         <div className="rc-node-children">
-          {node.children.map((c, i) => <RecipeNode key={i} node={c} prices={prices} />)}
+          {node.children.map((c, i) => <RecipeNode key={i} node={c} prices={prices} buy={buy} toggleBuy={toggleBuy} t={t} />)}
         </div>
       )}
     </div>
@@ -45,23 +57,27 @@ const RecipeCalc = () => {
   const [q, setQ] = useState('');
   const [selected, setSelected] = useState(null);
   const [count, setCount] = useState(1);
-  const [prices, setPrices] = useState(loadPrices);
+  const [prices, setPrices] = useState(() => loadJSON(PRICES_KEY, '{}'));
+  const [buyArr, setBuyArr] = useState(() => loadJSON(BUY_KEY, '[]'));
   const [showTree, setShowTree] = useState(false);
 
+  const buy = useMemo(() => new Set(buyArr.map(String)), [buyArr]);
   useEffect(() => { localStorage.setItem(PRICES_KEY, JSON.stringify(prices)); }, [prices]);
+  useEffect(() => { localStorage.setItem(BUY_KEY, JSON.stringify(buyArr)); }, [buyArr]);
 
   const products = useMemo(() => listProducts({ grade, type, q }), [grade, type, q]);
   const rec = selected ? RECIPES[selected] : null;
-  const base = useMemo(() => (selected ? flattenBase(selected, count) : {}), [selected, count]);
-  const tree = useMemo(() => (selected && showTree ? buildTree(selected, count) : null), [selected, count, showTree]);
+  const base = useMemo(() => (selected ? flattenBase(selected, count, buy) : {}), [selected, count, buy]);
+  const tree = useMemo(() => (selected && showTree ? buildTree(selected, count, buy) : null), [selected, count, showTree, buy]);
 
   const baseRows = useMemo(() => Object.keys(base)
-    .map(id => ({ id, name: itemName(id), grade: itemGrade(id), qty: base[id] }))
+    .map(id => ({ id, name: itemName(id), grade: itemGrade(id), qty: base[id], craftable: hasRecipe(id) }))
     .sort((a, b) => a.name.localeCompare(b.name)), [base]);
 
   const total = baseRows.reduce((s, r) => s + r.qty * (Number(prices[r.id]) || 0), 0);
   const outCount = (rec ? rec.q : 1) * count;
   const setPrice = (id, v) => setPrices(p => ({ ...p, [id]: Number(v) || 0 }));
+  const toggleBuy = (id) => setBuyArr(a => a.map(String).includes(String(id)) ? a.filter(x => String(x) !== String(id)) : [...a, String(id)]);
 
   return (
     <div className="rc-grid">
@@ -86,6 +102,7 @@ const RecipeCalc = () => {
         <div className="rc-list">
           {products.map(p => (
             <button key={p.id} className={`rc-item ${selected === p.id ? 'rc-item--active' : ''}`} onClick={() => setSelected(p.id)}>
+              <Icon id={p.id} size={20} />
               <span className={gradeClass(p.grade)}>{p.grade}</span>
               <span className="rc-item-name">{p.name}</span>
             </button>
@@ -100,6 +117,7 @@ const RecipeCalc = () => {
         ) : (
           <>
             <div className="rc-detail-head">
+              <Icon id={selected} size={28} />
               <span className={gradeClass(itemGrade(selected))}>{itemGrade(selected)}</span>
               <h3 className="rc-detail-title">{itemName(selected)}</h3>
             </div>
@@ -119,7 +137,14 @@ const RecipeCalc = () => {
                 <tbody>
                   {baseRows.map(r => (
                     <tr key={r.id}>
-                      <td><span className={gradeClass(r.grade)}>{r.grade}</span> {r.name}{hasRecipe(r.id) ? ' *' : ''}</td>
+                      <td>
+                        <span className="rc-res-name"><Icon id={r.id} size={18} /> <span className={gradeClass(r.grade)}>{r.grade}</span> {r.name}</span>
+                        {r.craftable && (
+                          <button className="rc-buy-toggle rc-buy-toggle--inline" onClick={() => toggleBuy(r.id)}>
+                            <Hammer size={10} /> {t('craft.craftIt')}
+                          </button>
+                        )}
+                      </td>
                       <td>{fmt(r.qty)}</td>
                       <td><input type="number" className="input-field craft-market" value={prices[r.id] ?? ''} placeholder="0" onChange={e => setPrice(r.id, e.target.value)} /></td>
                       <td className="text-secondary">{fmt(r.qty * (Number(prices[r.id]) || 0))}</td>
@@ -137,7 +162,7 @@ const RecipeCalc = () => {
             <button className="btn btn-sm mt-2" onClick={() => setShowTree(s => !s)}>
               {showTree ? <ChevronDown size={14} /> : <ChevronRight size={14} />} {t('craft.tree')}
             </button>
-            {showTree && tree && <div className="rc-tree">{tree.children?.map((c, i) => <RecipeNode key={i} node={c} prices={prices} />)}</div>}
+            {showTree && tree && <div className="rc-tree">{tree.children?.map((c, i) => <RecipeNode key={i} node={c} prices={prices} buy={buy} toggleBuy={toggleBuy} t={t} />)}</div>}
             <p className="craft-hint" style={{ marginTop: '0.75rem' }}>{t('craft.baseNote')}</p>
           </>
         )}
@@ -146,7 +171,7 @@ const RecipeCalc = () => {
   );
 };
 
-// ---------- Быстрый расчёт сосок (данные из «Луч КП Дикей») ----------
+// ---------- Быстрый расчёт сосок + рекомендация КП Дикей ----------
 const SHOT_RECIPES = [
   { id: 'ssd', name: 'Soulshot D — физ', dc: 1, so: 3, output: 200, market: 7 },
   { id: 'ssnd', name: 'Spiritshot D — маг', dc: 1, so: 3, output: 140, market: 20 },
@@ -172,6 +197,16 @@ const ShotsCalc = () => {
   });
   return (
     <>
+      <div className="reco-card mb-4">
+        <div className="reco-head"><Lightbulb size={15} /> {t('craft.recoTitle')}</div>
+        <p className="reco-intro">{LU4_CRAFT.intro}</p>
+        <ul className="reco-list">
+          {LU4_CRAFT.nukeMath.map((x, i) => <li key={`n${i}`}>{x}</li>)}
+          {LU4_CRAFT.tips.map((x, i) => <li key={`t${i}`}>{x}</li>)}
+        </ul>
+        <span className="reco-source">{t('craft.recoSource')}</span>
+      </div>
+
       <div className="glass-panel mb-4">
         <h3 className="section-header">{t('craft.prices')}</h3>
         <div className="craft-inputs">
@@ -213,7 +248,7 @@ const ShotsCalc = () => {
 export const Craft = () => {
   const { t } = useLang();
   const [tab, setTab] = useState('recipes');
-  const clearPrices = () => { if (window.confirm(t('craft.resetConfirm'))) { localStorage.removeItem('matPrices'); localStorage.removeItem('craftCalc'); window.location.reload(); } };
+  const clearPrices = () => { if (window.confirm(t('craft.resetConfirm'))) { localStorage.removeItem('matPrices'); localStorage.removeItem('craftBuy'); localStorage.removeItem('craftCalc'); window.location.reload(); } };
   return (
     <div className="fade-in">
       <div className="flex justify-between items-center mb-4">
