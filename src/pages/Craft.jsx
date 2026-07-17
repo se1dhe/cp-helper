@@ -1,11 +1,14 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Hammer, RotateCcw, ChevronRight, ChevronDown, Search, Lightbulb, ShoppingCart, ExternalLink } from 'lucide-react';
 import { useLang } from '../context/LanguageContext';
+import { useAuth } from '../context/AuthContext';
 import {
   listProducts, flattenBase, buildTree, itemName, itemGrade, itemIcon, hasRecipe,
   itemStats, wikiUrl, RECIPES, PRODUCT_TYPES,
 } from '../utils/recipeCalc';
+import { subscribeToPrices, setSharedPrice } from '../services/priceService';
 import { openExternal } from '../utils/openExternal';
+import { CraftQueue } from './CraftQueue';
 import { LU4_CRAFT } from '../data/lu4Roadmap';
 
 const fmt = (n) => new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 1 }).format(n);
@@ -17,8 +20,17 @@ const Icon = ({ id, size = 20 }) => {
   return <img className="item-icon" src={src} alt="" width={size} height={size} loading="lazy" onError={e => { e.target.style.visibility = 'hidden'; }} />;
 };
 
+// Инпут цены: у офицеров редактируемый (коммит по blur), у мемберов только чтение.
+const PriceInput = ({ value, editable, onCommit }) => {
+  const [v, setV] = useState(value ?? '');
+  useEffect(() => { setV(value ?? ''); }, [value]);
+  return (
+    <input type="number" className="input-field craft-market" value={v} placeholder="0" readOnly={!editable}
+      onChange={e => setV(e.target.value)} onBlur={() => editable && onCommit(v)} />
+  );
+};
+
 // ---------- Полный калькулятор рецептов ----------
-const PRICES_KEY = 'matPrices';
 const BUY_KEY = 'craftBuy';
 const loadJSON = (k, d) => { try { return JSON.parse(localStorage.getItem(k) || d); } catch { return JSON.parse(d); } };
 
@@ -53,17 +65,18 @@ const RecipeNode = ({ node, prices, buy, toggleBuy, t }) => {
 
 const RecipeCalc = () => {
   const { t } = useLang();
+  const { isOfficer } = useAuth();
   const [grade, setGrade] = useState('all');
   const [type, setType] = useState('all');
   const [q, setQ] = useState('');
   const [selected, setSelected] = useState(null);
   const [count, setCount] = useState(1);
-  const [prices, setPrices] = useState(() => loadJSON(PRICES_KEY, '{}'));
+  const [prices, setPrices] = useState({}); // общий прайс-лист (config/prices)
   const [buyArr, setBuyArr] = useState(() => loadJSON(BUY_KEY, '[]'));
   const [showTree, setShowTree] = useState(false);
 
   const buy = useMemo(() => new Set(buyArr.map(String)), [buyArr]);
-  useEffect(() => { localStorage.setItem(PRICES_KEY, JSON.stringify(prices)); }, [prices]);
+  useEffect(() => { const unsub = subscribeToPrices(setPrices); return () => unsub(); }, []);
   useEffect(() => { localStorage.setItem(BUY_KEY, JSON.stringify(buyArr)); }, [buyArr]);
 
   const products = useMemo(() => listProducts({ grade, type, q }), [grade, type, q]);
@@ -77,7 +90,7 @@ const RecipeCalc = () => {
 
   const total = baseRows.reduce((s, r) => s + r.qty * (Number(prices[r.id]) || 0), 0);
   const outCount = (rec ? rec.q : 1) * count;
-  const setPrice = (id, v) => setPrices(p => ({ ...p, [id]: Number(v) || 0 }));
+  const setPrice = (id, v) => { if (isOfficer) setSharedPrice(id, v).catch(() => {}); };
   const toggleBuy = (id) => setBuyArr(a => a.map(String).includes(String(id)) ? a.filter(x => String(x) !== String(id)) : [...a, String(id)]);
 
   return (
@@ -157,7 +170,7 @@ const RecipeCalc = () => {
                         </div>
                       </td>
                       <td>{fmt(r.qty)}</td>
-                      <td><input type="number" className="input-field craft-market" value={prices[r.id] ?? ''} placeholder="0" onChange={e => setPrice(r.id, e.target.value)} /></td>
+                      <td><PriceInput value={prices[r.id]} editable={isOfficer} onCommit={(v) => setPrice(r.id, v)} /></td>
                       <td className="text-secondary">{fmt(r.qty * (Number(prices[r.id]) || 0))}</td>
                     </tr>
                   ))}
@@ -298,8 +311,9 @@ export const Craft = () => {
       <div className="craft-tabs">
         <button className={tab === 'recipes' ? 'active' : ''} onClick={() => setTab('recipes')}>{t('craft.tabRecipes')}</button>
         <button className={tab === 'shots' ? 'active' : ''} onClick={() => setTab('shots')}>{t('craft.tabShots')}</button>
+        <button className={tab === 'queue' ? 'active' : ''} onClick={() => setTab('queue')}>{t('craft.tabQueue')}</button>
       </div>
-      {tab === 'recipes' ? <RecipeCalc /> : <ShotsCalc />}
+      {tab === 'recipes' ? <RecipeCalc /> : tab === 'shots' ? <ShotsCalc /> : <CraftQueue />}
     </div>
   );
 };

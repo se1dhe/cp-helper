@@ -2004,3 +2004,42 @@ tbody tr:hover { background: rgba(255,255,255,0.02); }
 /* ===== Результат расчёта сосок ===== */
 .shots-result { display: flex; gap: 1.5rem; flex-wrap: wrap; }
 .shots-result > div { display: flex; flex-direction: column; }
+
+/* ===== Рейд-боссы ===== */
+.rb-form { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+.rb-name { display: inline-flex; align-items: center; gap: 0.35rem; font-weight: 600; color: var(--text-primary); }
+.rb-name svg { color: var(--primary-light); }
+.rb-lvl { font-size: 0.68rem; font-weight: 700; color: var(--text-muted); }
+.rb-note { display: block; font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; }
+.rb-cd { font-weight: 800; font-size: 0.92rem; font-variant-numeric: tabular-nums; }
+.rb-cd--ready { color: var(--success); }
+.rb-cd--soon { color: var(--primary-light); animation: update-pulse 1.5s ease-in-out infinite; }
+.rb-cd--wait { color: var(--gold-light); }
+.rb-cd--none { color: var(--text-muted); }
+.rb-actions { display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap; }
+.rb-h { width: 56px; padding: 0.25rem 0.4rem; font-size: 0.8rem; }
+.rb-dt { width: 190px; padding: 0.25rem 0.4rem; font-size: 0.78rem; }
+.rb-del { background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 2px; display: flex; transition: color var(--transition); }
+.rb-del:hover { color: var(--danger); }
+
+/* ===== Заявки на крафт ===== */
+.cq-results { display: flex; flex-direction: column; gap: 2px; margin-top: 0.5rem; max-height: 320px; overflow-y: auto; }
+.cq-form { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+.cq-form label { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.8rem; color: var(--text-secondary); }
+.cq-picked { display: inline-flex; align-items: center; gap: 0.35rem; font-weight: 600; color: var(--text-primary); }
+.cq-list { display: flex; flex-direction: column; gap: 0.6rem; }
+.cq-req { padding: 0.7rem 0.85rem; }
+.cq-req--done { opacity: 0.6; }
+.cq-req-head { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+.cq-req-name { font-weight: 600; color: var(--text-primary); }
+.cq-req-count { color: var(--gold-light); font-weight: 700; }
+.cq-req-by { display: inline-flex; align-items: center; gap: 3px; font-size: 0.74rem; color: var(--text-muted); }
+.cq-req-note { font-size: 0.74rem; color: var(--text-secondary); overflow-wrap: anywhere; }
+.cq-req-cost { margin-left: auto; font-weight: 700; color: var(--gold-light); }
+.cq-req-actions { display: flex; align-items: center; gap: 0.3rem; }
+.cq-res { margin-top: 0.6rem; padding-top: 0.5rem; border-top: 1px solid var(--border); }
+.cq-res-h { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); font-weight: 700; margin-bottom: 0.4rem; }
+.cq-res-row { display: flex; align-items: center; gap: 0.4rem; padding: 2px 0; font-size: 0.82rem; }
+.cq-res-name { flex: 1; min-width: 0; color: var(--text-primary); overflow-wrap: anywhere; }
+.cq-res-qty { color: var(--text-muted); font-size: 0.78rem; }
+.cq-res-sub { color: var(--gold-light); font-size: 0.78rem; min-width: 50px; text-align: right; }

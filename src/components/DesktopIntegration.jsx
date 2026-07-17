@@ -6,6 +6,7 @@ import { ask } from '@tauri-apps/plugin-dialog';
 import { RefreshCw, Download, AlertTriangle } from 'lucide-react';
 import { useLang } from '../context/LanguageContext';
 import { subscribeToNews } from '../services/newsService';
+import { subscribeToRB } from '../services/rbService';
 import { getCloseAction } from '../utils/settings';
 
 const isTauri = typeof window !== 'undefined' && '__TAURI_INTERNALS__' in window;
@@ -16,6 +17,8 @@ export const DesktopIntegration = () => {
   const { t } = useLang();
   const seenNewsRef = useRef(null);
   const updateRef = useRef(null);
+  const rbListRef = useRef([]);
+  const rbNotifiedRef = useRef(new Set());
   // status: 'idle' | 'available' | 'downloading' | 'installing' | 'error'
   const [upd, setUpd] = useState({ status: 'idle', version: '', progress: 0, indeterminate: false });
 
@@ -109,6 +112,30 @@ export const DesktopIntegration = () => {
       });
     });
     return () => unsub();
+  }, [t]);
+
+  // Трей-уведомления по рейд-боссам: предупреждение за 15 мин и в момент респа.
+  useEffect(() => {
+    if (!isTauri) return;
+    const unsub = subscribeToRB((list) => { rbListRef.current = list; });
+    const timer = setInterval(() => {
+      const now = Date.now();
+      for (const rb of rbListRef.current) {
+        if (!rb.nextAt) continue;
+        const diff = rb.nextAt - now;
+        const k15 = `${rb.id}:${rb.nextAt}:15`;
+        const k0 = `${rb.id}:${rb.nextAt}:0`;
+        if (diff <= 15 * 60000 && diff > 60000 && !rbNotifiedRef.current.has(k15)) {
+          rbNotifiedRef.current.add(k15);
+          invoke('notify', { title: t('rb.notifySoon', { name: rb.name }), body: t('rb.notifySoonBody', { n: Math.round(diff / 60000) }) }).catch(() => {});
+        }
+        if (diff <= 60000 && diff > -180000 && !rbNotifiedRef.current.has(k0)) {
+          rbNotifiedRef.current.add(k0);
+          invoke('notify', { title: t('rb.notifyUp', { name: rb.name }), body: rb.note || '' }).catch(() => {});
+        }
+      }
+    }, 30000);
+    return () => { unsub(); clearInterval(timer); };
   }, [t]);
 
   if (!isTauri || upd.status === 'idle') return null;

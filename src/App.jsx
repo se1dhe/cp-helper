@@ -15,6 +15,7 @@ import { Roadmap } from './pages/Roadmap';
 import { Schedule } from './pages/Schedule';
 import { Links } from './pages/Links';
 import { Craft } from './pages/Craft';
+import { RaidBosses } from './pages/RaidBosses';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
               <Route index element={<Dashboard />} />
               <Route path="roadmap" element={<Roadmap />} />
               <Route path="schedule" element={<Schedule />} />
+              <Route path="raidbosses" element={<RaidBosses />} />
               <Route path="craft" element={<Craft />} />
               <Route path="links" element={<Links />} />
               <Route path="news" element={<News />} />
