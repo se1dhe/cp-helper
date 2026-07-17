@@ -61,7 +61,7 @@ export const AuthProvider = ({ children }) => {
           } else {
             const pendingNickname = sessionStorage.getItem('pendingNickname') || '';
             sessionStorage.removeItem('pendingNickname');
-            const fallbackName = pendingNickname || user.email?.split('@')[0] || user.email;
+            const fallbackName = pendingNickname || (user.email || '').split('@')[0] || user.email || 'user';
             if (!user.displayName) {
               await updateProfile(user, { displayName: fallbackName });
             }

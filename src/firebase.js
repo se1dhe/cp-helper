@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, initializeFirestore, persistentLocalCache } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDU5KhGtNTsFliP5GX2UGo2a-zkGjnAvAw",
@@ -14,7 +14,17 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db = getFirestore(app);
+
+// Персистентный кэш: данные переживают перезапуск, приложение работает и без сети
+// (одно окно — single-instance, конфликта вкладок нет). Фолбэк на обычный кэш в памяти,
+// если IndexedDB недоступен.
+let db;
+try {
+  db = initializeFirestore(app, { localCache: persistentLocalCache() });
+} catch (e) {
+  console.warn("Firestore persistent cache недоступен, работаем в памяти:", e);
+  db = getFirestore(app);
+}
 
 export const signInWithEmail = (email, password) => signInWithEmailAndPassword(auth, email, password);
 export const registerWithEmail = async (email, password) => {

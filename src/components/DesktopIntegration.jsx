@@ -17,7 +17,8 @@ const isTauri = typeof window !== 'undefined' && '__TAURI_INTERNALS__' in window
 // уведомления о новых новостях. Работает только внутри Tauri (в браузере — no-op).
 export const DesktopIntegration = () => {
   const { t } = useLang();
-  const { currentUser } = useAuth();
+  const { currentUser, isGuest } = useAuth();
+  const active = !!currentUser && !isGuest; // гость не имеет прав чтения — не подписываемся
   const seenNewsRef = useRef(null);
   const updateRef = useRef(null);
   const rbListRef = useRef([]);
@@ -98,7 +99,8 @@ export const DesktopIntegration = () => {
 
   // Уведомления о новых новостях, когда окно не в фокусе.
   useEffect(() => {
-    if (!isTauri) return;
+    if (!isTauri || !active) return;
+    seenNewsRef.current = null;
     const unsub = subscribeToNews((list) => {
       if (seenNewsRef.current === null) {
         seenNewsRef.current = new Set(list.map((n) => n.id));
@@ -116,11 +118,11 @@ export const DesktopIntegration = () => {
       });
     });
     return () => unsub();
-  }, [t]);
+  }, [t, active]);
 
   // Трей-уведомления по рейд-боссам: предупреждение за 15 мин и в момент респа.
   useEffect(() => {
-    if (!isTauri) return;
+    if (!isTauri || !active) return;
     const unsub = subscribeToRB((list) => { rbListRef.current = list; });
     const timer = setInterval(() => {
       const now = Date.now();
@@ -140,11 +142,12 @@ export const DesktopIntegration = () => {
       }
     }, 30000);
     return () => { unsub(); clearInterval(timer); };
-  }, [t]);
+  }, [t, active]);
 
   // Тихое уведомление: кто-то из пачки зашёл в онлайн (только когда окно не в фокусе).
   useEffect(() => {
-    if (!isTauri) return;
+    if (!isTauri || !active) return;
+    presencePrevRef.current = null;
     const unsub = subscribeToPresence((map) => {
       const online = new Set(Object.entries(map).filter(([, d]) => isUserOnline(d)).map(([uid]) => uid));
       if (presencePrevRef.current === null) { presencePrevRef.current = online; return; }
@@ -157,7 +160,7 @@ export const DesktopIntegration = () => {
       presencePrevRef.current = online;
     });
     return () => unsub();
-  }, [t, currentUser]);
+  }, [t, currentUser, active]);
 
   if (!isTauri || upd.status === 'idle') return null;
 
