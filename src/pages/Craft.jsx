@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Hammer, RotateCcw, ChevronRight, ChevronDown, Search, Lightbulb, ShoppingCart, ExternalLink } from 'lucide-react';
 import { useLang } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
@@ -63,7 +64,7 @@ const RecipeNode = ({ node, prices, buy, toggleBuy, t }) => {
   );
 };
 
-const RecipeCalc = () => {
+const RecipeCalc = ({ initialId, onConsumed }) => {
   const { t } = useLang();
   const { isOfficer } = useAuth();
   const [grade, setGrade] = useState('all');
@@ -78,6 +79,15 @@ const RecipeCalc = () => {
   const buy = useMemo(() => new Set(buyArr.map(String)), [buyArr]);
   useEffect(() => { const unsub = subscribeToPrices(setPrices); return () => unsub(); }, []);
   useEffect(() => { localStorage.setItem(BUY_KEY, JSON.stringify(buyArr)); }, [buyArr]);
+
+  // Пришли из поиска с конкретным рецептом — выбираем его и сбрасываем фильтры, чтобы он был виден.
+  useEffect(() => {
+    if (initialId && RECIPES[initialId]) {
+      setSelected(initialId);
+      setQ(''); setGrade('all'); setType('all'); setCount(1);
+      onConsumed?.();
+    }
+  }, [initialId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const products = useMemo(() => listProducts({ grade, type, q }), [grade, type, q]);
   const rec = selected ? RECIPES[selected] : null;
@@ -300,7 +310,21 @@ const ShotsCalc = () => {
 
 export const Craft = () => {
   const { t } = useLang();
+  const location = useLocation();
+  const navigate = useNavigate();
   const [tab, setTab] = useState('recipes');
+  const [initialRecipe, setInitialRecipe] = useState(location.state?.recipeId ?? null);
+
+  // Клик по рецепту в глобальном поиске приходит сюда через location.state.
+  useEffect(() => {
+    const rid = location.state?.recipeId;
+    if (rid) {
+      setTab('recipes');
+      setInitialRecipe(rid);
+      navigate('/craft', { replace: true, state: {} }); // очищаем, чтобы не липло при возврате
+    }
+  }, [location.state, navigate]);
+
   const clearPrices = () => { if (window.confirm(t('craft.resetConfirm'))) { localStorage.removeItem('matPrices'); localStorage.removeItem('craftBuy'); localStorage.removeItem('craftCalc'); localStorage.removeItem('shotsCalc2'); window.location.reload(); } };
   return (
     <div className="fade-in">
@@ -313,7 +337,7 @@ export const Craft = () => {
         <button className={tab === 'shots' ? 'active' : ''} onClick={() => setTab('shots')}>{t('craft.tabShots')}</button>
         <button className={tab === 'queue' ? 'active' : ''} onClick={() => setTab('queue')}>{t('craft.tabQueue')}</button>
       </div>
-      {tab === 'recipes' ? <RecipeCalc /> : tab === 'shots' ? <ShotsCalc /> : <CraftQueue />}
+      {tab === 'recipes' ? <RecipeCalc initialId={initialRecipe} onConsumed={() => setInitialRecipe(null)} /> : tab === 'shots' ? <ShotsCalc /> : <CraftQueue />}
     </div>
   );
 };

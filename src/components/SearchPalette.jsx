@@ -56,7 +56,7 @@ export const SearchPalette = ({ open, onClose }) => {
 
   if (!open) return null;
 
-  const go = (path) => { navigate(path); onClose(); };
+  const go = (path, state) => { navigate(path, state ? { state } : undefined); onClose(); };
   const flat = [
     ...results.pages.map(p => ({ label: p.label, path: p.path, group: 'page' })),
     ...results.members.map(m => ({ label: m.name, path: '/members', group: 'member' })),
@@ -64,7 +64,13 @@ export const SearchPalette = ({ open, onClose }) => {
     ...results.bosses.map(b => ({ label: b.name, path: '/raidbosses', group: 'boss' })),
   ];
 
-  const onKey = (e) => { if (e.key === 'Escape') onClose(); if (e.key === 'Enter' && flat[0]) go(flat[0].path); };
+  const onKey = (e) => {
+    if (e.key === 'Escape') onClose();
+    if (e.key === 'Enter' && flat[0]) {
+      const f = flat[0];
+      go(f.path, f.group === 'recipe' && f.id ? { recipeId: f.id } : undefined);
+    }
+  };
 
   return (
     <div className="modal-overlay search-overlay" onClick={onClose}>
@@ -87,7 +93,7 @@ export const SearchPalette = ({ open, onClose }) => {
           )}
           {results.recipes.length > 0 && (
             <div className="search-group"><div className="search-group-h">{t('search.recipes')}</div>
-              {results.recipes.map(r => <button key={r.id} className="search-item" onClick={() => go('/craft')}>{itemIcon(r.id) ? <img src={itemIcon(r.id)} alt="" width={18} height={18} className="item-icon" /> : <Hammer size={15} />} {r.name} <span className="search-meta">{r.grade}</span></button>)}
+              {results.recipes.map(r => <button key={r.id} className="search-item" onClick={() => go('/craft', { recipeId: r.id })}>{itemIcon(r.id) ? <img src={itemIcon(r.id)} alt="" width={18} height={18} className="item-icon" /> : <Hammer size={15} />} {r.name} <span className="search-meta">{r.grade}</span></button>)}
             </div>
           )}
           {results.bosses.length > 0 && (
