@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "CP-Helper",
-  "version": "1.24.2",
+  "version": "1.24.3",
   "identifier": "com.outlaw.cphelper",
   "build": {
     "frontendDist": "../dist",
@@ -46,7 +46,7 @@
   "plugins": {
     "updater": {
       "endpoints": [
-        "https://github.com/se1dhe/cp-helper/releases/latest/download/latest.json"
+        "https://github.com/se1dhe/cp-helper-dist/releases/latest/download/latest.json"
       ],
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDhFMUNEQkVFOEQ2QTVEMzQKUldRMFhXcU43dHNjanJoQUxLZVNtMUNlb3h2RlphZzVxOGlOU25PaDg3TG04QXBWM2ZOZUR3NFgK",
       "windows": {

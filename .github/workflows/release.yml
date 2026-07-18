@@ -68,3 +68,37 @@ jobs:
             - See commits for details.
           releaseDraft: false
           prerelease: false
+
+  # Зеркалим готовые билды в ПУБЛИЧНЫЙ dist-репо, чтобы авто-апдейтер работал,
+  # пока исходный репозиторий приватный. В latest.json правим ссылки на dist-репо.
+  mirror:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Download release assets from private repo
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p out
+          gh release download "${GITHUB_REF_NAME}" -R "${GITHUB_REPOSITORY}" -D out --clobber
+
+      - name: Rewrite updater URLs (private -> dist)
+        run: |
+          if [ -f out/latest.json ]; then
+            sed -i 's#/se1dhe/cp-helper/releases/#/se1dhe/cp-helper-dist/releases/#g' out/latest.json
+            echo "--- latest.json ---"; cat out/latest.json
+          else
+            echo "latest.json не найден"; ls -la out
+          fi
+
+      - name: Publish builds to public dist repo
+        env:
+          GH_TOKEN: ${{ secrets.DIST_TOKEN }}
+        run: |
+          gh release create "${GITHUB_REF_NAME}" out/* \
+            -R se1dhe/cp-helper-dist \
+            -t "CP-Helper ${GITHUB_REF_NAME}" \
+            --notes "Сборки CP-Helper ${GITHUB_REF_NAME}." \
+          || gh release upload "${GITHUB_REF_NAME}" out/* -R se1dhe/cp-helper-dist --clobber
