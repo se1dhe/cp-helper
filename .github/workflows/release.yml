@@ -8,11 +8,14 @@ jobs:
     permissions:
       contents: write
     strategy:
+      fail-fast: false
       matrix:
-        os: [macos-latest, windows-latest]
         include:
           - os: macos-latest
             target: aarch64-apple-darwin
+            bundle: dmg
+          - os: macos-latest
+            target: x86_64-apple-darwin
             bundle: dmg
           - os: windows-latest
             target: x86_64-pc-windows-msvc
@@ -59,6 +62,7 @@ jobs:
         with:
           tagName: ${{ github.ref_name }}
           releaseName: CP-Helper ${{ github.ref_name }}
+          args: --target ${{ matrix.target }}
           releaseBody: |
             ## Changes
             - See commits for details.
