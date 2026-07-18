@@ -1,5 +1,10 @@
 [
   {
+    "version": "1.24.5",
+    "date": "2026-07-18",
+    "text": "macOS апдейт: добавлен bundle-таргет app (.app.tar.gz)"
+  },
+  {
     "version": "1.24.4",
     "date": "2026-07-18",
     "text": "macOS universal-сборка: чиним авто-апдейт мака"

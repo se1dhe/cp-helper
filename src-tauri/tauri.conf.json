@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "CP-Helper",
-  "version": "1.24.4",
+  "version": "1.24.5",
   "identifier": "com.outlaw.cphelper",
   "build": {
     "frontendDist": "../dist",
@@ -28,7 +28,7 @@
   },
   "bundle": {
     "active": true,
-    "targets": ["nsis", "dmg"],
+    "targets": ["app", "dmg", "nsis"],
     "createUpdaterArtifacts": true,
     "icon": [
       "icons/32x32.png",
