@@ -91,7 +91,7 @@ export const DesktopIntegration = () => {
       await invoke('restart_app');
     } catch (err) {
       console.error('update failed:', err);
-      setUpd((s) => ({ ...s, status: 'error' }));
+      setUpd((s) => ({ ...s, status: 'error', error: String(err?.message || err || '') }));
     }
   };
 
@@ -206,6 +206,7 @@ export const DesktopIntegration = () => {
           <>
             <div className="update-error-icon"><AlertTriangle size={30} /></div>
             <h3 className="update-title">{t('update.failed')}</h3>
+            {upd.error && <p className="update-sub" style={{ opacity: 0.85, fontSize: '0.75rem', wordBreak: 'break-word', maxHeight: '5rem', overflow: 'auto' }}>{upd.error}</p>}
             <div className="update-actions">
               <button className="btn btn-sm" onClick={dismissUpdate}>{t('update.later')}</button>
               <button className="btn btn-primary" onClick={runUpdate}>
