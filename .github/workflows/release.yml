@@ -89,10 +89,25 @@ jobs:
 
       - name: Rewrite updater URLs (private -> dist)
         run: |
-          sed -i 's#/se1dhe/cp-helper/releases/#/se1dhe/cp-helper-dist/releases/#g' out/latest.json
+          # tauri-action кладёт в url API-ссылку по asset-id ИСХОДНОГО репо — в dist этот id
+          # невалиден. Поэтому переписываем url на прямые browser-ссылки dist по имени файла.
+          WIN_FILE=$(ls out | grep -E '_x64-setup\.exe$' | head -1)
+          MAC_FILE=$(ls out | grep -E '\.app\.tar\.gz$' | head -1)
+          echo "win: $WIN_FILE | mac: $MAC_FILE"
+          test -n "$WIN_FILE" || { echo "::error::нет windows setup.exe"; exit 1; }
+          test -n "$MAC_FILE" || echo "::warning::нет mac .app.tar.gz — mac-апдейт не заработает"
+          BASE="https://github.com/se1dhe/cp-helper-dist/releases/download/${GITHUB_REF_NAME}"
+          jq --arg win "$BASE/$WIN_FILE" --arg mac "$BASE/$MAC_FILE" '
+            .platforms |= with_entries(
+              .value.url = (
+                if (.key|startswith("windows")) then $win
+                elif (.key|startswith("darwin")) then $mac
+                else .value.url end)
+            )
+          ' out/latest.json > out/latest.json.new && mv out/latest.json.new out/latest.json
           echo "--- latest.json ---"; cat out/latest.json
-          if grep -q 'se1dhe/cp-helper/releases' out/latest.json; then
-            echo "::error::в latest.json остались приватные ссылки"; exit 1
+          if grep -q 'api.github.com' out/latest.json; then
+            echo "::error::в latest.json остались api-ссылки"; exit 1
           fi
 
       - name: Publish builds to public dist repo
