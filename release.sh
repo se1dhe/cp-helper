@@ -86,6 +86,19 @@ else
   exit 1
 fi
 
+# 3b) обновить встроенный ченжлог (версия + дата + сообщение релиза)
+node -e '
+const fs=require("fs");
+const p="src/data/changelog.json";
+let arr=[]; try{arr=JSON.parse(fs.readFileSync(p,"utf8"));}catch(e){}
+const v=process.argv[1], msg=process.argv[2];
+const date=new Date().toISOString().slice(0,10);
+arr=arr.filter(e=>e.version!==v);
+arr.unshift({version:v,date,text:msg});
+fs.writeFileSync(p, JSON.stringify(arr.slice(0,50),null,2)+"\n");
+' "$PKG_VERSION" "$MSG"
+echo "▶ Ченжлог обновлён: $PKG_VERSION — $MSG"
+
 # 4) коммит
 git add -A
 if git diff --cached --quiet; then

@@ -1,29 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { X, History, ExternalLink } from 'lucide-react';
+import React from 'react';
+import { X, History } from 'lucide-react';
 import { useLang } from '../context/LanguageContext';
-import { openExternal } from '../utils/openExternal';
+import CHANGELOG from '../data/changelog.json';
 
-const REPO = 'se1dhe/cp-helper';
-
-// Последние релизы приложения (ченжлог) — тянем с GitHub Releases API.
+// Ченжлог приложения — встроен в билд (пополняется release.sh при релизе).
+// Работает офлайн и не зависит от доступности репозитория.
 export const ChangelogModal = ({ open, onClose }) => {
   const { t } = useLang();
-  const [state, setState] = useState({ loading: true, error: false, releases: [] });
-
-  useEffect(() => {
-    if (!open) return;
-    let cancelled = false;
-    setState({ loading: true, error: false, releases: [] });
-    fetch(`https://api.github.com/repos/${REPO}/releases?per_page=10`)
-      .then(r => (r.ok ? r.json() : Promise.reject(new Error('http'))))
-      .then(data => { if (!cancelled) setState({ loading: false, error: false, releases: Array.isArray(data) ? data.slice(0, 10) : [] }); })
-      .catch(() => { if (!cancelled) setState({ loading: false, error: true, releases: [] }); });
-    return () => { cancelled = true; };
-  }, [open]);
-
   if (!open) return null;
 
-  const fmtDate = (s) => { try { return new Date(s).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' }); } catch { return ''; } };
+  const fmtDate = (s) => {
+    const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(s || '');
+    return m ? `${m[3]}.${m[2]}.${m[1]}` : (s || '');
+  };
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -33,27 +22,21 @@ export const ChangelogModal = ({ open, onClose }) => {
           <button className="modal-close" onClick={onClose}><X size={18} /></button>
         </div>
 
-        {state.loading && <div className="changelog-empty">{t('changelog.loading')}</div>}
-        {state.error && <div className="changelog-empty">{t('changelog.error')}</div>}
-        {!state.loading && !state.error && state.releases.length === 0 && <div className="changelog-empty">{t('changelog.none')}</div>}
-
-        {state.releases.length > 0 && (
+        {CHANGELOG.length === 0 ? (
+          <div className="changelog-empty">{t('changelog.none')}</div>
+        ) : (
           <div className="changelog-list">
-            {state.releases.map(r => (
-              <div key={r.id} className="changelog-item">
+            {CHANGELOG.map((r, i) => (
+              <div key={`${r.version}-${i}`} className="changelog-item">
                 <div className="changelog-item-head">
-                  <span className="changelog-ver">{r.name || r.tag_name}</span>
-                  <span className="changelog-date">{fmtDate(r.published_at)}</span>
+                  <span className="changelog-ver">CP-Helper v{r.version}</span>
+                  <span className="changelog-date">{fmtDate(r.date)}</span>
                 </div>
-                {r.body && <p className="changelog-body">{r.body.slice(0, 600)}</p>}
+                {r.text && <p className="changelog-body">{r.text}</p>}
               </div>
             ))}
           </div>
         )}
-
-        <div className="modal-actions">
-          <button className="btn btn-sm" onClick={() => openExternal(`https://github.com/${REPO}/releases`)}><ExternalLink size={13} /> {t('changelog.all')}</button>
-        </div>
       </div>
     </div>
   );
