@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Plus, Trash2, Search, ChevronRight, ChevronDown, User, CheckCircle2, Circle } from 'lucide-react';
+import { Plus, Trash2, Search, ChevronRight, ChevronDown, User, CheckCircle2, Circle, Check } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useLang } from '../context/LanguageContext';
 import { listProducts, flattenBase, itemName, itemGrade, itemIcon } from '../utils/recipeCalc';
@@ -119,6 +119,9 @@ export const CraftQueue = () => {
                   const mine = req.requesterId === currentUser?.uid;
                   const done = req.status === 'done';
                   const contribs = req.contributions || [];
+                  const totalNeed = rows.reduce((s, r) => s + r.qty, 0);
+                  const totalGot = rows.reduce((s, r) => s + Math.min(contribSum(req, r.id), r.qty), 0);
+                  const reqPct = totalNeed ? Math.round(totalGot / totalNeed * 100) : 0;
                   return (
                     <div key={req.id} className={`glass-panel cq-req ${done ? 'cq-req--done' : ''}`}>
                       <div className="cq-req-head">
@@ -126,7 +129,7 @@ export const CraftQueue = () => {
                         <Ic id={req.productId} size={22} />
                         <span className="cq-req-name">{req.productName} <span className="cq-req-count">×{req.count}</span></span>
                         {req.note && <span className="cq-req-note">{req.note}</span>}
-                        {contribs.length > 0 && <span className="cq-req-coop" title={t('cq.coop')}>🤝 {contribs.length}</span>}
+                        {totalGot > 0 && <span className="cq-req-coop" title={t('cq.coop')}>🤝 {reqPct}%</span>}
                         <span className="cq-req-cost">{fmt(costOf(rows))}</span>
                         <div className="cq-req-actions">
                           {(isOfficer || mine) && (
@@ -137,18 +140,26 @@ export const CraftQueue = () => {
                           {(isOfficer || mine) && <button className="rb-del" onClick={() => { if (window.confirm(t('cq.deleteConfirm'))) deleteCraftRequest(req.id); }}><Trash2 size={14} /></button>}
                         </div>
                       </div>
+                      {totalGot > 0 && <div className="cq-req-bar"><div className="cq-req-bar-fill" style={{ width: `${reqPct}%` }} /></div>}
                       {isOpen && (
                         <div className="cq-res">
                           <div className="cq-res-h">{t('cq.needRes')}</div>
                           {rows.map(r => {
                             const got = contribSum(req, r.id);
+                            const need = r.qty;
+                            const left = Math.max(0, need - got);
+                            const rpct = need ? Math.min(100, Math.round(got / need * 100)) : 0;
+                            const full = got >= need;
                             return (
-                              <div key={r.id} className="cq-res-row">
+                              <div key={r.id} className={`cq-res-row ${full ? 'cq-res-row--ok' : ''}`}>
                                 <Ic id={r.id} size={16} /><span className={gradeClass(r.grade)}>{r.grade}</span>
                                 <span className="cq-res-name">{r.name}</span>
-                                <span className="cq-res-qty">×{fmt(r.qty)}</span>
-                                {got > 0 && <span className={`cq-res-got ${got >= r.qty ? 'cq-res-got--full' : ''}`}>{t('cq.gathered')}: {fmt(got)}</span>}
-                                <span className="cq-res-sub">{prices[r.id] ? fmt(r.qty * Number(prices[r.id])) : '—'}</span>
+                                <span className="cq-res-count">{fmt(got)}/{fmt(need)}</span>
+                                <div className="cq-res-bar"><div className="cq-res-bar-fill" style={{ width: `${rpct}%` }} /></div>
+                                {full
+                                  ? <span className="cq-res-ok"><Check size={13} /></span>
+                                  : <span className="cq-res-left">{t('cq.left')} {fmt(left)}</span>}
+                                <span className="cq-res-sub">{prices[r.id] ? fmt(need * Number(prices[r.id])) : '—'}</span>
                               </div>
                             );
                           })}
