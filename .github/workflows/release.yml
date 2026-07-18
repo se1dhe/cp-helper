@@ -95,8 +95,12 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.DIST_TOKEN }}
         run: |
+          # --latest обязателен: все dist-релизы на одном коммите main, и без явной пометки
+          # GitHub /releases/latest (куда стучится апдейтер) выбирает не тот релиз.
           gh release create "${GITHUB_REF_NAME}" out/* \
             -R se1dhe/cp-helper-dist \
             -t "CP-Helper ${GITHUB_REF_NAME}" \
             --notes "Сборки CP-Helper ${GITHUB_REF_NAME}." \
-          || gh release upload "${GITHUB_REF_NAME}" out/* -R se1dhe/cp-helper-dist --clobber
+            --latest \
+          || (gh release upload "${GITHUB_REF_NAME}" out/* -R se1dhe/cp-helper-dist --clobber \
+              && gh release edit "${GITHUB_REF_NAME}" -R se1dhe/cp-helper-dist --latest)
