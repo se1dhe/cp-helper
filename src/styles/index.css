@@ -166,22 +166,27 @@ body {
 .changelog-date { font-size: 0.72rem; color: var(--text-muted); flex-shrink: 0; }
 .changelog-body { font-size: 0.8rem; color: var(--text-secondary); white-space: pre-wrap; line-height: 1.45; margin: 0; }
 
-/* ===== CRAFT STASH (личные закладки) ===== */
+/* ===== CRAFT STASH (закладки на крафт) ===== */
 .stash-list { display: flex; flex-direction: column; gap: 0.6rem; }
 .stash-row { padding: 0.75rem 0.9rem; }
 .stash-row--done { border-color: rgba(16,185,129,0.4); }
-.stash-row-head { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
+.stash-row-head { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; flex-wrap: wrap; }
 .stash-name { font-weight: 600; flex: 1; min-width: 0; }
-.stash-left { font-size: 0.8rem; color: var(--text-secondary); }
-.stash-left b { color: var(--primary); }
+.stash-craftcount { display: inline-flex; align-items: center; gap: 0.2rem; font-size: 0.8rem; color: var(--text-secondary); }
+.stash-craftcount input { width: 54px; padding: 0.2rem 0.4rem; background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 6px; color: var(--text-primary); font-size: 0.8rem; }
+.stash-left { font-size: 0.8rem; color: var(--text-secondary); font-weight: 600; }
 .stash-left--done { color: var(--success); display: inline-flex; align-items: center; gap: 0.25rem; }
-.stash-bar { height: 6px; border-radius: 3px; background: rgba(255,255,255,0.06); overflow: hidden; margin-bottom: 0.5rem; }
+.stash-bar { height: 6px; border-radius: 3px; background: rgba(255,255,255,0.06); overflow: hidden; margin-bottom: 0.6rem; }
 .stash-bar-fill { height: 100%; background: linear-gradient(90deg, var(--primary), rgba(220,38,38,0.5)); transition: width 0.2s; }
 .stash-row--done .stash-bar-fill { background: linear-gradient(90deg, var(--success), rgba(16,185,129,0.5)); }
-.stash-row-ctl { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap; }
-.stash-have { font-size: 0.82rem; color: var(--text-secondary); display: inline-flex; align-items: center; gap: 0.3rem; }
-.stash-tgt { width: 70px !important; padding: 0.2rem 0.4rem !important; }
-.stash-add { display: flex; align-items: center; gap: 0.4rem; }
+.stash-res { display: flex; flex-direction: column; gap: 0.25rem; }
+.stash-res-row { display: flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; padding: 0.15rem 0; }
+.stash-res-row--ok { opacity: 0.6; }
+.stash-res-name { flex: 1; min-width: 0; }
+.stash-res-need { color: var(--text-muted); font-size: 0.75rem; white-space: nowrap; }
+.stash-have-inp { width: 80px !important; padding: 0.2rem 0.4rem !important; }
+.stash-res-left { color: var(--primary); font-size: 0.75rem; font-weight: 600; white-space: nowrap; }
+.stash-ok { color: var(--success); display: inline-flex; }
 
 /* ===== CRAFT QUEUE: группы + складчина ===== */
 .cq-groups { display: flex; flex-direction: column; gap: 1.25rem; }
