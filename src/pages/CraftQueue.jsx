@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { useLang } from '../context/LanguageContext';
 import { listProducts, flattenBase, itemName, itemGrade, itemIcon } from '../utils/recipeCalc';
 import { subscribeToPrices } from '../services/priceService';
-import { subscribeToCraftRequests, addCraftRequest, setRequestStatus, deleteCraftRequest } from '../services/craftRequestService';
+import { subscribeToCraftRequests, addCraftRequest, setRequestStatus, deleteCraftRequest, addContribution, removeContribution } from '../services/craftRequestService';
 
 const fmt = (n) => new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 1 }).format(n);
 const gradeClass = (g) => `grade-badge grade-${(g || 'NG').toLowerCase()}`;
@@ -20,6 +20,7 @@ export const CraftQueue = () => {
   const [count, setCount] = useState(1);
   const [note, setNote] = useState('');
   const [expanded, setExpanded] = useState({});
+  const [contrib, setContrib] = useState({}); // reqId -> { resourceId, qty }
 
   useEffect(() => {
     const u1 = subscribeToCraftRequests(setRequests);
@@ -42,6 +43,36 @@ export const CraftQueue = () => {
     .sort((a, b) => a.name.localeCompare(b.name));
 
   const costOf = (rows) => rows.reduce((s, r) => s + r.qty * (Number(prices[r.id]) || 0), 0);
+
+  // Заявки, сгруппированные по мемберу (свои — сверху).
+  const groups = useMemo(() => {
+    const map = new Map();
+    for (const r of requests) {
+      const key = r.requesterId || r.requesterName || '—';
+      if (!map.has(key)) map.set(key, { id: key, name: r.requesterName || '—', reqs: [] });
+      map.get(key).reqs.push(r);
+    }
+    const arr = [...map.values()];
+    arr.sort((a, b) => (a.id === currentUser?.uid ? -1 : b.id === currentUser?.uid ? 1 : a.name.localeCompare(b.name)));
+    return arr;
+  }, [requests, currentUser]);
+
+  const contribSum = (req, resId) => (req.contributions || [])
+    .filter(c => String(c.resourceId) === String(resId))
+    .reduce((s, c) => s + (Number(c.qty) || 0), 0);
+
+  const sendContribution = async (req) => {
+    const cur = contrib[req.id];
+    const qty = Number(cur?.qty) || 0;
+    if (!cur?.resourceId || qty <= 0) return;
+    try {
+      await addContribution(req.id, {
+        uid: currentUser.uid, name: userNickname || currentUser.email,
+        resourceId: String(cur.resourceId), resourceName: itemName(cur.resourceId), qty, at: Date.now(),
+      });
+      setContrib(s => ({ ...s, [req.id]: { resourceId: '', qty: '' } }));
+    } catch { alert(t('cq.error')); }
+  };
 
   return (
     <>
@@ -77,46 +108,76 @@ export const CraftQueue = () => {
       {requests.length === 0 ? (
         <div className="glass-panel"><p className="text-center text-muted" style={{ padding: '2rem' }}>{t('cq.empty')}</p></div>
       ) : (
-        <div className="cq-list">
-          {requests.map(req => {
-            const rows = baseFor(req);
-            const isOpen = expanded[req.id];
-            const mine = req.requesterId === currentUser?.uid;
-            const done = req.status === 'done';
-            return (
-              <div key={req.id} className={`glass-panel cq-req ${done ? 'cq-req--done' : ''}`}>
-                <div className="cq-req-head">
-                  <button className="rc-node-toggle" onClick={() => setExpanded(p => ({ ...p, [req.id]: !p[req.id] }))}>{isOpen ? <ChevronDown size={14} /> : <ChevronRight size={14} />}</button>
-                  <Ic id={req.productId} size={22} />
-                  <span className="cq-req-name">{req.productName} <span className="cq-req-count">×{req.count}</span></span>
-                  <span className="cq-req-by"><User size={11} /> {req.requesterName}</span>
-                  {req.note && <span className="cq-req-note">{req.note}</span>}
-                  <span className="cq-req-cost">{fmt(costOf(rows))}</span>
-                  <div className="cq-req-actions">
-                    {(isOfficer || mine) && (
-                      <button className="btn btn-sm" onClick={() => setRequestStatus(req.id, done ? 'open' : 'done')} title={t('cq.toggleDone')}>
-                        {done ? <CheckCircle2 size={14} color="var(--success)" /> : <Circle size={14} />}
-                      </button>
-                    )}
-                    {(isOfficer || mine) && <button className="rb-del" onClick={() => { if (window.confirm(t('cq.deleteConfirm'))) deleteCraftRequest(req.id); }}><Trash2 size={14} /></button>}
-                  </div>
-                </div>
-                {isOpen && (
-                  <div className="cq-res">
-                    <div className="cq-res-h">{t('cq.needRes')}</div>
-                    {rows.map(r => (
-                      <div key={r.id} className="cq-res-row">
-                        <Ic id={r.id} size={16} /><span className={gradeClass(r.grade)}>{r.grade}</span>
-                        <span className="cq-res-name">{r.name}</span>
-                        <span className="cq-res-qty">×{fmt(r.qty)}</span>
-                        <span className="cq-res-sub">{prices[r.id] ? fmt(r.qty * Number(prices[r.id])) : '—'}</span>
+        <div className="cq-groups">
+          {groups.map(g => (
+            <div key={g.id} className="cq-group">
+              <div className="cq-group-head"><User size={13} /> {g.name} <span className="cq-group-count">{g.reqs.length}</span></div>
+              <div className="cq-list">
+                {g.reqs.map(req => {
+                  const rows = baseFor(req);
+                  const isOpen = expanded[req.id];
+                  const mine = req.requesterId === currentUser?.uid;
+                  const done = req.status === 'done';
+                  const contribs = req.contributions || [];
+                  return (
+                    <div key={req.id} className={`glass-panel cq-req ${done ? 'cq-req--done' : ''}`}>
+                      <div className="cq-req-head">
+                        <button className="rc-node-toggle" onClick={() => setExpanded(p => ({ ...p, [req.id]: !p[req.id] }))}>{isOpen ? <ChevronDown size={14} /> : <ChevronRight size={14} />}</button>
+                        <Ic id={req.productId} size={22} />
+                        <span className="cq-req-name">{req.productName} <span className="cq-req-count">×{req.count}</span></span>
+                        {req.note && <span className="cq-req-note">{req.note}</span>}
+                        {contribs.length > 0 && <span className="cq-req-coop" title={t('cq.coop')}>🤝 {contribs.length}</span>}
+                        <span className="cq-req-cost">{fmt(costOf(rows))}</span>
+                        <div className="cq-req-actions">
+                          {(isOfficer || mine) && (
+                            <button className="btn btn-sm" onClick={() => setRequestStatus(req.id, done ? 'open' : 'done')} title={t('cq.toggleDone')}>
+                              {done ? <CheckCircle2 size={14} color="var(--success)" /> : <Circle size={14} />}
+                            </button>
+                          )}
+                          {(isOfficer || mine) && <button className="rb-del" onClick={() => { if (window.confirm(t('cq.deleteConfirm'))) deleteCraftRequest(req.id); }}><Trash2 size={14} /></button>}
+                        </div>
                       </div>
-                    ))}
-                  </div>
-                )}
+                      {isOpen && (
+                        <div className="cq-res">
+                          <div className="cq-res-h">{t('cq.needRes')}</div>
+                          {rows.map(r => {
+                            const got = contribSum(req, r.id);
+                            return (
+                              <div key={r.id} className="cq-res-row">
+                                <Ic id={r.id} size={16} /><span className={gradeClass(r.grade)}>{r.grade}</span>
+                                <span className="cq-res-name">{r.name}</span>
+                                <span className="cq-res-qty">×{fmt(r.qty)}</span>
+                                {got > 0 && <span className={`cq-res-got ${got >= r.qty ? 'cq-res-got--full' : ''}`}>{t('cq.gathered')}: {fmt(got)}</span>}
+                                <span className="cq-res-sub">{prices[r.id] ? fmt(r.qty * Number(prices[r.id])) : '—'}</span>
+                              </div>
+                            );
+                          })}
+                          <div className="cq-coop">
+                            <div className="cq-res-h">{t('cq.coop')}</div>
+                            {contribs.map((c, i) => (
+                              <div key={i} className="cq-coop-row">
+                                <User size={11} /> <span className="cq-coop-name">{c.name}</span>
+                                <span className="cq-coop-item">{c.resourceName} ×{fmt(c.qty)}</span>
+                                {c.uid === currentUser?.uid && <button className="rb-del" onClick={() => removeContribution(req.id, c)} title={t('cq.removeContrib')}><Trash2 size={12} /></button>}
+                              </div>
+                            ))}
+                            <div className="cq-coop-add">
+                              <select className="input-field" value={contrib[req.id]?.resourceId ?? ''} onChange={e => setContrib(s => ({ ...s, [req.id]: { ...s[req.id], resourceId: e.target.value } }))}>
+                                <option value="">{t('cq.pickRes')}</option>
+                                {rows.map(r => <option key={r.id} value={r.id}>{r.name}</option>)}
+                              </select>
+                              <input type="number" min="1" className="input-field" placeholder={t('cq.qty')} value={contrib[req.id]?.qty ?? ''} onChange={e => setContrib(s => ({ ...s, [req.id]: { ...s[req.id], qty: e.target.value } }))} style={{ width: '90px' }} />
+                              <button className="btn btn-sm btn-primary" onClick={() => sendContribution(req)}><Plus size={13} /> {t('cq.iSent')}</button>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
       )}
     </>

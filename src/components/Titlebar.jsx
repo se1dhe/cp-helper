@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { getCurrentWindow } from '@tauri-apps/api/window';
-import { Minus, Square, Copy, X, Rocket, Map as MapIcon } from 'lucide-react';
+import { Minus, Square, Copy, X, Rocket, Map as MapIcon, History } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useLang } from '../context/LanguageContext';
+import { ChangelogModal } from './ChangelogModal';
 import { subscribeToServerInfo } from '../services/roadmapService';
 import { subscribeToRoster } from '../services/rosterService';
 import { getCountdown } from '../utils/countdown';
@@ -19,6 +20,7 @@ export const Titlebar = () => {
   const [maximized, setMaximized] = useState(false);
   const [launchDate, setLaunchDate] = useState('');
   const [roster, setRoster] = useState([]);
+  const [changelogOpen, setChangelogOpen] = useState(false);
 
   const active = !!currentUser && !isGuest;
 
@@ -54,6 +56,7 @@ export const Titlebar = () => {
   const phase = phaseId ? LU4_PHASES.find((p) => p.id === phaseId) : null;
 
   return (
+    <>
     <div className="titlebar" data-tauri-drag-region>
       <div className="titlebar-left" data-tauri-drag-region>
         <img src="/icons/icon.png" alt="" className="titlebar-logo" onError={(e) => { e.target.style.display = 'none'; }} />
@@ -74,6 +77,10 @@ export const Titlebar = () => {
         )}
       </div>
 
+      <button className="titlebar-action" onClick={() => setChangelogOpen(true)} title={t('changelog.title')} aria-label={t('changelog.title')}>
+        <History size={14} />
+      </button>
+
       {isTauri && (
         <div className="titlebar-controls">
           <button className="titlebar-btn" onClick={minimize} title={t('win.minimize')} aria-label={t('win.minimize')}>
@@ -88,5 +95,7 @@ export const Titlebar = () => {
         </div>
       )}
     </div>
+    <ChangelogModal open={changelogOpen} onClose={() => setChangelogOpen(false)} />
+    </>
   );
 };

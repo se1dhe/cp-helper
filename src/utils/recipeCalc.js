@@ -70,3 +70,16 @@ export const listProducts = ({ grade = 'all', type = 'all', q = '' } = {}) => {
 };
 
 export const PRODUCT_TYPES = ['Weapon', 'Armor', 'Accessory', 'Other'];
+
+// Поиск по ВСЕМ предметам (включая ресурсы/базовые мат.) — для личных закладок.
+export const searchItems = (q = '', limit = 20) => {
+  const query = q.trim().toLowerCase();
+  if (query.length < 2) return [];
+  const res = [];
+  for (const id in ITEMS) {
+    const name = ITEMS[id][0];
+    if (name && name.toLowerCase().includes(query)) res.push({ id, name, grade: ITEMS[id][1] || 'NG' });
+  }
+  res.sort((a, b) => (GRADE_ORDER[a.grade] - GRADE_ORDER[b.grade]) || a.name.localeCompare(b.name));
+  return res.slice(0, limit);
+};

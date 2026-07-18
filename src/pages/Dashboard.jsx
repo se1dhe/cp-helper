@@ -16,7 +16,9 @@ import { useAuth } from '../context/AuthContext';
 import { useLang } from '../context/LanguageContext';
 import { L2_CLASSES } from '../utils/classes';
 import { ClassIcon } from '../components/ClassIcon';
-import { getUniversalQuests, getRaceQuestsForClass, getRaceLabel, getRaceForClass } from '../data/quests';
+import { getUniversalQuests, getRaceQuestsForClass, getRaceLabel, getRaceForClass, isQuestHiddenForMember, questWikiUrl } from '../data/quests';
+import { openExternal } from '../utils/openExternal';
+import { ExternalLink } from 'lucide-react';
 
 const getClassDetails = (name) => L2_CLASSES.find(c => c.name === name) || { type: 'unknown', color: '#888' };
 
@@ -55,6 +57,8 @@ export const Dashboard = () => {
   const [newNote, setNewNote] = useState('');
   const [notesCollapsed, setNotesCollapsed] = useState(() => localStorage.getItem('notesCollapsed') === 'true');
   useEffect(() => { localStorage.setItem('notesCollapsed', notesCollapsed); }, [notesCollapsed]);
+  const [tasksCollapsed, setTasksCollapsed] = useState(() => localStorage.getItem('tasksCollapsed') === 'true');
+  useEffect(() => { localStorage.setItem('tasksCollapsed', tasksCollapsed); }, [tasksCollapsed]);
   const [launchDate, setLaunchDate] = useState('');
   const [roadmapProgress, setRoadmapProgress] = useState({});
 
@@ -288,15 +292,15 @@ export const Dashboard = () => {
       )}
 
       <div className="tasks-section">
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.875rem' }}>
-          <h3 className="section-header" style={{ margin: 0 }}><Target size={15} /> {t('dashboard.tasks')}</h3>
+        <button className="section-header section-header--clickable" onClick={() => setTasksCollapsed(prev => !prev)}>
+          <Target size={15} /> {t('dashboard.tasks')}
           {visibleTasks.length > 0 && (
-            <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: 600 }}>
-              {t('dashboard.completed', { done: doneTasks, total: visibleTasks.length })}
-            </span>
+            <span className="notes-count">{t('dashboard.completed', { done: doneTasks, total: visibleTasks.length })}</span>
           )}
-        </div>
+          {tasksCollapsed ? <ChevronRight size={14} /> : <ChevronDown size={14} />}
+        </button>
 
+        {!tasksCollapsed && (<>
         {(isPL || isOfficer) && (
           <form onSubmit={handleAddTask} style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.875rem', flexWrap: 'wrap' }}>
             <input
@@ -316,7 +320,7 @@ export const Dashboard = () => {
               <option value="prime">{t('dashboard.prime')}</option>
               <option value="offprime">{t('dashboard.offprime')}</option>
             </select>
-            {isPL && (
+            {(isPL || isOfficer) && (
               <select
                 className="input-field"
                 style={{ width: 'auto', minWidth: '130px' }}
@@ -376,6 +380,7 @@ export const Dashboard = () => {
             </div>
           )}
         </div>
+        </>)}
       </div>
 
       <div className="quests-section">
@@ -397,9 +402,10 @@ export const Dashboard = () => {
               let idx = 0;
               const renderQuest = (q) => {
                 const questId = `${m.id}-${idx}`;
+                idx++;
                 const isExpanded = expandedQuests[questId];
                 const isDone = questLog?.[m.userId]?.[q.name] === true;
-                idx++;
+                if (isQuestHiddenForMember(q, m.lvl, isDone)) return null;
                 return (
                   <div key={questId} className={`quest-card ${isExpanded ? 'quest-card--expanded' : ''} ${isDone ? 'quest-card--done' : ''}`}>
                     <div className="quest-card-top">
@@ -422,6 +428,9 @@ export const Dashboard = () => {
                           ? <ChevronDown size={14} className="quest-card-chevron" />
                           : <ChevronRight size={14} className="quest-card-chevron" />
                         }
+                      </button>
+                      <button className="quest-card-wiki" onClick={(e) => { e.stopPropagation(); openExternal(questWikiUrl(q.name)); }} title={t('quest.walkthrough')}>
+                        <ExternalLink size={13} />
                       </button>
                     </div>
                     {isExpanded && (

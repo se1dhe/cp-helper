@@ -1,13 +1,14 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { User, Coins, Medal, Map as MapIcon, Flame, CheckCircle2, Circle } from 'lucide-react';
+import { User, Coins, Medal, Map as MapIcon, Flame, CheckCircle2, Circle, ExternalLink } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useLang } from '../context/LanguageContext';
 import { subscribeToTransactions } from '../services/treasuryService';
 import { subscribeToQuestData } from '../services/questService';
 import { subscribeToQuestLog } from '../services/questLogService';
 import { subscribeToMinContributions } from '../services/memberService';
-import { getUniversalQuests, getRaceQuestsForClass } from '../data/quests';
+import { getUniversalQuests, getRaceQuestsForClass, isQuestHiddenForMember, questWikiUrl } from '../data/quests';
 import { LU4_PHASES, getActivePhaseId } from '../data/lu4Roadmap';
+import { openExternal } from '../utils/openExternal';
 import { L2_CLASSES } from '../utils/classes';
 import { ClassIcon } from '../components/ClassIcon';
 
@@ -60,9 +61,12 @@ export const Profile = () => {
     if (!questData || !userClass) return { done: 0, total: 0, list: [] };
     const all = [...getRaceQuestsForClass(questData, userClass), ...getUniversalQuests(questData)];
     const log = questLog?.[uid] || {};
-    const list = all.map(q => ({ name: q.name, lvl: q.lvl, done: log[q.name] === true }));
+    // Прячем выполненные квесты, которые мембер перерос по уровню.
+    const list = all
+      .map(q => ({ name: q.name, lvl: q.lvl, done: log[q.name] === true }))
+      .filter(q => !isQuestHiddenForMember(q, userLevel, q.done));
     return { done: list.filter(x => x.done).length, total: list.length, list };
-  }, [questData, userClass, questLog, uid]);
+  }, [questData, userClass, questLog, uid, userLevel]);
 
   const phase = LU4_PHASES.find(p => p.id === getActivePhaseId(userLevel, true));
 
@@ -119,6 +123,7 @@ export const Profile = () => {
                 {q.done ? <CheckCircle2 size={15} color="var(--success)" /> : <Circle size={15} color="var(--text-muted)" />}
                 <span className="prof-quest-name">{q.name}</span>
                 <span className="prof-quest-lvl">LVL {q.lvl}</span>
+                <button className="prof-quest-wiki" onClick={() => openExternal(questWikiUrl(q.name))} title={t('quest.walkthrough')}><ExternalLink size={12} /></button>
               </div>
             ))}
           </div>

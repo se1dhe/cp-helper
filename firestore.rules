@@ -147,8 +147,16 @@ service cloud.firestore {
       allow create: if isNotGuest()
                     && request.resource.data.requesterId == request.auth.uid
                     && request.resource.data.productName is string;
-      allow update: if isOfficer() || (isNotGuest() && resource.data.requesterId == request.auth.uid);
+      // Офицер/автор правят целиком; любой не-гость может лишь дополнить «складчину» (contributions).
+      allow update: if isOfficer()
+                     || (isNotGuest() && resource.data.requesterId == request.auth.uid)
+                     || (isNotGuest() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['contributions']));
       allow delete: if isOfficer() || (isNotGuest() && resource.data.requesterId == request.auth.uid);
+    }
+
+    // Личные закладки ресурсов крафта: читает и пишет только владелец.
+    match /craftStash/{userId} {
+      allow read, write: if isAuth() && request.auth.uid == userId;
     }
 
     // Полезные ссылки: читают все (не гости), публикуют офицеры+.

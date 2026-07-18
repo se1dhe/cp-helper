@@ -14,6 +14,7 @@ import { subscribeToRoster } from '../services/rosterService';
 import { addTask } from '../services/taskService';
 import { getCountdown } from '../utils/countdown';
 import { LU4_PHASES, LU4_MECHANICS, LU4_CHARACTERS, LU4_TENTH, LU4_CRAFT, LU4_START_STEPS, LU4_RACE_ROUTES, PHASE_LEVEL_STEPS, allTaskIds, packLevel, getActivePhaseId } from '../data/lu4Roadmap';
+import { questWikiUrl } from '../data/quests';
 import { Hammer, Package, ListChecks, Flag, Download, ExternalLink } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { openExternal } from '../utils/openExternal';
@@ -327,6 +328,7 @@ export const Roadmap = () => {
                             <span className="rm-quest-meta">{q.npc} · {q.lvl}</span>
                           </div>
                           <span className="rm-quest-reward">{q.reward}</span>
+                          <button className="rc-wiki" onClick={() => openExternal(questWikiUrl(q.name))} title={t('quest.walkthrough')}><ExternalLink size={11} /></button>
                         </div>
                       ))}
                     </div>

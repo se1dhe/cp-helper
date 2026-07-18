@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Hammer, RotateCcw, ChevronRight, ChevronDown, Search, Lightbulb, ShoppingCart, ExternalLink } from 'lucide-react';
+import { Hammer, RotateCcw, ChevronRight, ChevronDown, Search, Lightbulb, ShoppingCart, ExternalLink, Plus, CheckCircle2 } from 'lucide-react';
 import { useLang } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import {
@@ -8,8 +8,10 @@ import {
   itemStats, wikiUrl, RECIPES, PRODUCT_TYPES,
 } from '../utils/recipeCalc';
 import { subscribeToPrices, setSharedPrice } from '../services/priceService';
+import { addCraftRequest } from '../services/craftRequestService';
 import { openExternal } from '../utils/openExternal';
 import { CraftQueue } from './CraftQueue';
+import { CraftStash } from './CraftStash';
 import { LU4_CRAFT } from '../data/lu4Roadmap';
 
 const fmt = (n) => new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 1 }).format(n);
@@ -66,7 +68,8 @@ const RecipeNode = ({ node, prices, buy, toggleBuy, t }) => {
 
 const RecipeCalc = ({ initialId, onConsumed }) => {
   const { t } = useLang();
-  const { isOfficer } = useAuth();
+  const { isOfficer, currentUser, userNickname } = useAuth();
+  const [reqSent, setReqSent] = useState(false);
   const [grade, setGrade] = useState('all');
   const [type, setType] = useState('all');
   const [q, setQ] = useState('');
@@ -102,6 +105,13 @@ const RecipeCalc = ({ initialId, onConsumed }) => {
   const outCount = (rec ? rec.q : 1) * count;
   const setPrice = (id, v) => { if (isOfficer) setSharedPrice(id, v).catch(() => {}); };
   const toggleBuy = (id) => setBuyArr(a => a.map(String).includes(String(id)) ? a.filter(x => String(x) !== String(id)) : [...a, String(id)]);
+  const sendToQueue = async () => {
+    if (!selected || !currentUser) return;
+    try {
+      await addCraftRequest(selected, itemName(selected), count, '', currentUser.uid, userNickname || currentUser.email);
+      setReqSent(true); setTimeout(() => setReqSent(false), 2000);
+    } catch { alert(t('craft.reqError')); }
+  };
 
   return (
     <div className="rc-grid">
@@ -151,6 +161,9 @@ const RecipeCalc = ({ initialId, onConsumed }) => {
                 <input type="number" min="1" className="input-field" value={count} onChange={e => setCount(Math.max(1, Number(e.target.value) || 1))} />
               </label>
               <button className="rc-wiki-btn" onClick={() => openExternal(wikiUrl(selected))}><ExternalLink size={12} /> {t('craft.onWiki')}</button>
+              <button className="rc-wiki-btn" onClick={sendToQueue} title={t('craft.toQueueHint')}>
+                {reqSent ? <><CheckCircle2 size={12} color="var(--success)" /> {t('craft.reqSent')}</> : <><Plus size={12} /> {t('craft.toQueue')}</>}
+              </button>
             </div>
 
             {itemStats(selected) && (
@@ -336,8 +349,9 @@ export const Craft = () => {
         <button className={tab === 'recipes' ? 'active' : ''} onClick={() => setTab('recipes')}>{t('craft.tabRecipes')}</button>
         <button className={tab === 'shots' ? 'active' : ''} onClick={() => setTab('shots')}>{t('craft.tabShots')}</button>
         <button className={tab === 'queue' ? 'active' : ''} onClick={() => setTab('queue')}>{t('craft.tabQueue')}</button>
+        <button className={tab === 'stash' ? 'active' : ''} onClick={() => setTab('stash')}>{t('craft.tabStash')}</button>
       </div>
-      {tab === 'recipes' ? <RecipeCalc initialId={initialRecipe} onConsumed={() => setInitialRecipe(null)} /> : tab === 'shots' ? <ShotsCalc /> : <CraftQueue />}
+      {tab === 'recipes' ? <RecipeCalc initialId={initialRecipe} onConsumed={() => setInitialRecipe(null)} /> : tab === 'shots' ? <ShotsCalc /> : tab === 'queue' ? <CraftQueue /> : <CraftStash />}
     </div>
   );
 };

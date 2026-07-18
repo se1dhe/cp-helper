@@ -1,4 +1,4 @@
-import { collection, doc, addDoc, updateDoc, deleteDoc, onSnapshot, query, orderBy, serverTimestamp } from 'firebase/firestore';
+import { collection, doc, addDoc, updateDoc, deleteDoc, onSnapshot, query, orderBy, serverTimestamp, arrayUnion, arrayRemove } from 'firebase/firestore';
 import { db } from '../firebase';
 
 // Заявки на крафт: мембер создаёт свою, офицеры/автор правят статус/удаляют.
@@ -17,3 +17,10 @@ export const addCraftRequest = (productId, productName, count, note, requesterId
 
 export const setRequestStatus = (id, status) => updateDoc(doc(db, COLLECTION, id), { status });
 export const deleteCraftRequest = (id) => deleteDoc(doc(db, COLLECTION, id));
+
+// «Складчина»: любой мембер отмечает, сколько какого ресурса отправил на заявку.
+// at — число (Date.now), чтобы arrayRemove находил точную запись.
+export const addContribution = (id, c) =>
+  updateDoc(doc(db, COLLECTION, id), { contributions: arrayUnion(c) });
+export const removeContribution = (id, c) =>
+  updateDoc(doc(db, COLLECTION, id), { contributions: arrayRemove(c) });
