@@ -81,26 +81,30 @@ jobs:
         run: |
           mkdir -p out
           gh release download "${GITHUB_REF_NAME}" -R "${GITHUB_REPOSITORY}" -D out --clobber
+          echo "Скачано:"; ls -la out
+          # Не публикуем битый релиз: проверяем ключевые файлы и общий объём.
+          test -f out/latest.json || { echo "::error::нет latest.json в исходном релизе"; exit 1; }
+          N=$(ls -1 out | wc -l)
+          if [ "$N" -lt 4 ]; then echo "::error::слишком мало ассетов ($N)"; exit 1; fi
 
       - name: Rewrite updater URLs (private -> dist)
         run: |
-          if [ -f out/latest.json ]; then
-            sed -i 's#/se1dhe/cp-helper/releases/#/se1dhe/cp-helper-dist/releases/#g' out/latest.json
-            echo "--- latest.json ---"; cat out/latest.json
-          else
-            echo "latest.json не найден"; ls -la out
+          sed -i 's#/se1dhe/cp-helper/releases/#/se1dhe/cp-helper-dist/releases/#g' out/latest.json
+          echo "--- latest.json ---"; cat out/latest.json
+          if grep -q 'se1dhe/cp-helper/releases' out/latest.json; then
+            echo "::error::в latest.json остались приватные ссылки"; exit 1
           fi
 
       - name: Publish builds to public dist repo
         env:
           GH_TOKEN: ${{ secrets.DIST_TOKEN }}
         run: |
-          # --latest обязателен: все dist-релизы на одном коммите main, и без явной пометки
-          # GitHub /releases/latest (куда стучится апдейтер) выбирает не тот релиз.
+          # Пересоздаём релиз целиком (delete+create), чтобы не оставалось частичных/битых
+          # состояний, и явно помечаем --latest (все релизы на одном коммите main).
+          gh release delete "${GITHUB_REF_NAME}" -R se1dhe/cp-helper-dist --yes --cleanup-tag 2>/dev/null || true
+          sleep 3
           gh release create "${GITHUB_REF_NAME}" out/* \
             -R se1dhe/cp-helper-dist \
             -t "CP-Helper ${GITHUB_REF_NAME}" \
             --notes "Сборки CP-Helper ${GITHUB_REF_NAME}." \
-            --latest \
-          || (gh release upload "${GITHUB_REF_NAME}" out/* -R se1dhe/cp-helper-dist --clobber \
-              && gh release edit "${GITHUB_REF_NAME}" -R se1dhe/cp-helper-dist --latest)
+            --latest
