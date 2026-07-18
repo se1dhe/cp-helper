@@ -73,6 +73,15 @@ body {
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 2px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.15); }
 
+/* ===== ОБЩИЙ ПРОГРЕСС-БАР ===== */
+.progress { height: 6px; border-radius: 3px; background: rgba(255,255,255,0.06); overflow: hidden; }
+.progress--sm { height: 5px; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), rgba(220,38,38,0.5)); transition: width 0.25s ease; }
+.progress-fill--green { background: linear-gradient(90deg, var(--success), rgba(16,185,129,0.5)); }
+.progress-row { display: flex; align-items: center; gap: 0.5rem; }
+.progress-row .progress { flex: 1; }
+.progress-label { font-size: 0.72rem; color: var(--text-secondary); font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; }
+
 /* ===== TITLEBAR (frameless) ===== */
 .app-shell { display: flex; flex-direction: column; height: 100%; }
 .app-body { flex: 1; min-height: 0; }

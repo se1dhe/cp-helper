@@ -211,7 +211,10 @@ export const Dashboard = () => {
           <div className="dash-phase-goal">{activePhase.goal}</div>
           {phaseMin > 1 && assignableMembers.length > 0 && (
             <div className="dash-phase-readiness">
-              <span className="dash-ready">{t('dashboard.ready', { done: readyCount, total: assignableMembers.length })}</span>
+              <div className="progress-row">
+                <span className="dash-ready">{t('dashboard.ready', { done: readyCount, total: assignableMembers.length })}</span>
+                <div className="progress progress--sm"><div className="progress-fill progress-fill--green" style={{ width: `${Math.round(readyCount / assignableMembers.length * 100)}%` }} /></div>
+              </div>
               {lagging.length > 0 && (
                 <span className="dash-lagging">
                   {t('dashboard.lagging')}: {lagging.map(m => `${m.name} (${m.lvl})`).join(', ')}
@@ -301,6 +304,11 @@ export const Dashboard = () => {
         </button>
 
         {!tasksCollapsed && (<>
+        {visibleTasks.length > 0 && (
+          <div className="progress progress--sm" style={{ marginBottom: '0.75rem' }}>
+            <div className="progress-fill progress-fill--green" style={{ width: `${Math.round(doneTasks / visibleTasks.length * 100)}%` }} />
+          </div>
+        )}
         {(isPL || isOfficer) && (
           <form onSubmit={handleAddTask} style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.875rem', flexWrap: 'wrap' }}>
             <input

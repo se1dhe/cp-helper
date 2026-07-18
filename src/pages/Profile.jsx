@@ -117,6 +117,12 @@ export const Profile = () => {
       {quests.list.length > 0 && (
         <div className="glass-panel">
           <h3 className="section-header"><Medal size={16} /> {t('profile.myQuests')}</h3>
+          {quests.total > 0 && (
+            <div className="progress-row" style={{ marginBottom: '0.75rem' }}>
+              <div className="progress"><div className="progress-fill progress-fill--green" style={{ width: `${Math.round(quests.done / quests.total * 100)}%` }} /></div>
+              <span className="progress-label">{quests.done}/{quests.total}</span>
+            </div>
+          )}
           <div className="prof-quests">
             {quests.list.map((q, i) => (
               <div key={i} className={`prof-quest ${q.done ? 'prof-quest--done' : ''}`}>

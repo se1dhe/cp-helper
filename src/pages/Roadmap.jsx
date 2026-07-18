@@ -184,6 +184,9 @@ export const Roadmap = () => {
         </button>
         {expanded.has('start') && (
           <div className="rm-phase-body">
+            <div className="progress progress--sm" style={{ marginBottom: '0.6rem' }}>
+              <div className="progress-fill progress-fill--green" style={{ width: `${Math.round(LU4_START_STEPS.filter(s => progress[s.id]).length / LU4_START_STEPS.length * 100)}%` }} />
+            </div>
             <ol className="rm-start">
               {LU4_START_STEPS.map(s => (
                 <li key={s.id} className="rm-start-item">

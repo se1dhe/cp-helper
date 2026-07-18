@@ -218,6 +218,11 @@ export const MemberProgress = () => {
                         <span className={`quest-count ${questsOk === true ? 'quest-count--ok' : questsOk === false ? 'quest-count--bad' : ''}`}>
                           {total > 0 ? `${done}/${total}` : '—'}
                         </span>
+                        {total > 0 && (
+                          <div className="progress progress--sm" style={{ marginTop: '0.3rem', width: '72px' }}>
+                            <div className={`progress-fill ${done === total ? 'progress-fill--green' : ''}`} style={{ width: `${Math.round(done / total * 100)}%` }} />
+                          </div>
+                        )}
                       </td>
                       <td>
                         <span className={`adena-today ${adenaOk === true ? 'adena-today--ok' : adenaOk === false ? 'adena-today--bad' : ''}`}>
@@ -225,6 +230,11 @@ export const MemberProgress = () => {
                         </span>
                         {adenaOk === false && adenaRemaining > 0 && (
                           <span className="adena-remaining">{t('members.needMore', { amount: adenaRemaining.toLocaleString('ru-RU') })}</span>
+                        )}
+                        {minAdena > 0 && (
+                          <div className="progress progress--sm" style={{ marginTop: '0.3rem', width: '80px' }}>
+                            <div className={`progress-fill ${adenaOk ? 'progress-fill--green' : ''}`} style={{ width: `${Math.min(100, Math.round(adenaTodayAmount / minAdena * 100))}%` }} />
+                          </div>
                         )}
                       </td>
                       <td>
