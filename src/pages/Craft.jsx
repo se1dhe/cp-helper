@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Hammer, RotateCcw, ChevronRight, ChevronDown, Search, Lightbulb, ShoppingCart, ExternalLink, Plus, CheckCircle2 } from 'lucide-react';
+import { Hammer, RotateCcw, ChevronRight, ChevronDown, Search, Lightbulb, ShoppingCart, ExternalLink, Plus, CheckCircle2, Bookmark } from 'lucide-react';
 import { useLang } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import {
@@ -9,6 +9,7 @@ import {
 } from '../utils/recipeCalc';
 import { subscribeToPrices, setSharedPrice } from '../services/priceService';
 import { addCraftRequest } from '../services/craftRequestService';
+import { addCraftStashItem } from '../services/craftStashService';
 import { openExternal } from '../utils/openExternal';
 import { CraftQueue } from './CraftQueue';
 import { CraftStash } from './CraftStash';
@@ -70,6 +71,7 @@ const RecipeCalc = ({ initialId, onConsumed }) => {
   const { t } = useLang();
   const { isOfficer, currentUser, userNickname } = useAuth();
   const [reqSent, setReqSent] = useState(false);
+  const [bmSent, setBmSent] = useState(false);
   const [grade, setGrade] = useState('all');
   const [type, setType] = useState('all');
   const [q, setQ] = useState('');
@@ -110,6 +112,13 @@ const RecipeCalc = ({ initialId, onConsumed }) => {
     try {
       await addCraftRequest(selected, itemName(selected), count, '', currentUser.uid, userNickname || currentUser.email);
       setReqSent(true); setTimeout(() => setReqSent(false), 2000);
+    } catch { alert(t('craft.reqError')); }
+  };
+  const addToStash = async () => {
+    if (!selected || !currentUser) return;
+    try {
+      await addCraftStashItem(currentUser.uid, { productId: String(selected), name: itemName(selected), grade: itemGrade(selected), count, have: {} });
+      setBmSent(true); setTimeout(() => setBmSent(false), 2000);
     } catch { alert(t('craft.reqError')); }
   };
 
@@ -163,6 +172,9 @@ const RecipeCalc = ({ initialId, onConsumed }) => {
               <button className="rc-wiki-btn" onClick={() => openExternal(wikiUrl(selected))}><ExternalLink size={12} /> {t('craft.onWiki')}</button>
               <button className="rc-wiki-btn" onClick={sendToQueue} title={t('craft.toQueueHint')}>
                 {reqSent ? <><CheckCircle2 size={12} color="var(--success)" /> {t('craft.reqSent')}</> : <><Plus size={12} /> {t('craft.toQueue')}</>}
+              </button>
+              <button className="rc-wiki-btn" onClick={addToStash} title={t('craft.toStashHint')}>
+                {bmSent ? <><CheckCircle2 size={12} color="var(--success)" /> {t('craft.bmSent')}</> : <><Bookmark size={12} /> {t('craft.toStash')}</>}
               </button>
             </div>
 
