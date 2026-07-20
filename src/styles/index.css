@@ -180,12 +180,20 @@ body {
 .quest-modal-card .modal-head h3 { display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap; }
 .quest-modal-lvl { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 0.72rem; color: var(--primary); border: 1px solid var(--border); border-radius: 6px; padding: 1px 6px; }
 .quest-modal-body { overflow-y: auto; display: flex; flex-direction: column; gap: 0.9rem; padding: 0.25rem 0.15rem; }
+.quest-modal-ru { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1rem; color: var(--primary); margin-top: -0.4rem; }
 .quest-modal-intro { margin: 0; font-size: 0.85rem; line-height: 1.5; color: var(--text-secondary); font-style: italic; }
+.quest-modal-reward { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 8px; padding: 3px 9px; font-size: 0.78rem; color: var(--text-secondary); }
 .quest-modal-row { display: flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; color: var(--text-primary); }
 .quest-modal-row svg { color: var(--text-muted); flex-shrink: 0; }
 .quest-modal-section { display: flex; flex-direction: column; gap: 0.4rem; }
 .quest-modal-section-h { display: flex; align-items: center; gap: 0.4rem; font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-muted); }
+.quest-modal-src { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 0.62rem; letter-spacing: 0.02em; text-transform: none; color: var(--primary); border: 1px solid var(--border); border-radius: 5px; padding: 0 5px; }
 .quest-modal-rewards { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.quest-modal-rewards--list { flex-direction: column; gap: 0.3rem; }
+.quest-modal-rewards--list .quest-modal-reward { position: relative; padding: 2px 0 2px 0.9rem; background: none; border: none; border-radius: 0; font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4; }
+.quest-modal-rewards--list .quest-modal-reward::before { content: '◆'; position: absolute; left: 0; color: var(--primary); font-size: 0.6rem; top: 0.35rem; }
+.quest-modal-tips { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.4rem; }
+.quest-modal-tip { position: relative; padding: 0.5rem 0.7rem; background: rgba(212,175,55,0.06); border: 1px solid rgba(212,175,55,0.25); border-radius: 8px; font-size: 0.8rem; line-height: 1.5; color: var(--text-secondary); }
 .quest-modal-rewards-text { margin: 0; font-size: 0.82rem; color: var(--text-secondary); }
 .quest-modal-link { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 8px; padding: 3px 9px; font-size: 0.78rem; color: var(--text-secondary); cursor: pointer; transition: color 0.15s ease, border-color 0.15s ease; }
 .quest-modal-link:hover { color: var(--primary); border-color: var(--primary); }

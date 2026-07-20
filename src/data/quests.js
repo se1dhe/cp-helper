@@ -53,6 +53,6 @@ export const questWikiUrl = (name) => {
 // Возвращает объект { name, level, url, intro, startNpc, rewards[], steps[] } или null.
 export const getQuestDetails = (name) => QUEST_DETAILS[name] || null;
 
-// Абсолютная ссылка на страницу вики из относительного href ('/lu4/quest/...').
+// Абсолютная ссылка на l2hub из относительного href ('/il-ru/quests/...').
 export const wikiAbsUrl = (href) =>
-  href ? `https://masterwork.wiki${href}` : null;
+  href ? `https://l2hub.info${href}` : null;

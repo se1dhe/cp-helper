@@ -1,286 +1,513 @@
 {
   "Bonds of Slavery": {
     "name": "Bonds of Slavery",
-    "level": "6 ~ 11",
-    "url": "/lu4/quest/265-bonds-of-slavery",
-    "intro": "Our former slaves, the Imps, managed to escape while we were distracted by the war. It's time we teach those ungrateful wretches that no one escapes the Dark Elves!",
-    "startNpc": { "name": "Kristin Sentry (Kristin)", "href": "/lu4/npc/30357-kristin" },
-    "rewards": [{ "name": "Flexible Reward NG", "href": "/lu4/item/15630-flexible-reward" }],
+    "nameRu": "Цепи рабства",
+    "level": "6",
+    "location": "Деревня Темных Эльфов",
+    "startNpc": "Охранник Кристина",
+    "url": "/il-ru/quests/265-bonds-of-slavery",
+    "intro": "Пока мы были заняты войной, наши бывшие рабы, Бесы, сбежали. Пришло время научить этих неблагодарных негодяев, что ни у кого еще не получалось уйти от возмездия Темных Эльфов!",
+    "rewards": [
+      "Adena NG",
+      "Imp Shackles NG = 12 адены/шт",
+      "Бонус за 10+ предметов: 500 адены",
+      "Первое прохождение: Soulshot: No Grade NG ×2 000, Spiritshot: No Grade NG ×1 000"
+    ],
     "steps": [
-      { "title": "1: Imp Shackle", "text": "Go to the Dark Elven Forest and take an imp shackle to Sentry Kristin. Hunt - Imps and Imp Elders." }
+      "Поговорите с Охранник Кристина.",
+      "Убивайте Бес and Старший Бес, чтобы получать Кандалы Бесов.",
+      "Вернитесь Охранник Кристина, и получите в награду: - Адена x12 за каждый Кандалы Бесов Если вы принесете более 10 частей, то дополнительно получите Адена x500. Бонус для мага: - Заряд Духа: Без Ранга, для Новичков x3000 Бонус для воина: - Заряд Души: Без Ранга, для Новичков x6000"
+    ],
+    "tips": [
+      "Повторяемый фарм адены. Обязательно пройди первый раз ради зарядов (Soulshot ×2 000 / Spiritshot ×1 000). Предметы падают случайному в группе."
     ]
   },
   "Cure for Fever Disease": {
     "name": "Cure for Fever Disease",
-    "level": "15 ~ 21",
-    "url": "/lu4/quest/151-cure-for-fever-disease",
-    "intro": "The students of Einhovant's School of Magic have come down with a mysterious fever. Their teacher, Elias, is quite concerned.",
-    "startNpc": { "name": "Elias (Elias)", "href": "/lu4/npc/30050-elias" },
+    "nameRu": "Лекарство от лихорадки",
+    "level": "15",
+    "location": "Деревня Говорящего Острова",
+    "startNpc": "Элиас",
+    "url": "/il-ru/quests/151-cure-for-fever-disease",
+    "intro": "Ученики Школы Магов Айнховант заболели странной формой лихорадки. Их учитель Элиас волнуется за них.",
     "rewards": [
-      { "name": "Exp NG (20 000 шт.)", "href": "/lu4/item/15623-exp" },
-      { "name": "SP NG (2 000 шт.)", "href": "/lu4/item/15624-sp" },
-      { "name": "Bone Shield NG", "href": "/lu4/item/625-bone-shield" }
+      "Bone Shield NG",
+      "Exp NG ×20 000",
+      "SP NG ×2 000"
     ],
     "steps": [
-      { "title": "1: Spider's Poison Sac", "text": "Priest Yohanes needs the poison sacs of many spiders, and you are asked to bring them to him. The Poison Sacs is very rare! Hunt to - Blade Spider, Giant Spider, Talon Spider." },
-      { "title": "2: Creation of the Cure for the Fever", "text": "You have obtained the poison sacs of giant spiders. Take them immediately to Priest Yohanes and ask him to make the medicine!" },
-      { "title": "3: Treatment of the Fever", "text": "Priest Yohanes made fever medicine with the poison sacs you collected for him. Take the medicine for the students of the School of Wizardry to Master Elias immediately!" }
+      "Поговорите с Элиас",
+      "Убивайте Гигантский Паук, Когтистый Паук и Опасный Паук, пока не получите Ядовитая Железа.",
+      "Отдайте железу Жрец Йоханес, он даст вам Лекарство от Лихорадки.",
+      "Вернитесь с лекарством к Элиас, и получите в награду Круглый Щит x1."
+    ],
+    "tips": [
+      "Ядовитые железы пауков — редкий дроп, запасись терпением. Bone Shield + 20k EXP заметно тащат к 20 ур."
     ]
   },
   "Deliver Goods": {
     "name": "Deliver Goods",
-    "level": "2 ~ 7",
-    "url": "/lu4/quest/153-deliver-goods",
-    "intro": "Cargo that was presumed lost in a recent shipwreck has been recovered. Help Guard Arnold deliver the cargo to its recipients.",
-    "startNpc": { "name": "Arnold Guard (Arnold)", "href": "/lu4/npc/30041-arnold" },
+    "nameRu": "Доставка товаров",
+    "level": "2",
+    "location": "Деревня Говорящего Острова",
+    "startNpc": "Страж Арнольд",
+    "url": "/il-ru/quests/153-deliver-goods",
+    "intro": "Из корабельных обломков иногда можно извлечь сохранившиеся товары. Доставьте их по назначению.",
     "rewards": [
-      { "name": "Exp NG (2 000 шт.)", "href": "/lu4/item/15623-exp" },
-      { "name": "SP NG (200 шт.)", "href": "/lu4/item/15624-sp" },
-      { "name": "Ring of Knowledge NG (2 шт.)", "href": "/lu4/item/875-ring-of-knowledge" }
+      "Ring of Knowledge NG ×2",
+      "Exp NG ×2 000",
+      "SP NG ×200"
     ],
     "steps": [
-      { "title": "1: Deliver Goods", "text": "Guard Arnold, who has been working on the recovery of several recent shipwrecks, asks you to deliver some salvaged goods. Deliver the wooden box to Trader Jackson in the weapons shop. Deliver the bolts of cloth to Trader Silvia at the grocery store, and deliver the clay jar to Warehouse Keeper Rant." },
-      { "title": "2: Delivery Report", "text": "You have delivered the salvaged goods. Report to Guard Arnold." }
+      "Поговорите с Страж Арнольд. Он даст вам Список Доставки, Тяжелый Деревянный Ящик, Моток Ткани и Глиняный Горшок.",
+      "Отнесите горкошок к Warehouse KeeperРант, и он даст вам Расписка Ранта.",
+      "Отнесите ткань к Торговец Сильвия, и она даст вам Расписка Сильвии и Заряд Души: Без Ранга x3.",
+      "Отнесите ящик к Торговец Джексон, и он даст вам Расписка Джексона.",
+      "Вернитесь с 3 расписками к Страж Арнольд, и получите Кольцо Знаний x2."
+    ],
+    "tips": [
+      "Развози 3 посылки по деревне. Ring of Knowledge ×2 — хорошая стартовая бижа для маг-классов."
     ]
   },
   "Dragon Fangs": {
     "name": "Dragon Fangs",
-    "level": "19 ~ 29",
-    "url": "/lu4/quest/38-dragon-fangs",
-    "intro": "The primitive tribe of Langk Lizardmen in the southern part of Gludio Territory have been using a spell unknown to even the Mystics of the Ivory Tower.",
-    "startNpc": { "name": "Luis Guard (Luis)", "href": "/lu4/npc/30386-luis" },
+    "nameRu": "Клыки Дракона",
+    "level": "19",
+    "location": "Деревня Глудин",
+    "startNpc": "Страж Льюис",
+    "url": "/il-ru/quests/38-dragon-fangs",
+    "intro": "Примитивное племя Ящеров Лангк использует заклинание, неизвестное даже мистикам Башни Слоновой Кости.",
     "rewards": [
-      { "name": "Exp NG (350 000 шт.)", "href": "/lu4/item/15623-exp" },
-      { "name": "SP NG (35 000 шт.)", "href": "/lu4/item/15624-sp" },
-      { "name": "Random Reward NG", "href": "/lu4/item/15629-random-reward" }
+      "Exp NG ×350 000",
+      "SP NG ×35 000",
+      "Случайно (D-грейд): Bronze Helmet, Leather Gauntlets, Blue Buckskin Boots, Aspis, Iron Plate Gaiters, Puma Skin Gaiters, Cursed Stockings, Ring Mail Breastplate, Puma Skin Shirt, Cursed Tunic"
     ],
     "steps": [
-      { "title": "1: Wipe out the Raiders!", "text": "The guards of Giran have asked you to destroy the lizardmen that are disturbing the peace. Monsters to Hunt - Langk Lizardman Sentinel, Langk Lizardman Scout, Langk Lizardman Lieutenant, Langk Lizardman Warrior" },
-      { "title": "2: Return to Guard Luis", "text": "You've defeated the Langk Lizardmen that have been threatening the southern coast road. Return to Guard Luis of Gludin Village." },
-      { "title": "3: Mysterious Tooth", "text": "You discover a strange tooth among the warriors' effects. Ask Magister Iris about it." },
-      { "title": "4: Towards Magister Rohmer", "text": "Magister Iris was able to identify the tooth as coming from a dragon, but is unable to control it. She suggests that you ask Magister Rohmer in the Town of Gludio." },
-      { "title": "5: Exposed Secret", "text": "An expert in the sorcery of Lizardmen, Magister Rohmer has important reference data and asks you to deliver it to Magister Iris at once." },
-      { "title": "6: Find the Tooth", "text": "Magister Iris asks you to steal 50 teeth from the Lizardmen. Monsters to be hunted - Langk Lizardman Shaman, Langk Lizardman Leader." },
-      { "title": "7: Duty Fulfilled", "text": "You've collected the 50 dragon's teeth that Magister Iris asked for. Take them to her." }
+      "Поговорите с Страж Льюис.",
+      "Убивайте Часовой Ящеров Лангк и Лейтенант Ящеров Лангк, пока не получите Перо Лангк x100.",
+      "Поговорите с Страж Льюис.",
+      "Поговорите с Магистр Ирис.",
+      "Поговорите с Магистр Ромер.",
+      "Поговорите с Магистр Ирис.",
+      "Убивайте Шаман Ящеров Лангк and Главарь Ящеров Лангк, пока не получите Клык Дракона x50.",
+      "Вернитесь к Магистр Ирис, и получите одну случайную награду: - Костяной Шлемd и Адена x5200 - Асписd и Адена x1500 - Голубые Замшевые Сапогиd и Адена x3200 - Кожаные Рукавицыd и Адена x3200"
+    ],
+    "tips": [
+      "Топовый стартовый квест: 350k EXP + случайный D-грейд шмот. Фарм Langk Lizardmen у Глудина, бери группу. Делать ближе к 20 ур."
     ]
   },
   "Find Sir Windawood": {
     "name": "Find Sir Windawood",
-    "level": "3 ~ 6",
-    "url": "/lu4/quest/155-find-sir-windawood",
-    "intro": "An important letter has arrived for Sir Colin Windawood, the Consul of Talking Island. Sir Windawood, more likely to be found out on a stroll than in his office, hasn't seen it. Find Sir Windawood and deliver the letter to him.",
-    "startNpc": { "name": "Abellos Guard (Abellos)", "href": "/lu4/npc/30042-abellos" },
+    "nameRu": "Поиск сэра Виндавуда",
+    "level": "3",
+    "location": "Деревня Говорящего Острова",
+    "startNpc": "Страж Абеллос",
+    "url": "/il-ru/quests/155-find-sir-windawood",
+    "intro": "Прибыло срочное сообщение для сэра Коллина Виндавуда, консула Говорящего Острова. Консул ничего не знает об этом. Найдите сэра Виндавуда и доставьте ему письмо.",
     "rewards": [
-      { "name": "Exp NG (1 000 шт.)", "href": "/lu4/item/15623-exp" },
-      { "name": "SP NG (100 шт.)", "href": "/lu4/item/15624-sp" },
-      { "name": "Haste Potion NG", "href": "/lu4/item/734-haste-potion" },
-      { "name": "Alacrity Potion NG", "href": "/lu4/item/735-alacrity-potion" }
+      "Haste Potion NG",
+      "Alacrity Potion NG",
+      "Exp NG ×1 000",
+      "SP NG ×100"
     ],
     "steps": [
-      { "title": "1: Find Sir Windawood", "text": "Guard Abellos tells you that an urgent message has arrived from Gludio Castle for Sir Collin Windawood, the Consul of Talking Island. He asks you to deliver the message to the Consul near the Obelisk of Victory." }
+      "Поговорите с Страж Абеллос. Он даст вам Официальное Письмо.",
+      "Отнесите Официальное Письмо к Сэр Коллин Виндавуд, и получите Адена x100."
+    ],
+    "tips": [
+      "Отнеси письмо к консулу у Обелиска Победы. Haste/Alacrity зелья пригодятся на прокачке."
     ]
   },
   "Forgotten Truth": {
     "name": "Forgotten Truth",
-    "level": "10 ~ 15",
-    "url": "/lu4/quest/106-forgotten-truth",
-    "intro": "The infamous Orc Brigand has stolen Kaysha's Revelations! Retrieve this vital document to secure the future of all Dark Elves!",
-    "startNpc": { "name": "Thifiell Tetrarch (Thifiell)", "href": "/lu4/npc/30358-thifiell" },
+    "nameRu": "Забытая правда",
+    "level": "10",
+    "location": "Деревня Темных Эльфов",
+    "startNpc": "Тетрарх Тифиэль",
+    "url": "/il-ru/quests/106-forgotten-truth",
+    "intro": "Банда мерзких Орков украла \"Откровения Кайши\"! Верните этот бесценный манускрипт во имя будущего всех Темных Эльфов!",
     "rewards": [
-      { "name": "Lesser Healing Potion NG (100 шт.)", "href": "/lu4/item/1060-lesser-healing-potion" },
-      { "name": "Eldritch Dagger NG", "href": "/lu4/item/989-eldritch-dagger" },
-      { "name": "Apprentice's Spellbook NG", "href": "/lu4/item/99-apprentices-spellbook" },
-      { "name": "Question Mark NG", "href": "/lu4/item/15625-question-mark" }
+      "Для воинов: Eldritch Dagger NG, Soulshot: No Grade NG ×2 500, Lesser Healing Potion NG ×100",
+      "Для магов: Apprentice's Spellbook NG, Spiritshot: No Grade NG ×1 250, Lesser Healing Potion NG ×100"
     ],
     "steps": [
-      { "title": "1: Kaysha's Revelations", "text": "Dark Elven Tetrarch Thifiell asked Abyssal Celebrant Kartia to translate an ancient manuscript. He now asks you to retrieve the translated copy of 'Kaysha's Revelations'. You must be very discreet." },
-      { "title": "2: In Search of the Stolen Revelations", "text": "You hear that 'Kaysha's Revelations' was stolen by Tumran Orcs! Kill the Tumran Orc brigands that were last seen camping near the Altar of Rites, and recover the original copy of 'Kaysha's Revelations' and a clay tablet." },
-      { "title": "3: Return to Abyssal Celebrant Kartia", "text": "You have recovered the ancient scroll and clay tablet. Abyssal Celebrant Kartia is waiting for you." },
-      { "title": "4: Translation of the Completed Revelations", "text": "The translation of 'Kaysha's Revelations' is complete. Tetrarch Thifiell is waiting for you." }
+      "Поговорите с Тетрарх Тифиэль. Он даст вам I Ониксовый Талисман.",
+      "Отнесите талисман Служитель Бездны Картия. Она даст вам II Ониксовый Талисман.",
+      "Убивайте Квестовый Монстр Бандит Орков Тумран, пока не получите Древний Свиток и Древняя Глиняная Табличка. Они находятся возле Церемониального Алтаря",
+      "Вернитесь к Служитель Бездны Картия и отдайте ей Древний Свиток, Древняя Глиняная Табличка, and II Ониксовый Талисман. Она даст вам Перевод Картии.",
+      "Отдайте перевод Тетрарх Тифиэль, и получите в награду: - Пугающий Кинжал - Малое Зелье Исцеления x100 - Музыкальный Кристалл - Тема: Уединение x10 - Музыкальный Кристалл - Тема: Фестиваль x10 - Музыкальный Кристалл - Тема: Праздник x10 - Музыкальный Кристалл - Тема: Любовь x10 - Музыкальный Кристалл - Тема: Битва x10 Награда для мага: - Заряд Духа: Без Ранга, для Новичков x3000 - Заряд Духа: Без Ранга x500 Награда для воина: - Заряд Души: Без Ранга x1000"
+    ],
+    "tips": [
+      "Только Т.Эльфы. Воины — Eldritch Dagger, маги — Apprentice's Spellbook. Отличное стартовое оружие/книга."
     ]
   },
   "Fruit of the Mother Tree": {
     "name": "Fruit of the Mother Tree",
-    "level": "3 ~ 7",
-    "url": "/lu4/quest/161-fruit-of-the-mother-tree",
-    "intro": "Elves owe their long lifespans to their consumption of the fruit of the Mother Tree. The caretakers of the tree are quite concerned about the recent decline in production of fruit.",
-    "startNpc": { "name": "Andellia (Andellia)", "href": "/lu4/npc/30362-andellia" },
+    "nameRu": "Плод Древа Жизни",
+    "level": "3",
+    "location": "Деревня Эльфов",
+    "startNpc": "Анделия",
+    "url": "/il-ru/quests/161-fruit-of-the-mother-tree",
+    "intro": "Секрет долголетия Эльфов кроется в плодах Древа Жизни. Хранители деревьев очень обеспокоены снижением их плодородия.",
     "rewards": [
-      { "name": "Exp NG (1 500 шт.)", "href": "/lu4/item/15623-exp" },
-      { "name": "SP NG (150 шт.)", "href": "/lu4/item/15624-sp" },
-      { "name": "Adena NG (500 шт.)", "href": "/lu4/item/57-adena" },
-      { "name": "Lesser Healing Potion NG (5 шт.)", "href": "/lu4/item/1060-lesser-healing-potion" }
+      "Lesser Healing Potion NG ×5",
+      "Exp NG ×1 500",
+      "SP NG ×150",
+      "Adena NG ×500"
     ],
     "steps": [
-      { "title": "1: Fruit of the Mother Tree", "text": "Andellia and her sisters care for the Mother Trees. You received a letter informing you that the Mother Tree near Iris Lake, maintained by their younger sister Thalia, has borne fruit. Since Andellia and her sisters cannot leave the Mother Trees untended, they ask you to visit Thalia and bring back the fruit of the Mother Tree." },
-      { "title": "2: The One and Only Fruit", "text": "Thalia gives you the fruit of the Mother Tree that was harvested some time ago. This was the only fruit she harvested this year. She asks you to carefully take it to her sister Andellia." }
+      "Поговорите с Анделия. Она даст вам Письмо Анделии.",
+      "Поговорите с Талия. Она возьмет Письмо Анделии и даст вам Плод Древа Жизни.",
+      "Вернитесь к Анделия с Плод Древа Жизни, и получите 1000 EXP и Адена x1000."
+    ],
+    "tips": [
+      "Только Эльфы. Курьерский квест за EXP и зельями лечения — делается быстро."
     ]
   },
   "Invaders of the Holy Land": {
     "name": "Invaders of the Holy Land",
-    "level": "6 ~ 14",
-    "url": "/lu4/quest/273-invaders-of-the-holy-land",
-    "intro": "Imps are invading the Immortal Plateau, the ancestral Orcish homeland! Those impetus and foolish imps don't stand a chance against us! In the sacred name of Pa'agrio, the Lord of Flame! Arise, Orc warriors! Drive this scourge from our land!",
-    "startNpc": { "name": "Varkees Atuba Chief (Varkees)", "href": "/lu4/npc/30566-varkees" },
-    "rewards": [{ "name": "Flexible Reward NG", "href": "/lu4/item/15630-flexible-reward" }],
+    "nameRu": "Нападение на Святую землю",
+    "level": "6",
+    "location": "Деревня Орков",
+    "startNpc": "Главарь Атуба Варкис",
+    "url": "/il-ru/quests/273-invaders-of-the-holy-land",
+    "intro": "На Плато Бессмертия, древнюю Родину Орков вторглись коварные бесы! Но им не устоять против великих Орков! Во имя Повелителя Огня Паагрио, восстаньте, воители Орков! Изгоните эту заразу с нашей земли!",
+    "rewards": [
+      "Adena NG",
+      "Black Soulstone NG = 3 адены/шт",
+      "Red Soulstone NG = 10 адены/шт",
+      "Бонус за 10+: только чёрные = 1 500 адены, есть красные = 1 800 адены",
+      "Первое прохождение: Soulshot: No Grade NG ×2 000, Spiritshot: No Grade NG ×1 000, Lesser Healing Potion NG ×100"
+    ],
     "steps": [
-      { "title": "1: Rakeclaw Imp", "text": "Atuba Chief Varkees reports that rakeclaw imps have invaded the Immortal Plateau. Hunt in the Valley of Heroes - Rakeclaw Imps and Rakeclaw Imp Hunters. On the northern Immortal Plateau, hunt - Rakeclaw Imp Chieftains." }
+      "Поговорите с Главарь Атуба Варкис.",
+      "Убивайте Когтистый Бес, Охотник Когтистых Бесов и Вождь Когтистых Бесов, чтобы получать Черный Камень Души и Красный Камень Души.",
+      "Вернитесь к Главарь Атуба Варкис, и получите в награду: - Заряд Души: Без Ранга, для Новичков x6000 - Адена x3 за каждый Черный Камень Души - Адена x10 за каждый Красный Камень Души Если вы принесете более 10 частей без Красный Камень Души, то дополнительно получите Адена x1500 Если вы принесете более 10 частей с Красный Камень Души, то дополнительно получите Адена x1800"
+    ],
+    "tips": [
+      "Только Орки, повторяемый. Красные камни ценнее — бонус 1 800 адены. Первое прохождение даёт заряды + Lesser Healing ×100."
     ]
   },
   "Jumble, Tumble, Diamond Fuss": {
     "name": "Jumble, Tumble, Diamond Fuss",
-    "level": "10 ~ 14",
-    "url": "/lu4/quest/108-jumble-tumble-diamond-fuss",
-    "intro": "The Star Diamond is one of only 12 on the entire continent! The Dwarves are planning a Jumble, Tumble, Diamond Fuss!",
-    "startNpc": { "name": "Gouph Collector (Gouph)", "href": "/lu4/npc/30523-gouph" },
+    "nameRu": "Алмазная лихорадка",
+    "level": "10",
+    "location": "Деревня Гномов",
+    "startNpc": "Коллекционер Гуф",
+    "url": "/il-ru/quests/108-jumble-tumble-diamond-fuss",
+    "intro": "Звездный Алмаз - большая редкость, на всем континенте их не больше двенадцати. Неужели кто-то умудрился потерять такую ценную вещь?..",
     "rewards": [
-      { "name": "Silversmith Hammer NG", "href": "/lu4/item/1511-silversmith-hammer" },
-      { "name": "Lesser Healing Potion NG (100 шт.)", "href": "/lu4/item/1060-lesser-healing-potion" },
-      { "name": "Soulshot: No Grade for Beginners NG (5 000 шт.)", "href": "/lu4/item/5789-soulshot-no-grade-for-beginners" }
+      "Silversmith Hammer NG",
+      "Soulshot: No Grade NG ×5 000",
+      "Lesser Healing Potion NG ×100"
     ],
     "steps": [
-      { "title": "1: In Search of a Star Diamond!", "text": "Collector Gouph of the Bronze Key Guild has purchased a rare star diamond from Trader Reep of the Silver Scales Guild. It is one of only twelve on the continent! Three days have past since the agreed-upon delivery date and Gouph is becoming impatient. He asks you to go to Trader Reep, retrieve the star diamond and bring it to him." },
-      { "title": "2: Carrier Torocco", "text": "Trader Reep informs you that he gave the star diamond to Carrier Torocco to deliver to Gouph. Find Torocco and ask him about the diamond." },
-      { "title": "3: Booze can make you lose!", "text": "Torocco got drunk with Miner Maron last night and passed out. When he awoke, his weapons, armor, money and even the star diamond had been stolen! Find Maron and ask him what happened." },
-      { "title": "4: Gambling can make you a loser, too!", "text": "Carrier Torocco is usually quite trustworthy, but.when he starts drinking he inevitably starts gambling. He got drunk last night and lost everything he had in a dice game with Blacksmith Brunon. Could this mean that Blacksmith Brunon has the star diamond?" },
-      { "title": "5: Brunon's Request", "text": "Indeed, Blacksmith Brunon won the star diamond in a dice game! He tells you that he will give it to you if you recover the aquamarine and chrysoberyl that were stolen by a goblin brigand lieutenant." },
-      { "title": "6: Return to Blacksmith Brunon", "text": "You have recovered the aquamarines and chrysoberyls that Blacksmith Brunon lost. Take them to him." },
-      { "title": "7: Gem Box", "text": "Brunon gives you the gem box he says he won in a dice game. Take it to Gouph." },
-      { "title": "8: Useless Coal", "text": "The gem box doesn't contain the star diamond, only a strange looking piece of coal! Return to Blacksmith Brunon and demand an explanation!" },
-      { "title": "9: A Chest of Mistaken Identity", "text": "The piece of coal once belonged to Warehouse Freightman Murdoc. Take the letter from Brunon to Murdoc and exchange it for the gem box that contains the star diamond." },
-      { "title": "10: The Diamond Is Gone!", "text": "The star diamond was eaten by a bat that Warehouse Keeper Airy keeps as a pet! The bat escaped out of an open window! Go quickly and speak with Airy!" },
-      { "title": "11: Who keeps a bat as a pet, anyway?", "text": "Warehouse Keeper Airy asks you to find her pet, a blade bat. Kill the bat and get the diamond." },
-      { "title": "12: Small Sacrifice, Great Reward", "text": "You finally recover the star diamond. Pray for the soul of the poor bat then take the star diamond to Collector Gouph." }
+      "Поговорите с Коллекционер Гуф. Он даст вам Контракт Гуфа.",
+      "Поговорите с Торговец Рип. Он возьмет Контракт Гуфа и даст вам Контракт Рипа.",
+      "Поговорите с Посыльный Торокко, Он возьмет Контракт Рипа и даст вам Эльфийское Вино.",
+      "Поговорите с Шахтер Марон. Он возьмет Эльфийское Вино и даст вам Игральные Кости Брюнона.",
+      "Поговорите с Кузнец Брюнон. Он возьмет Игральные Кости Брюнона и даст вам Расписка Брюнона.",
+      "Убивайте Лейтенант Банды Гоблинов, пока не получите Аквамарин x10 и Хризоберил x10.",
+      "Вернитесь к с драгоценными камнями Кузнец Брюнон. Он даст вам Шкатулка с Самоцветами.",
+      "Поговорите с Коллекционер Гуф. Он возьмет Шкатулка с Самоцветами и даст вам Кусок Угля.",
+      "Поговорите с Кузнец Брюнон. Он возьмет Кусок Угля и даст вам Письмо Брюнона.",
+      "Поговорите с Рабочий Склада Мердок. Он возьмет Письмо Брюнона и даст вам Ягодный Пирог.",
+      "Поговорите с Смотритель Склада Эйри. Она возьмет Ягодный Пирог и даст вам Рисунок Летучей Мыши.",
+      "Убивайте Опасная Летучая Мышь, пока не получите Звездный Алмаз.",
+      "Поговорите с Коллекционер Гуф, и получите награду: - Молот Кузнеца - Заряд Души: Без Ранга, для Новичков x7000 - Заряд Души: Без Ранга, для Новичков x7000 - Малое Зелье Исцеления x100 - Музыкальный Кристалл - Тема: Уединение x10 - Музыкальный Кристалл - Тема: Фестиваль x10 - Музыкальный Кристалл - Тема: Праздник x10 - Музыкальный Кристалл - Тема: Любовь x10 - Музыкальный Кристалл - Тема: Битва x10 Награда для мага: - Заряд Духа: Без Ранга, для Новичков x3000 Награда для воина: - Заряд Души: Без Ранга, для Новичков x7000"
+    ],
+    "tips": [
+      "Только Гномы. Длинная цепочка курьерских задач + бой с Blade Bat в конце. Silversmith Hammer нужен для крафта."
     ]
   },
   "Letters of Love": {
     "name": "Letters of Love",
-    "level": "2 ~ 5",
-    "url": "/lu4/quest/1-letters-of-love",
-    "intro": "Darin, a young man on Talking Island, carries a torch for Gatekeeper Roxxy, who doesn't return his affections. Darin is not so easily dissuaded, however.",
-    "startNpc": { "name": "Darin (Darin)", "href": "/lu4/npc/30048-darin" },
-    "rewards": [{ "name": "Necklace of Knowledge NG", "href": "/lu4/item/906-necklace-of-knowledge" }],
+    "nameRu": "Любовное послание",
+    "level": "2",
+    "location": "Деревня Говорящего Острова",
+    "startNpc": "Дарин",
+    "url": "/il-ru/quests/1-letters-of-love",
+    "intro": "Дарин, юноша с Говорящего Острова, пылает страстью к Хранителю Портала Рокси, но боится, что она не ответит ему взаимностью. Помогите ему найти свою любовь!",
+    "rewards": [
+      "Necklace of Knowledge NG"
+    ],
     "steps": [
-      { "title": "1: Delivery of Love Letters", "text": "Darin of Talking Island Village has fallen in love with Gatekeeper Roxxy. He is too shy to express his feelings and asks you to deliver his love letter to her." },
-      { "title": "2: Roxxy's Kerchief", "text": "Roxxy reads Darin's letter and tells you that she admires him as well. She asks you to deliver her kerchief to him. Take Roxxy's kerchief to Darin in the village square." },
-      { "title": "3: Baulro's Magic Potion", "text": "Darin is overjoyed to learn that Roxxy returns his admiration, and says he wants to ask her for a date. He asks you to go and get a love potion promised to him by Magister Baulro at the temple." },
-      { "title": "4: Water that Brings Out Courage", "text": "Magister Baulro admits that he deceived Darin about the potion in order to bolster his courage. He gives you a medicine bottle filled with tap water. Take it to Darin in the village square." }
+      "Поговорите с Дарин, он даст вам Письмо Дарина.",
+      "Отдайте Письмо Дарина Хранитель Портала Рокси. Она даст вам Платок Рокси.",
+      "Поговорите с Дарин, он даст вам Расписка Дарина.",
+      "Отдайте Расписка Дарина Магистр Баулро и возьмите Зелье Баулро.",
+      "Вернитесь к Дарин с Зелье Баулро, в награду он даст вам Адена x450."
+    ],
+    "tips": [
+      "Чисто курьерский квест по деревне Говорящего Острова, боёв нет — сделай сразу на старте за пару минут."
     ]
   },
   "Mass of Darkness": {
     "name": "Mass of Darkness",
-    "level": "2 ~ 5",
-    "url": "/lu4/quest/166-mass-of-darkness",
-    "intro": "The Mass of Darkness is performed in honor of Shilen, the mother of all Dark Elves. Let's all work together to make this the best festival ever!",
-    "startNpc": { "name": "Undrias Abyssal Celebrant (Undrias)", "href": "/lu4/npc/30130-undrias" },
+    "nameRu": "Темная месса",
+    "level": "2",
+    "location": "Храм Богини Шилен",
+    "startNpc": "Служитель Бездны Андриас",
+    "url": "/il-ru/quests/166-mass-of-darkness",
+    "intro": "Темные Эльфы готовятся к мессе в честь богини Шилен. Все жители деревни должны принять участие в подготовке к ней!",
     "rewards": [
-      { "name": "Exp NG (500 шт.)", "href": "/lu4/item/15623-exp" },
-      { "name": "SP NG (100 шт.)", "href": "/lu4/item/15624-sp" },
-      { "name": "Adena NG (250 шт.)", "href": "/lu4/item/57-adena" }
+      "Exp NG ×500",
+      "SP NG ×100",
+      "Adena NG ×250"
     ],
     "steps": [
-      { "title": "1: Items Needed for the Mass of Darkness.", "text": "Abyssal Celebrant Undrias is busily preparing for the ceremony of Shilen and Gran Kain. He asks you to go to the village and obtain several items that he will need for the Mass of Darkness. He asks for the following: a ceremonial dagger from Trader Iria in the Weapons Shop, dreviant wine from Warehouse Keeper Dorankus, and Garmiel's scripture from Master Trudy of the Elder Council." },
-      { "title": "2: Return to Abyssal Celebrant Undrias", "text": "You've obtained the ceremonial dagger, the dreviant wine and Garmiel's scripture that are needed for the Mass. Take them to Abyssal Celebrant Undrias." }
+      "Поговорите с Служитель Бездны Андриас. Он даст вам Письмо Андриаса.",
+      "Поговорите с Смотритель Склада Доранкус. Он даст вам Вино Древиант.",
+      "Поговорите с Мастер Тради. Она даст вам Заповеди Гармиэля.",
+      "Поговорите с Торговец Ирина. Она даст вам Церемониальный Кинжал.",
+      "Отнесите все вещи к Служитель Бездны Андриас, и получите 500 EXP и Адена x500."
+    ],
+    "tips": [
+      "Только Т.Эльфы. Собери 4 предмета у NPC в деревне — боёв нет, быстрый старт-EXP."
     ]
   },
   "Orc Hunting": {
     "name": "Orc Hunting",
-    "level": "6 ~ 16",
-    "url": "/lu4/quest/260-orc-hunting",
-    "intro": "Kaboo Orcs from the Misty Mountains have begun invading the Elven Forest. They've even infiltrated the village under the very eyes of the guards! All brave Elves who can help are asked to report to Sentinel Rayen!",
-    "startNpc": { "name": "Rayen Sentinel (Rayen)", "href": "/lu4/npc/30221-rayen" },
-    "rewards": [{ "name": "Flexible Reward NG", "href": "/lu4/item/15630-flexible-reward" }],
+    "nameRu": "Охота на Орков",
+    "level": "6",
+    "location": "Деревня Эльфов",
+    "startNpc": "Часовой Райен",
+    "url": "/il-ru/quests/260-orc-hunting",
+    "intro": "Орки Кабу с Туманных Гор начали вторжение в Эльфийский Лес. Они напали на деревню прямо под носом у стражи! Если Вы хотите помочь справиться с угрозой, обращайтесь к Часовому Райену.",
+    "rewards": [
+      "Adena NG",
+      "Orc Amulet NG = 5 адены/шт",
+      "Orc's Necklace NG = 15 адены/шт",
+      "Бонус за 10+ предметов: 1 000 адены",
+      "Первое прохождение: Soulshot: No Grade NG ×2 000, Spiritshot: No Grade NG ×1 000"
+    ],
     "steps": [
-      { "title": "1: Hunt for Kaboo Orcs", "text": "Sentinel Rayen is recruiting warriors to fight the orcs. Hunt near the Elven Village - Kaboo Orc, Kaboo Orc Archer and Kaboo Orc Grunt. Hunt in the Elven Forest - Kaboo Orc Fighter Leader, Kaboo Orc Fighter Lieutenant and Kaboo Orc Fighter." }
+      "Поговорите с Часовой Райен.",
+      "Убивайте Орк Кабу, Стрелок Орков Кабу и Воитель Орков Кабу, чтобы получать Амулет Орка.",
+      "Убивайте Главарь Бойцов Орков Кабу, Лейтенант Бойцов Орков Кабу и Боец Орков Кабу, чтобы получать Ожерелье Орка.",
+      "Вернитесь к Часовой Райен, и получите в награду: - Адена x12 за каждый Амулет Орка - Адена x30 за каждый Ожерелье Орка Если вы принесете более 10 частей, то дополнительно получите Адена x1000. Bonus for the mage: - Заряд Духа: Без Ранга, для Новичков x3000 Bonus for the fighter: - Заряд Души: Без Ранга, для Новичков x6000"
+    ],
+    "tips": [
+      "Только Эльфы, повторяемый. Ожерелья ценнее амулетов. Первое прохождение — заряды ×тысячи."
     ]
   },
   "Spirit of Mirrors": {
     "name": "Spirit of Mirrors",
-    "level": "10 ~ 15",
-    "url": "/lu4/quest/104-spirit-of-mirrors",
-    "intro": "Three Spirits of Mirror have escaped from Magister Gallint's laboratory on Talking Island! Capture and seal these spirits!",
-    "startNpc": { "name": "Gallint Grand Magister (Gallint)", "href": "/lu4/npc/30017-gallint" },
+    "nameRu": "Духи Зеркал",
+    "level": "10",
+    "location": "Школа Магов Айнховант",
+    "startNpc": "Великий Магистр Галлинт",
+    "url": "/il-ru/quests/104-spirit-of-mirrors",
+    "intro": "Из лаборатории Великого Магистра Галлинта на Говорящем Острове сбежало три Духа Зеркал: Необходимо захватить их и вернуть хозяину.",
     "rewards": [
-      { "name": "Lesser Healing Potion NG (100 шт.)", "href": "/lu4/item/1060-lesser-healing-potion" },
-      { "name": "Wand of Adept NG", "href": "/lu4/item/747-wand-of-adept" },
-      { "name": "Question Mark NG", "href": "/lu4/item/15625-question-mark" }
+      "Для воинов: Soulshot: No Grade NG ×3 500, Lesser Healing Potion NG ×100",
+      "Для магов: Wand of Adept NG, Spiritshot: No Grade NG ×1 750, Lesser Healing Potion NG ×100"
     ],
     "steps": [
-      { "title": "1: Escaped Spirits", "text": "The spirits of mirrors that Grand Magister Gallint was studying have escaped! Hit each one of them with Gallint's oak wand to seal them. Seal all three and return to Gallint. The guards in the village can tell you where to find the spirits. Monsters that need to be sealed by Gallint's Oak Wand - 3 spirits of mirrors." },
-      { "title": "2: Location of the Spirits", "text": "The spirits of mirrors that Grand Magister Gallint was studying have escaped! Hit each one of them with Gallint's oak wand to seal them. Seal all three and return to Gallint. You will find one of them on the western shore of the island, another near the bridge west of Einhovant's School of Wizardry and the third can be found near the Obelisk of Victory. Monsters that need to be sealed by Gallint's Oak Wand - 3 spirits of mirrors." },
-      { "title": "3: Return to Grand Magister Gallint", "text": "You have sealed all three of the spirits of mirrors with Gallint's oak wand! Return to Grand Magister Gallint." }
+      "Поговорите с Великий Магистр Галлинт. Он даст вам Посох Галлинта x3.",
+      "Охотьтесь на Квестовый Монстр Дух Зеркал, пока не получите Посох Духов. Он находится на южном берегу реки, рядом с другими жабами.",
+      "Охотьтесь на Квестовый Монстр Дух Зеркал, пока не получите Посох Духов. Он находится на холме к северу от обелиска.",
+      "Охотьтесь на Квестовый Монстр Дух Зеркал, пока не получите Посох Духов. Он находится на западном берегу острова, на спуске к воде.",
+      "Верните 3 посоха Великий Магистр Галлинт, и получите в награду: - Скипетр Адепта - Малое Зелье Исцеления x100 - Музыкальный Кристалл - Тема: Уединение x10 - Музыкальный Кристалл - Тема: Фестиваль x10 - Музыкальный Кристалл - Тема: Праздник x10 - Музыкальный Кристалл - Тема: Любовь x10 - Музыкальный Кристалл - Тема: Битва x10 Бонус для мага: - Заряд Духа: Без Ранга, для Новичков x3000 - Заряд Духа: Без Ранга x500 Бонус для воина: - Заряд Души: Без Ранга x1000"
+    ],
+    "tips": [
+      "Только Люди. Маги берут Wand of Adept. Духов лови посохом Галлинта в 3 точках Говорящего Острова."
     ]
   },
   "Sword of Solidarity": {
     "name": "Sword of Solidarity",
-    "level": "9 ~ 16",
-    "url": "/lu4/quest/101-sword-of-solidarity",
-    "intro": "The Sword of Solidarity has long symbolized the friendship between Elves and Humans. The disappearance of the sword has coincided with the deterioration of that friendship. Grand Master Roien is seeking a warrior to restore the sword to its place of honor.",
-    "startNpc": { "name": "Roien Grand Master (Roien)", "href": "/lu4/npc/30008-roien" },
+    "nameRu": "Меч Единства",
+    "level": "9",
+    "location": "Школа Сэдрика",
+    "startNpc": "Великий Мастер Роен",
+    "url": "/il-ru/quests/101-sword-of-solidarity",
+    "intro": "Меч Единства долгое время являлся символом дружбы Эльфов и Людей. Утрата меча вызвала конфликт между двумя расами. Великий Мастер Роен ищет героя для возвращения древней реликвии.",
     "rewards": [
-      { "name": "Lesser Healing Potion NG (100 шт.)", "href": "/lu4/item/1060-lesser-healing-potion" },
-      { "name": "Sword of Solidarity NG", "href": "/lu4/item/738-sword-of-solidarity" },
-      { "name": "Flexible Reward NG", "href": "/lu4/item/15630-flexible-reward" }
+      "Для воинов: Sword of Solidarity NG, Soulshot: No Grade NG ×3 500, Lesser Healing Potion NG ×100",
+      "Для магов: Spiritshot: No Grade NG ×1 750, Lesser Healing Potion NG ×100"
     ],
     "steps": [
-      { "title": "1: Broken Sword", "text": "Grand Master Roien of Cedric's Training Hall wants to restore the sword of solidarity. He explains that the sword was made long ago to symbolize the friendship between Elves and Humans. He mentions that Blacksmith Altran is also very interested in restoring this relic. He asks you to take the letter containing the results of his investigation of the relic to Altran in the Blacksmith Shop." },
-      { "title": "2: Broken Sword Blade Piece", "text": "Blacksmith Altran explains that if he is to restore the Sword of Solidarity to its original condition, he must have the two pieces of the blade. He asks you to go the Elven Ruins and obtain the broken sword blade pieces from the Orcs there. Hunt Tunath Orc Warriors and Tunath Orc Marksmen." },
-      { "title": "3: Return to Blacksmith Altran", "text": "Take the broken sword blade pieces to Blacksmith Altran." },
-      { "title": "4: Last Parts", "text": "While Blacksmith Altran joins the sword blade pieces together, go to Cedric's Training Hall and obtain the broken sword handle from Grand Master Roien." },
-      { "title": "5: Sword of Solidarity", "text": "Take the broken sword handle to Blacksmith Altran so he can restore the sword of solidarity to its original condition." }
+      "Поговорите с Великий Мастер Роен. Он даст вам Письмо Роена.",
+      "Отнесите Письмо Роена Кузнец Альтран. Он даст вам Дорога к Руинам.",
+      "Убивайте Снайпер Орков Тунат и Воин Орков Тунат в Эльфийских Руинах, пока не получите Верх Сломанного Клинка и Низ Сломанного Клинка. Не пытайтесь сделать это без друзей, пока вы не достигнете как минимум 12 уровня.",
+      "Отдайте добытые предметы Кузнец Альтран, он даст вам Письмо Альтрана.",
+      "Отдайте письмо Великий Мастер Роен. Он даст вам Рукоять Сломанного Меча.",
+      "Отдайте рукоять Кузнец Альтран, и получите в награду: - Меч Единства - Малое Зелье Исцеления x100 - Музыкальный Кристалл - Тема: Уединение x10 - Музыкальный Кристалл - Тема: Фестиваль x10 - Музыкальный Кристалл - Тема: Праздник x10 - Музыкальный Кристалл - Тема: Любовь x10 - Музыкальный Кристалл - Тема: Битва x10 Бонус для воина: - Заряд Души: Без Ранга, для Новичков x7000"
+    ],
+    "tips": [
+      "Только Люди. Даёт Sword of Solidarity NG — сильное стартовое оружие воина. Обломки клинка выбиваются в Эльфийских Руинах, бери группу."
     ]
   },
   "The Guard is Busy": {
     "name": "The Guard is Busy",
-    "level": "6 ~ 16",
-    "url": "/lu4/quest/257-the-guard-is-busy",
-    "intro": "Talking Island's immigration policy has been relaxed in order to give refuge to those who have fled the violence of the Gracian War. But it's still quite a dangerous place!",
-    "startNpc": { "name": "Gilbert Captain (Gilbert)", "href": "/lu4/npc/30039-gilbert" },
-    "rewards": [{ "name": "Flexible Reward NG", "href": "/lu4/item/15630-flexible-reward" }],
+    "nameRu": "Помощь страже",
+    "level": "6",
+    "location": "Деревня Говорящего Острова",
+    "startNpc": "Капитан Гилберт",
+    "url": "/il-ru/quests/257-the-guard-is-busy",
+    "intro": "Правитель Говорящего Острова решил предоставить убежище беженцам, пострадавшим во время войны с Грацией. Но перед этим необходимо очистить остров от монстров!",
+    "rewards": [
+      "Adena NG",
+      "Orc Amulet NG = 10 адены/шт",
+      "Orc's Necklace NG = 20 адены/шт",
+      "Werewolf's Fang NG = 20 адены/шт",
+      "Бонус за 10+ предметов: 1 000 адены",
+      "Первое прохождение: Soulshot: No Grade NG ×800, Spiritshot: No Grade NG ×400"
+    ],
     "steps": [
-      { "title": "1: War with the Primitive Tribe", "text": "Captain Gilbert asks you to eliminate the Orcs and werewolves. Hunt near the Obelisk of Victory - Orcs, Orc Archers, Orc Fighters, Orc Lieutenants, Orc Fighter Leaders, Werewolves, Werewolf Hunters and Werewolf Chieftains." }
+      "Поговорите с Капитан Гилберт.",
+      "Убивайте Оборотень, Охотник Оборотней и Вождь Оборотней, чтобы получать Клык Оборотня.",
+      "Убивайте Орк, Орк Воитель и Орк Воитель, чтобы получать Амулет Орка.",
+      "Убивайте Боец Орков, Орк Лейтенант и Вожак Орков Бойцов, чтобы получать Ожерелье Орка.",
+      "Вернитесь к Капитан Гилберт и получите в награду: - Адена x10 за каждый Амулет Орка - Адена x20 за каждый Клык Оборотня - Адена x20 за каждый Ожерелье Орка Если вы принесете более 10 частей, то дополнительно получите Адена x1000. Бонус для мага: - Заряд Духа: Без Ранга, для Новичков x3000 Бонус для воина: - Заряд Души: Без Ранга, для Новичков x6000"
+    ],
+    "tips": [
+      "Повторяемый фарм адены под Обелиском Победы. Копи 10+ предметов ради бонуса 1 000 адены."
     ]
   },
   "The Hidden Veins": {
     "name": "The Hidden Veins",
-    "level": "6 ~ 15",
-    "url": "/lu4/quest/293-the-hidden-veins",
-    "intro": "Elder Filaur, an expert in the construction and mining business, has learned that Otuk Orcs have recently discovered a long-lost chrysolite mine...",
-    "startNpc": { "name": "Filaur Gray Pillar Member (Filaur)", "href": "/lu4/npc/30535-filaur" },
-    "rewards": [{ "name": "Flexible Reward NG", "href": "/lu4/item/15630-flexible-reward" }],
+    "nameRu": "Скрытые жилы",
+    "level": "6",
+    "location": "Деревня Гномов",
+    "startNpc": "Гильдия Серой Колонны Филар",
+    "url": "/il-ru/quests/293-the-hidden-veins",
+    "intro": "Старейшина Филар, эксперт в строительстве и в деле добычи, узнал, что Орки Утуку недавно обнаружили забытую хризолитовую шахту.",
+    "rewards": [
+      "Adena NG",
+      "Chrysolite Ore NG = 5 адены/шт",
+      "Hidden Ore Map NG = 500 адены/шт",
+      "Бонус за 10+ предметов: 2 000 адены",
+      "Первое прохождение: Soulshot: No Grade NG ×2 000, Lesser Healing Potion NG ×100"
+    ],
     "steps": [
-      { "title": "1: Chrysolite", "text": "Elder Filaur asks you defeat the Utuku Orcs and bring the Chrysolite Ore they possess . Also collect the four pieces of the map that reveals the location of the vein, and take them to Maphr Priestess Chichirin who will put them together for you. Then, take the map to Elder Filaur to claim a great reward. Hunt in the Frozen Valley - Utuku Orcs, and Utuku Orc Grunts. Hunt in the Western Mining Zone - Utuku Orc Archers." }
+      "Поговорите с Гильдия Серой Колонны Филар.",
+      "Убивайте Орк Утуку, Воитель Орков Утуку и Стрелок Орков Утуку, чтобы получать Хризолитовая Руда и Обрывок Карты.",
+      "У Жрица Земли Чичерин можно обменять Обрывок Карты x4 на Карта Тайной Жилы.",
+      "Вернитесь к Гильдия Серой Колонны Филар, и получите награду: - Адена x500 за каждый Карта Тайной Жилы Если вы принесете более 10 карт, то дополнительно получите Адена x2000. - Адена x5 за каждый Хризолитовая Руда Если вы принесете более 10 предметов, то дополнительно получите Адена x2000. Бонус для воинов: с заряд: Заряд Души: Без Ранга, для Новичков x6000"
+    ],
+    "tips": [
+      "Только Гномы, повторяемый. Hidden Ore Map = 500 адены/шт. Первое прохождение — заряды и зелья."
     ]
   },
   "What Women Want": {
     "name": "What Women Want",
-    "level": "2 ~ 5",
-    "url": "/lu4/quest/2-what-women-want",
-    "intro": "Arujian, a young man in the Elven Village, adores Magister Greenis with all his heart, but no one knows if Greenis returns his affections.",
-    "startNpc": { "name": "Arujien (Arujien)", "href": "/lu4/npc/30223-arujien" },
-    "rewards": [{ "name": "Question Mark NG", "href": "/lu4/item/15625-question-mark" }],
+    "nameRu": "Чего хотят женщины",
+    "level": "2",
+    "location": "Деревня Эльфов",
+    "startNpc": "Аруен",
+    "url": "/il-ru/quests/2-what-women-want",
+    "intro": "Аруен, юноша из Эльфийской Деревни, любит Магистра Гринис всем сердцем, но кто знает, ответит ли она ему взаимностью…",
+    "rewards": [
+      "На выбор «To forget about her»: Exp NG ×3 000, SP NG ×300",
+      "На выбор «That Greenis may like him»: Mystic's Earring NG, Haste Potion NG, Adena NG ×500"
+    ],
     "steps": [
-      { "title": "1: Arujien's Letter", "text": "Arujien confesses to you that he has pined for Magister Greenis for a long time. He asks you to find out if Greenis returns his affection. Meet with her younger sister, Gatekeeper Mirabel, and show her Arujien's letter." },
-      { "title": "2: Uncle Herbiel", "text": "Gatekeeper Mirabel says that she doesn't get involved in her sister's affairs. She suggests that you ask Trader Herbiel. You will find him in a magic shop. Show him Arujien's Letter." },
-      { "title": "3: Uncle's Advice", "text": "Trader Herbiel thinks that Magister Greenis likes Arujien. Go back to Arujien and give him the good news." },
-      { "title": "4: Feelings that Have Turned into a Poem", "text": "Arujien says that he's written a book of poetry for Greenis. Take Arujien's poetry book to Magister Greenis." },
-      { "title": "5: Letter of Refusal", "text": "Magister Greenis informs you that she loves another. Take Greenis' letter of refusal to Arujian." }
+      "Поговорите с Аруен. Он даст вам Письмо Аруена.",
+      "Поговорите с Хранитель Портала Мирабель. Она даст вам Письмо Аруена.",
+      "Поговорите с Торговец Гербиэль. Он даст Вам Письмо Аруена.",
+      "Поговорите с Аруен. Если вы предложите забыть ему о ней \"to forget about her\", он даст вам Адена x450 и задание закончится. Если вы сообщите ему, что он может понравиться \"that Greenis may like him\", он даст вам Сборник Стихов, чтобы передать ей.",
+      "Отдайте Сборник Стихов Магистр Гринис. Она примет книгу, но отвергнет бедного Аруен. Она даст вам Письмо Гринис и отправит к нему.",
+      "Возвращайтесь к Аруен с плохими новостями, и он даст вам Серьга Мистика."
+    ],
+    "tips": [
+      "Награда на выбор: бери «That Greenis may like him» ради Mystic's Earring — полезная стартовая бижа для любого класса."
     ]
   },
   "Will the Seal be Broken?": {
     "name": "Will the Seal be Broken?",
-    "level": "16 ~ 26",
-    "url": "/lu4/quest/3-will-the-seal-be-broken",
-    "intro": "The Human has betrayed the secret that's kept Hierarch Mitraell sealed for centuries! Help Tettrarch Talloth break the seal that binds Mitraell!",
-    "startNpc": { "name": "Talloth Tetrarch (Talloth)", "href": "/lu4/npc/30141-talloth" },
+    "nameRu": "Как снять проклятие?",
+    "level": "16",
+    "location": "Деревня Темных Эльфов",
+    "startNpc": "Тетрарх Таллот",
+    "url": "/il-ru/quests/3-will-the-seal-be-broken",
+    "intro": "По вине людей Иерарх Митраэль проклят на века! Помогите Тетрарху Таллоту снять проклятие, сковавшее Митраэля.",
     "rewards": [
-      { "name": "Exp NG (25 000 шт.)", "href": "/lu4/item/15623-exp" },
-      { "name": "SP NG (2 500 шт.)", "href": "/lu4/item/15624-sp" },
-      { "name": "Random Reward NG", "href": "/lu4/item/15629-random-reward" }
+      "Exp NG ×25 000",
+      "SP NG ×2 500",
+      "Случайно: Stockings of Magic NG / Hard Leather Gaiters NG / Bronze Gaiters NG",
+      "Случайно (не гарантировано): Scroll: Enchant Armor (D) NG / Scroll: Enchant Weapon (D) NG"
     ],
     "steps": [
-      { "title": "1: Preparation for a Ritual", "text": "Dark Elven Tetrarch Talloth is continuing in the studies of the dark arts in order to break the seal that binds Mitraell, the leader of the Dark Elves. He asks that you to go to the school of the Dark Arts and bring him an Omen Beast's eye, a Taint Stone and Succubus Blood which are all needed to break the Seal. This being the first stage among three stages that binds the great leader. Monsters to be hunted - Omen Beast, Tainted Zombies, Stink Zombies, Lesser Succubi, Lesser Succubus Turen and Lesser Succubus Tilfos" },
-      { "title": "2: Return to Tetrarch Talloth", "text": "You have collected all the ingredients required for a spell. Return to Hierarch Talloth." }
+      "Поговорите с Тетрарх Таллот.",
+      "Убивайте Зверь Знамения, пока не получите Глаз Зверя Знамения.",
+      "Убивайте Гнилой Зомби и Зловонный Зомби, пока не получите Камень Порока.",
+      "Убивайте Младший Суккуб, Младший Суккуб Турен и Младший Суккуб Тилфо, пока не получите Кровь Суккуба.",
+      "Возвращайтесь к Тетрарх Таллот c ингредиентами, в награду он даст Свиток: Зачаровать Доспех (D)."
+    ],
+    "tips": [
+      "Только Т.Эльфы. Может дать свитки заточки D-грейда (не гарантированно) — прибереги под первое D-оружие."
+    ]
+  },
+  "Shilen's Hunt": {
+    "name": "Shilen's Hunt",
+    "nameRu": "Охота в честь Шилен",
+    "level": "3",
+    "location": "Деревня Темных Эльфов",
+    "startNpc": "Часовой Нельсия",
+    "url": "/il-ru/quests/165-shilens-hunt",
+    "intro": "Скоро начнется Темная месса в честь богини Шилен. Готовьтесь к славной охоте! Берите луки и стрелы и принесите дары Матери Бездны!",
+    "rewards": [
+      "Adena NG",
+      "Dark Bezoar NG = 5 адены/шт"
+    ],
+    "steps": [
+      "Поговорите с Часовой Нельсия.",
+      "Убивайте Молодой Бурый Шакал, Бурый Шакал, Матерый Бурый Шакал и Пепельный Волк, пока не получите Темный Безоар x13.",
+      "вернитесь к Часовой Нельсия с Темный Безоар x13, и получите Малое Зелье Исцеления x5 и 1000 EXP."
+    ],
+    "tips": [
+      "Только Т.Эльфы. Dark Bezoar копится без лимита и падает любому в группе — можно фармить сапортом и сдавать пачкой."
+    ]
+  },
+  "Miner's Favor": {
+    "name": "Miner's Favor",
+    "nameRu": "Поручение шахтера",
+    "level": "2",
+    "location": "Рудник Возрождения",
+    "startNpc": "Шахтер Больтер",
+    "url": "/il-ru/quests/5-miners-favor",
+    "intro": "Члены Гильдии Серой Колонны усердно работают в Руднике Возрождения. Шахтер Больтер обеспокоен тем, что некому сходить в деревню за необходимыми материалами.",
+    "rewards": [
+      "Exp NG ×1 500",
+      "SP NG ×150",
+      "Adena NG ×700"
+    ],
+    "steps": [
+      "Поговорите с Шахтер Больтер. Он даст вам Вонючие Носки Больтера и Список Больтера.",
+      "Поговорите с Торговец Гарита. Он даст вам Сапоги Шахтера.",
+      "Поговорите с Торговец Шари. Она даст вам Порох.",
+      "Поговорите с Начальник Склада Рид. Он даст вам Пиво Рэдстоун.",
+      "Поговорите с Кузнец Брюнон. Отдайте ему Вонючие Носки Больтера и возьмите Кирка Шахтера.",
+      "Вернитесь со всеми предметами к Шахтер Больтер, и получите Адена x450."
+    ],
+    "tips": [
+      "Только Гномы. Курьерский квест по деревне за EXP и аденой — делай сразу на 1 профе."
+    ]
+  },
+  "Long live the Pa'agrio Lord!": {
+    "name": "Long live the Pa'agrio Lord!",
+    "nameRu": "Болезнь Лорда Паагрио",
+    "level": "2",
+    "location": "Деревня Орков",
+    "startNpc": "Центурион Накушин",
+    "url": "/il-ru/quests/4-long-live-the-paagrio-lord",
+    "intro": "Правитель Орков Кекеи, Лорд Паагрио, заболел! Старейшины решили, что каждое племя должно преподнести лорду подарок во имя его скорейшего выздоровления.",
+    "rewards": [
+      "Club NG"
+    ],
+    "steps": [
+      "Поговорите с Центурион Накушин. Вы должны поговорить с 6 вождями племен и получить подарок от каждого.",
+      "Поговорите с Главарь Атуба Варкис. Он даст вам Мед Хандар.",
+      "Поговорите с Татару Зу Хестуи. Он даст вам Плащ из Медвежьей Шкуры.",
+      "Поговорите с Торговец Аска. Он даст вам Череп Предка.",
+      "Поговорите с Смотритель Склада Грукин. Он даст вам Кровавый Топор.",
+      "Поговорите с Гентаки Зу Уруту. Он даст вам Морская Сфера.",
+      "Поговорите с Торговец Кунай. Она даст вам Прах Паука.",
+      "Вернитесь к Центурион Накушин с 6 подарками, в награду он даст Дубина."
+    ],
+    "tips": [
+      "Только Орки. Обойди 6 вождей за подарками — курьерский квест ради Club NG (стартовое оружие)."
     ]
   }
 }
