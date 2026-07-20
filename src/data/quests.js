@@ -40,9 +40,9 @@ export const isQuestHiddenForMember = (quest, memberLevel, done) =>
 
 // Ссылка на прохождение: поиск по базе знаний Lu4 (masterwork.wiki) с фильтром «Quests»
 // по англ. названию. Открывает страницу результатов поиска вики, оттуда — на страницу квеста.
-// Формат: /lu4/search/result?Search[query]=<name>&Search[search_type]=0&Search[search_type]=4
-// (search_type передаётся двумя значениями: 0 = все + 4 = квесты; пробелы кодируются как '+').
+// Формат: /lu4/search/result?Search[query]=<name>&Search[search_type]=4
+// (search_type=4 = вкладка «Quests» сразу активна; пробелы кодируются как '+').
 export const questWikiUrl = (name) => {
   const query = encodeURIComponent(name || '').replace(/%20/g, '+');
-  return `https://masterwork.wiki/lu4/search/result?Search%5Bquery%5D=${query}&Search%5Bsearch_type%5D=0&Search%5Bsearch_type%5D=4`;
+  return `https://masterwork.wiki/lu4/search/result?Search%5Bquery%5D=${query}&Search%5Bsearch_type%5D=4`;
 };
