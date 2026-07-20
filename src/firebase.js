@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, sendPasswordResetEmail } from "firebase/auth";
 import { getFirestore, initializeFirestore, persistentLocalCache } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -31,5 +31,7 @@ export const registerWithEmail = async (email, password) => {
   return createUserWithEmailAndPassword(auth, email, password);
 };
 export const logOut = () => signOut(auth);
+// Отправка письма для сброса пароля (мембер забыл пароль).
+export const resetPassword = (email) => sendPasswordResetEmail(auth, email);
 
 export { auth, db };

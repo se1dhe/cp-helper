@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Outlet, NavLink } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useLang } from '../context/LanguageContext';
-import { signInWithEmail, registerWithEmail, logOut } from '../firebase';
+import { signInWithEmail, registerWithEmail, logOut, resetPassword } from '../firebase';
 import { subscribeToRoster } from '../services/rosterService';
 import { isRegistrationAllowed } from '../services/registrationService';
 import { LayoutDashboard, Users, Wallet, LogIn, LogOut, ShieldAlert, UserPlus, Languages, UserCheck, Newspaper, Map as MapIcon, CalendarClock, Pencil, Settings, Hammer, Link2, Skull, User, Search } from 'lucide-react';
@@ -31,6 +31,7 @@ export const Layout = () => {
   const [nickname, setNickname] = useState('');
   const [isRegistering, setIsRegistering] = useState(false);
   const [error, setError] = useState('');
+  const [info, setInfo] = useState('');
   const [loading, setLoading] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -66,9 +67,28 @@ export const Layout = () => {
   const effectiveClass = userClass || mySlot?.className || '';
   const classDetails = getClassDetails(effectiveClass);
 
+  const handleReset = async () => {
+    setError('');
+    setInfo('');
+    if (!email) {
+      setError(t('auth.resetNeedEmail'));
+      return;
+    }
+    setLoading(true);
+    try {
+      await resetPassword(email);
+      setInfo(t('auth.resetSent', { email }));
+    } catch (err) {
+      setError(err.message?.replace('Firebase:', '').trim() || t('auth.error'));
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleAuth = async (e) => {
     e.preventDefault();
     setError('');
+    setInfo('');
     setLoading(true);
     try {
       if (isRegistering) {
@@ -104,6 +124,7 @@ export const Layout = () => {
 
           <form onSubmit={handleAuth} className="login-form">
             {error && <div className="login-form-error">{error}</div>}
+            {info && <div className="login-form-info">{info}</div>}
 
             <div className="input-group">
               <label>{t('auth.email')}</label>
@@ -145,6 +166,17 @@ export const Layout = () => {
               />
             </div>
 
+            {!isRegistering && (
+              <button
+                type="button"
+                className="login-forgot-btn"
+                onClick={handleReset}
+                disabled={loading}
+              >
+                {t('auth.forgotPassword')}
+              </button>
+            )}
+
             <button type="submit" className="auth-btn" disabled={loading}>
               {loading ? (
                 <span style={{ opacity: 0.7 }}>{t('auth.loading')}</span>
@@ -157,7 +189,7 @@ export const Layout = () => {
           </form>
 
           <button
-            onClick={() => { setIsRegistering(!isRegistering); setError(''); }}
+            onClick={() => { setIsRegistering(!isRegistering); setError(''); setInfo(''); }}
             className="login-switch-btn"
           >
             {isRegistering ? t('auth.switchToLogin') : t('auth.switchToRegister')}

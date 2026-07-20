@@ -877,6 +877,32 @@ tbody tr:hover { background: rgba(255,255,255,0.02); }
   text-align: center;
 }
 
+.login-form-info {
+  background: rgba(16,185,129,0.08);
+  border: 1px solid rgba(16,185,129,0.25);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.875rem;
+  color: #6ee7b7;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.login-forgot-btn {
+  display: block;
+  margin: 0.75rem 0 0 auto;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  cursor: pointer;
+  font-family: inherit;
+  transition: color var(--transition);
+}
+.login-forgot-btn:hover { color: var(--primary); }
+.login-forgot-btn:disabled { opacity: 0.5; cursor: default; }
+
 .login-switch-btn {
   background: none;
   border: none;

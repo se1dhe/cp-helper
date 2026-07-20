@@ -20,6 +20,9 @@ export const RU = {
   'auth.nicknamePlaceholder': 'Ваш ник в игре',
   'auth.error': 'Ошибка авторизации',
   'auth.registrationClosed': 'Регистрация закрыта. Обратитесь к PL для добавления в клан.',
+  'auth.forgotPassword': 'Забыли пароль?',
+  'auth.resetNeedEmail': 'Введите email выше, чтобы отправить ссылку для сброса пароля.',
+  'auth.resetSent': 'Письмо для сброса пароля отправлено на {email}. Проверьте почту (и папку «Спам»).',
 
   // Guest
   'guest.title': 'Ожидание одобрения',
@@ -540,6 +543,9 @@ export const UA = {
   'auth.nicknamePlaceholder': 'Ваш нік у грі',
   'auth.error': 'Помилка авторизації',
   'auth.registrationClosed': 'Реєстрацію закрито. Зверніться до PL для додавання до клану.',
+  'auth.forgotPassword': 'Забули пароль?',
+  'auth.resetNeedEmail': 'Введіть email вище, щоб надіслати посилання для скидання пароля.',
+  'auth.resetSent': 'Лист для скидання пароля надіслано на {email}. Перевірте пошту (і теку «Спам»).',
 
   'guest.title': 'Очікування схвалення',
   'guest.message': 'Ви авторизовані як',
