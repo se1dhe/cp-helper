@@ -56,3 +56,7 @@ export const getQuestDetails = (name) => QUEST_DETAILS[name] || null;
 // Абсолютная ссылка на l2hub из относительного href ('/il-ru/quests/...').
 export const wikiAbsUrl = (href) =>
   href ? `https://l2hub.info${href}` : null;
+
+// URL иконки итема (файл из wiki_items.db, хостится на masterwork.wiki).
+export const itemIconUrl = (file) =>
+  file ? `https://masterwork.wiki/i64/${file}` : null;

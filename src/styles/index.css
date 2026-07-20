@@ -176,33 +176,40 @@ body {
 .changelog-body { font-size: 0.8rem; color: var(--text-secondary); white-space: pre-wrap; line-height: 1.45; margin: 0; }
 
 /* ===== QUEST MODAL (прохождение квеста) ===== */
-.quest-modal-card { max-width: 620px; width: 94%; max-height: 85vh; display: flex; flex-direction: column; }
+.quest-modal-card { max-width: 780px; width: 96%; max-height: 88vh; display: flex; flex-direction: column; }
 .quest-modal-card .modal-head h3 { display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap; }
 .quest-modal-lvl { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 0.72rem; color: var(--primary); border: 1px solid var(--border); border-radius: 6px; padding: 1px 6px; }
-.quest-modal-body { overflow-y: auto; display: flex; flex-direction: column; gap: 0.9rem; padding: 0.25rem 0.15rem; }
+.quest-modal-body { overflow-y: auto; display: flex; flex-direction: column; gap: 0.75rem; padding: 0.25rem 0.15rem; }
 .quest-modal-ru { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1rem; color: var(--primary); margin-top: -0.4rem; }
 .quest-modal-intro { margin: 0; font-size: 0.85rem; line-height: 1.5; color: var(--text-secondary); font-style: italic; }
-.quest-modal-reward { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 8px; padding: 3px 9px; font-size: 0.78rem; color: var(--text-secondary); }
+.quest-modal-meta { display: flex; flex-wrap: wrap; gap: 0.4rem 1.4rem; }
 .quest-modal-row { display: flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; color: var(--text-primary); }
 .quest-modal-row svg { color: var(--text-muted); flex-shrink: 0; }
-.quest-modal-section { display: flex; flex-direction: column; gap: 0.4rem; }
-.quest-modal-section-h { display: flex; align-items: center; gap: 0.4rem; font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-muted); }
+
+.quest-modal-section { display: flex; flex-direction: column; gap: 0.5rem; border-top: 1px solid var(--border); padding-top: 0.6rem; }
+.quest-modal-section-h { width: 100%; display: flex; align-items: center; gap: 0.4rem; background: none; border: none; padding: 0; cursor: pointer; font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 0.8rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-muted); transition: color 0.15s ease; }
+.quest-modal-section-h:hover { color: var(--text-secondary); }
+.quest-modal-chev { margin-left: auto; display: inline-flex; }
 .quest-modal-src { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 0.62rem; letter-spacing: 0.02em; text-transform: none; color: var(--primary); border: 1px solid var(--border); border-radius: 5px; padding: 0 5px; }
 .quest-modal-changes { font-weight: 500; font-size: 0.68rem; text-transform: none; letter-spacing: 0; color: var(--text-muted); }
-.quest-modal-rewards { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.4rem; }
-.quest-modal-rewards--list { flex-direction: column; gap: 0.3rem; }
-.quest-modal-rewards--list .quest-modal-reward { position: relative; padding: 2px 0 2px 0.9rem; background: none; border: none; border-radius: 0; font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4; }
-.quest-modal-rewards--list .quest-modal-reward::before { content: '◆'; position: absolute; left: 0; color: var(--primary); font-size: 0.6rem; top: 0.35rem; }
-.quest-modal-tips { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.4rem; }
-.quest-modal-tip { position: relative; padding: 0.5rem 0.7rem; background: rgba(212,175,55,0.06); border: 1px solid rgba(212,175,55,0.25); border-radius: 8px; font-size: 0.8rem; line-height: 1.5; color: var(--text-secondary); }
+
+.quest-modal-rewards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.3rem 1rem; }
+.quest-modal-reward-note { grid-column: 1 / -1; font-size: 0.72rem; font-weight: 600; color: var(--text-muted); padding-top: 0.2rem; }
+.quest-modal-reward-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: var(--text-secondary); min-width: 0; }
+.quest-modal-reward-ic { width: 26px; height: 26px; border-radius: 5px; flex-shrink: 0; background: rgba(0,0,0,0.25); border: 1px solid var(--border); object-fit: cover; }
+.quest-modal-reward-ic--ph { display: inline-block; }
+.quest-modal-reward-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.quest-modal-reward-grade { flex-shrink: 0; font-size: 0.6rem; font-weight: 700; color: var(--primary); border: 1px solid var(--primary); border-radius: 4px; padding: 0 3px; }
+.quest-modal-reward-qty { flex-shrink: 0; margin-left: auto; font-variant-numeric: tabular-nums; color: var(--text-muted); font-size: 0.76rem; }
 .quest-modal-rewards-text { margin: 0; font-size: 0.82rem; color: var(--text-secondary); }
-.quest-modal-link { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 8px; padding: 3px 9px; font-size: 0.78rem; color: var(--text-secondary); cursor: pointer; transition: color 0.15s ease, border-color 0.15s ease; }
-.quest-modal-link:hover { color: var(--primary); border-color: var(--primary); }
-.quest-modal-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.55rem; counter-reset: none; }
-.quest-modal-step { border: 1px solid var(--border); border-left: 3px solid var(--primary); border-radius: 10px; padding: 0.6rem 0.8rem; background: rgba(255,255,255,0.02); display: flex; flex-direction: column; gap: 0.25rem; }
-.quest-modal-step-title { font-weight: 600; font-size: 0.82rem; color: var(--text-primary); }
-.quest-modal-step-text { font-size: 0.8rem; line-height: 1.5; color: var(--text-secondary); }
+
+.quest-modal-tips { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.4rem; }
+.quest-modal-tip { padding: 0.5rem 0.7rem; background: rgba(212,175,55,0.06); border: 1px solid rgba(212,175,55,0.25); border-radius: 8px; font-size: 0.8rem; line-height: 1.5; color: var(--text-secondary); }
+
+.quest-modal-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.45rem; }
+.quest-modal-step { border: 1px solid var(--border); border-left: 3px solid var(--primary); border-radius: 8px; padding: 0.5rem 0.75rem; background: rgba(255,255,255,0.02); font-size: 0.8rem; line-height: 1.5; color: var(--text-secondary); }
 .quest-modal-nodetails { margin: 0; font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; }
+@media (max-width: 560px) { .quest-modal-rewards { grid-template-columns: 1fr; } }
 .quest-modal-foot { display: flex; justify-content: flex-end; margin-top: 1rem; padding-top: 0.85rem; border-top: 1px solid var(--border); }
 .quest-modal-wiki-btn { display: inline-flex; align-items: center; gap: 0.4rem; background: var(--primary); color: #fff; border: none; border-radius: 8px; padding: 0.5rem 0.9rem; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: filter 0.15s ease; }
 .quest-modal-wiki-btn:hover { filter: brightness(1.1); }

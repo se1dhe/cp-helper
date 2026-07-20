@@ -8,10 +8,35 @@
     "url": "/il-ru/quests/265-bonds-of-slavery",
     "intro": "Пока мы были заняты войной, наши бывшие рабы, Бесы, сбежали. Пришло время научить этих неблагодарных негодяев, что ни у кого еще не получалось уйти от возмездия Темных Эльфов!",
     "rewards": [
-      "Adena NG",
-      "Imp Shackles NG = 12 адены/шт",
-      "Бонус за 10+ предметов: 500 адены",
-      "Первое прохождение: Soulshot: No Grade NG ×2 000, Spiritshot: No Grade NG ×1 000"
+      {
+        "n": "Adena",
+        "g": "NG",
+        "ic": "etc_adena_i00.png"
+      },
+      {
+        "n": "Imp Shackles",
+        "g": "NG",
+        "ic": "accessary_cerberuss_earing_i00.png",
+        "q": "= 12 адены/шт"
+      },
+      {
+        "t": "Бонус за 10+ предметов: 500 адены"
+      },
+      {
+        "t": "Первое прохождение:"
+      },
+      {
+        "n": "Soulshot: No Grade",
+        "g": "NG",
+        "ic": "etc_spirit_bullet_white_i00.png",
+        "q": "×2 000"
+      },
+      {
+        "n": "Spiritshot: No Grade",
+        "g": "NG",
+        "ic": "etc_spell_shot_white_i00.png",
+        "q": "×1 000"
+      }
     ],
     "steps": [
       "Поговорите с Охранник Кристина.",
@@ -32,9 +57,23 @@
     "url": "/il-ru/quests/151-cure-for-fever-disease",
     "intro": "Ученики Школы Магов Айнховант заболели странной формой лихорадки. Их учитель Элиас волнуется за них.",
     "rewards": [
-      "Bone Shield NG",
-      "Exp NG ×20 000",
-      "SP NG ×2 000"
+      {
+        "n": "Bone Shield",
+        "g": "NG",
+        "ic": "shield_bone_shield_i00.png"
+      },
+      {
+        "n": "Exp",
+        "g": "NG",
+        "ic": "etc_exp_point_i00.png",
+        "q": "×20 000"
+      },
+      {
+        "n": "SP",
+        "g": "NG",
+        "ic": "etc_sp_point_i00.png",
+        "q": "×2 000"
+      }
     ],
     "steps": [
       "Поговорите с Элиас",
@@ -56,9 +95,24 @@
     "url": "/il-ru/quests/153-deliver-goods",
     "intro": "Из корабельных обломков иногда можно извлечь сохранившиеся товары. Доставьте их по назначению.",
     "rewards": [
-      "Ring of Knowledge NG ×2",
-      "Exp NG ×2 000",
-      "SP NG ×200"
+      {
+        "n": "Ring of Knowledge",
+        "g": "NG",
+        "ic": "accessary_ring_of_knowledge_i00.png",
+        "q": "×2"
+      },
+      {
+        "n": "Exp",
+        "g": "NG",
+        "ic": "etc_exp_point_i00.png",
+        "q": "×2 000"
+      },
+      {
+        "n": "SP",
+        "g": "NG",
+        "ic": "etc_sp_point_i00.png",
+        "q": "×200"
+      }
     ],
     "steps": [
       "Поговорите с Страж Арнольд. Он даст вам Список Доставки, Тяжелый Деревянный Ящик, Моток Ткани и Глиняный Горшок.",
@@ -81,9 +135,71 @@
     "url": "/il-ru/quests/38-dragon-fangs",
     "intro": "Примитивное племя Ящеров Лангк использует заклинание, неизвестное даже мистикам Башни Слоновой Кости.",
     "rewards": [
-      "Exp NG ×350 000",
-      "SP NG ×35 000",
-      "Случайно (D-грейд): Bronze Helmet, Leather Gauntlets, Blue Buckskin Boots, Aspis, Iron Plate Gaiters, Puma Skin Gaiters, Cursed Stockings, Ring Mail Breastplate, Puma Skin Shirt, Cursed Tunic"
+      {
+        "n": "Exp",
+        "g": "NG",
+        "ic": "etc_exp_point_i00.png",
+        "q": "×350 000"
+      },
+      {
+        "n": "SP",
+        "g": "NG",
+        "ic": "etc_sp_point_i00.png",
+        "q": "×35 000"
+      },
+      {
+        "t": "Случайно (один D-грейд):"
+      },
+      {
+        "n": "Bronze Helmet",
+        "g": "D",
+        "ic": "armor_helmet_i00.png"
+      },
+      {
+        "n": "Leather Gauntlets",
+        "g": "D",
+        "ic": "armor_t18_g_i00.png"
+      },
+      {
+        "n": "Blue Buckskin Boots",
+        "g": "D",
+        "ic": "armor_t18_b_i00.png"
+      },
+      {
+        "n": "Aspis",
+        "g": "D",
+        "ic": "shield_aspis_i00.png"
+      },
+      {
+        "n": "Iron Plate Gaiters",
+        "g": "D",
+        "ic": "armor_t12_l_i00.png"
+      },
+      {
+        "n": "Puma Skin Gaiters",
+        "g": "D",
+        "ic": "armor_t09_l_i00.png"
+      },
+      {
+        "n": "Cursed Stockings",
+        "g": "D",
+        "ic": "armor_t14_l_i00.png"
+      },
+      {
+        "n": "Ring Mail Breastplate",
+        "g": "D",
+        "ic": "armor_t12_u_i00.png"
+      },
+      {
+        "n": "Puma Skin Shirt",
+        "g": "D",
+        "ic": "armor_t09_u_i00.png"
+      },
+      {
+        "n": "Cursed Tunic",
+        "g": "D",
+        "ic": "armor_t14_u_i00.png"
+      }
     ],
     "steps": [
       "Поговорите с Страж Льюис.",
@@ -109,10 +225,28 @@
     "url": "/il-ru/quests/155-find-sir-windawood",
     "intro": "Прибыло срочное сообщение для сэра Коллина Виндавуда, консула Говорящего Острова. Консул ничего не знает об этом. Найдите сэра Виндавуда и доставьте ему письмо.",
     "rewards": [
-      "Haste Potion NG",
-      "Alacrity Potion NG",
-      "Exp NG ×1 000",
-      "SP NG ×100"
+      {
+        "n": "Haste Potion",
+        "g": "NG",
+        "ic": "etc_potion_green_i00.png"
+      },
+      {
+        "n": "Alacrity Potion",
+        "g": "NG",
+        "ic": "etc_reagent_green_i00.png"
+      },
+      {
+        "n": "Exp",
+        "g": "NG",
+        "ic": "etc_exp_point_i00.png",
+        "q": "×1 000"
+      },
+      {
+        "n": "SP",
+        "g": "NG",
+        "ic": "etc_sp_point_i00.png",
+        "q": "×100"
+      }
     ],
     "steps": [
       "Поговорите с Страж Абеллос. Он даст вам Официальное Письмо.",
@@ -132,8 +266,46 @@
     "url": "/il-ru/quests/106-forgotten-truth",
     "intro": "Банда мерзких Орков украла \"Откровения Кайши\"! Верните этот бесценный манускрипт во имя будущего всех Темных Эльфов!",
     "rewards": [
-      "Для воинов: Eldritch Dagger NG, Soulshot: No Grade NG ×2 500, Lesser Healing Potion NG ×100",
-      "Для магов: Apprentice's Spellbook NG, Spiritshot: No Grade NG ×1 250, Lesser Healing Potion NG ×100"
+      {
+        "t": "Для воинов:"
+      },
+      {
+        "n": "Eldritch Dagger",
+        "g": "NG",
+        "ic": "weapon_knife_i00.png"
+      },
+      {
+        "n": "Soulshot: No Grade",
+        "g": "NG",
+        "ic": "etc_spirit_bullet_white_i00.png",
+        "q": "×2 500"
+      },
+      {
+        "n": "Lesser Healing Potion",
+        "g": "NG",
+        "ic": "etc_lesser_potion_red_i00.png",
+        "q": "×100"
+      },
+      {
+        "t": "Для магов:"
+      },
+      {
+        "n": "Apprentice's Spellbook",
+        "g": "NG",
+        "ic": "weapon_apprentices_spellbook_i00.png"
+      },
+      {
+        "n": "Spiritshot: No Grade",
+        "g": "NG",
+        "ic": "etc_spell_shot_white_i00.png",
+        "q": "×1 250"
+      },
+      {
+        "n": "Lesser Healing Potion",
+        "g": "NG",
+        "ic": "etc_lesser_potion_red_i00.png",
+        "q": "×100"
+      }
     ],
     "steps": [
       "Поговорите с Тетрарх Тифиэль. Он даст вам I Ониксовый Талисман.",
@@ -156,10 +328,30 @@
     "url": "/il-ru/quests/161-fruit-of-the-mother-tree",
     "intro": "Секрет долголетия Эльфов кроется в плодах Древа Жизни. Хранители деревьев очень обеспокоены снижением их плодородия.",
     "rewards": [
-      "Lesser Healing Potion NG ×5",
-      "Exp NG ×1 500",
-      "SP NG ×150",
-      "Adena NG ×500"
+      {
+        "n": "Lesser Healing Potion",
+        "g": "NG",
+        "ic": "etc_lesser_potion_red_i00.png",
+        "q": "×5"
+      },
+      {
+        "n": "Exp",
+        "g": "NG",
+        "ic": "etc_exp_point_i00.png",
+        "q": "×1 500"
+      },
+      {
+        "n": "SP",
+        "g": "NG",
+        "ic": "etc_sp_point_i00.png",
+        "q": "×150"
+      },
+      {
+        "n": "Adena",
+        "g": "NG",
+        "ic": "etc_adena_i00.png",
+        "q": "×500"
+      }
     ],
     "steps": [
       "Поговорите с Анделия. Она даст вам Письмо Анделии.",
@@ -180,11 +372,47 @@
     "url": "/il-ru/quests/273-invaders-of-the-holy-land",
     "intro": "На Плато Бессмертия, древнюю Родину Орков вторглись коварные бесы! Но им не устоять против великих Орков! Во имя Повелителя Огня Паагрио, восстаньте, воители Орков! Изгоните эту заразу с нашей земли!",
     "rewards": [
-      "Adena NG",
-      "Black Soulstone NG = 3 адены/шт",
-      "Red Soulstone NG = 10 адены/шт",
-      "Бонус за 10+: только чёрные = 1 500 адены, есть красные = 1 800 адены",
-      "Первое прохождение: Soulshot: No Grade NG ×2 000, Spiritshot: No Grade NG ×1 000, Lesser Healing Potion NG ×100"
+      {
+        "n": "Adena",
+        "g": "NG",
+        "ic": "etc_adena_i00.png"
+      },
+      {
+        "n": "Black Soulstone",
+        "g": "NG",
+        "ic": "etc_bead_gold_i00.png",
+        "q": "= 3 адены/шт"
+      },
+      {
+        "n": "Red Soulstone",
+        "g": "NG",
+        "ic": "etc_crystal_ball_red_i00.png",
+        "q": "= 10 адены/шт"
+      },
+      {
+        "t": "Бонус за 10+: чёрные = 1 500, есть красные = 1 800 адены"
+      },
+      {
+        "t": "Первое прохождение:"
+      },
+      {
+        "n": "Soulshot: No Grade",
+        "g": "NG",
+        "ic": "etc_spirit_bullet_white_i00.png",
+        "q": "×2 000"
+      },
+      {
+        "n": "Spiritshot: No Grade",
+        "g": "NG",
+        "ic": "etc_spell_shot_white_i00.png",
+        "q": "×1 000"
+      },
+      {
+        "n": "Lesser Healing Potion",
+        "g": "NG",
+        "ic": "etc_lesser_potion_red_i00.png",
+        "q": "×100"
+      }
     ],
     "steps": [
       "Поговорите с Главарь Атуба Варкис.",
@@ -205,9 +433,23 @@
     "url": "/il-ru/quests/108-jumble-tumble-diamond-fuss",
     "intro": "Звездный Алмаз - большая редкость, на всем континенте их не больше двенадцати. Неужели кто-то умудрился потерять такую ценную вещь?..",
     "rewards": [
-      "Silversmith Hammer NG",
-      "Soulshot: No Grade NG ×5 000",
-      "Lesser Healing Potion NG ×100"
+      {
+        "n": "Silversmith Hammer",
+        "g": "NG",
+        "ic": "weapon_iron_hammer_i00.png"
+      },
+      {
+        "n": "Soulshot: No Grade",
+        "g": "NG",
+        "ic": "etc_spirit_bullet_white_i00.png",
+        "q": "×5 000"
+      },
+      {
+        "n": "Lesser Healing Potion",
+        "g": "NG",
+        "ic": "etc_lesser_potion_red_i00.png",
+        "q": "×100"
+      }
     ],
     "steps": [
       "Поговорите с Коллекционер Гуф. Он даст вам Контракт Гуфа.",
@@ -238,7 +480,11 @@
     "url": "/il-ru/quests/1-letters-of-love",
     "intro": "Дарин, юноша с Говорящего Острова, пылает страстью к Хранителю Портала Рокси, но боится, что она не ответит ему взаимностью. Помогите ему найти свою любовь!",
     "rewards": [
-      "Necklace of Knowledge NG"
+      {
+        "n": "Necklace of Knowledge",
+        "g": "NG",
+        "ic": "accessary_necklace_of_knowledge_i00.png"
+      }
     ],
     "steps": [
       "Поговорите с Дарин, он даст вам Письмо Дарина.",
@@ -261,9 +507,24 @@
     "url": "/il-ru/quests/166-mass-of-darkness",
     "intro": "Темные Эльфы готовятся к мессе в честь богини Шилен. Все жители деревни должны принять участие в подготовке к ней!",
     "rewards": [
-      "Exp NG ×500",
-      "SP NG ×100",
-      "Adena NG ×250"
+      {
+        "n": "Exp",
+        "g": "NG",
+        "ic": "etc_exp_point_i00.png",
+        "q": "×500"
+      },
+      {
+        "n": "SP",
+        "g": "NG",
+        "ic": "etc_sp_point_i00.png",
+        "q": "×100"
+      },
+      {
+        "n": "Adena",
+        "g": "NG",
+        "ic": "etc_adena_i00.png",
+        "q": "×250"
+      }
     ],
     "steps": [
       "Поговорите с Служитель Бездны Андриас. Он даст вам Письмо Андриаса.",
@@ -286,11 +547,41 @@
     "url": "/il-ru/quests/260-orc-hunting",
     "intro": "Орки Кабу с Туманных Гор начали вторжение в Эльфийский Лес. Они напали на деревню прямо под носом у стражи! Если Вы хотите помочь справиться с угрозой, обращайтесь к Часовому Райену.",
     "rewards": [
-      "Adena NG",
-      "Orc Amulet NG = 5 адены/шт",
-      "Orc's Necklace NG = 15 адены/шт",
-      "Бонус за 10+ предметов: 1 000 адены",
-      "Первое прохождение: Soulshot: No Grade NG ×2 000, Spiritshot: No Grade NG ×1 000"
+      {
+        "n": "Adena",
+        "g": "NG",
+        "ic": "etc_adena_i00.png"
+      },
+      {
+        "n": "Orc Amulet",
+        "g": "NG",
+        "ic": "etc_feather_gold_i00.png",
+        "q": "= 5 адены/шт"
+      },
+      {
+        "n": "Orc's Necklace",
+        "g": "NG",
+        "ic": "accessary_necklace_of_anguish_i00.png",
+        "q": "= 15 адены/шт"
+      },
+      {
+        "t": "Бонус за 10+ предметов: 1 000 адены"
+      },
+      {
+        "t": "Первое прохождение:"
+      },
+      {
+        "n": "Soulshot: No Grade",
+        "g": "NG",
+        "ic": "etc_spirit_bullet_white_i00.png",
+        "q": "×2 000"
+      },
+      {
+        "n": "Spiritshot: No Grade",
+        "g": "NG",
+        "ic": "etc_spell_shot_white_i00.png",
+        "q": "×1 000"
+      }
     ],
     "steps": [
       "Поговорите с Часовой Райен.",
@@ -312,8 +603,41 @@
     "url": "/il-ru/quests/104-spirit-of-mirrors",
     "intro": "Из лаборатории Великого Магистра Галлинта на Говорящем Острове сбежало три Духа Зеркал: Необходимо захватить их и вернуть хозяину.",
     "rewards": [
-      "Для воинов: Soulshot: No Grade NG ×3 500, Lesser Healing Potion NG ×100",
-      "Для магов: Wand of Adept NG, Spiritshot: No Grade NG ×1 750, Lesser Healing Potion NG ×100"
+      {
+        "t": "Для воинов:"
+      },
+      {
+        "n": "Soulshot: No Grade",
+        "g": "NG",
+        "ic": "etc_spirit_bullet_white_i00.png",
+        "q": "×3 500"
+      },
+      {
+        "n": "Lesser Healing Potion",
+        "g": "NG",
+        "ic": "etc_lesser_potion_red_i00.png",
+        "q": "×100"
+      },
+      {
+        "t": "Для магов:"
+      },
+      {
+        "n": "Wand of Adept",
+        "g": "NG",
+        "ic": "weapon_apprentices_wand_i00.png"
+      },
+      {
+        "n": "Spiritshot: No Grade",
+        "g": "NG",
+        "ic": "etc_spell_shot_white_i00.png",
+        "q": "×1 750"
+      },
+      {
+        "n": "Lesser Healing Potion",
+        "g": "NG",
+        "ic": "etc_lesser_potion_red_i00.png",
+        "q": "×100"
+      }
     ],
     "steps": [
       "Поговорите с Великий Магистр Галлинт. Он даст вам Посох Галлинта x3.",
@@ -336,8 +660,41 @@
     "url": "/il-ru/quests/101-sword-of-solidarity",
     "intro": "Меч Единства долгое время являлся символом дружбы Эльфов и Людей. Утрата меча вызвала конфликт между двумя расами. Великий Мастер Роен ищет героя для возвращения древней реликвии.",
     "rewards": [
-      "Для воинов: Sword of Solidarity NG, Soulshot: No Grade NG ×3 500, Lesser Healing Potion NG ×100",
-      "Для магов: Spiritshot: No Grade NG ×1 750, Lesser Healing Potion NG ×100"
+      {
+        "t": "Для воинов:"
+      },
+      {
+        "n": "Sword of Solidarity",
+        "g": "NG",
+        "ic": "weapon_long_sword_i00.png"
+      },
+      {
+        "n": "Soulshot: No Grade",
+        "g": "NG",
+        "ic": "etc_spirit_bullet_white_i00.png",
+        "q": "×3 500"
+      },
+      {
+        "n": "Lesser Healing Potion",
+        "g": "NG",
+        "ic": "etc_lesser_potion_red_i00.png",
+        "q": "×100"
+      },
+      {
+        "t": "Для магов:"
+      },
+      {
+        "n": "Spiritshot: No Grade",
+        "g": "NG",
+        "ic": "etc_spell_shot_white_i00.png",
+        "q": "×1 750"
+      },
+      {
+        "n": "Lesser Healing Potion",
+        "g": "NG",
+        "ic": "etc_lesser_potion_red_i00.png",
+        "q": "×100"
+      }
     ],
     "steps": [
       "Поговорите с Великий Мастер Роен. Он даст вам Письмо Роена.",
@@ -361,12 +718,47 @@
     "url": "/il-ru/quests/257-the-guard-is-busy",
     "intro": "Правитель Говорящего Острова решил предоставить убежище беженцам, пострадавшим во время войны с Грацией. Но перед этим необходимо очистить остров от монстров!",
     "rewards": [
-      "Adena NG",
-      "Orc Amulet NG = 10 адены/шт",
-      "Orc's Necklace NG = 20 адены/шт",
-      "Werewolf's Fang NG = 20 адены/шт",
-      "Бонус за 10+ предметов: 1 000 адены",
-      "Первое прохождение: Soulshot: No Grade NG ×800, Spiritshot: No Grade NG ×400"
+      {
+        "n": "Adena",
+        "g": "NG",
+        "ic": "etc_adena_i00.png"
+      },
+      {
+        "n": "Orc Amulet",
+        "g": "NG",
+        "ic": "etc_feather_gold_i00.png",
+        "q": "= 10 адены/шт"
+      },
+      {
+        "n": "Orc's Necklace",
+        "g": "NG",
+        "ic": "accessary_necklace_of_anguish_i00.png",
+        "q": "= 20 адены/шт"
+      },
+      {
+        "n": "Werewolf's Fang",
+        "g": "NG",
+        "ic": "etc_claw_i00.png",
+        "q": "= 20 адены/шт"
+      },
+      {
+        "t": "Бонус за 10+ предметов: 1 000 адены"
+      },
+      {
+        "t": "Первое прохождение:"
+      },
+      {
+        "n": "Soulshot: No Grade",
+        "g": "NG",
+        "ic": "etc_spirit_bullet_white_i00.png",
+        "q": "×800"
+      },
+      {
+        "n": "Spiritshot: No Grade",
+        "g": "NG",
+        "ic": "etc_spell_shot_white_i00.png",
+        "q": "×400"
+      }
     ],
     "steps": [
       "Поговорите с Капитан Гилберт.",
@@ -389,11 +781,41 @@
     "url": "/il-ru/quests/293-the-hidden-veins",
     "intro": "Старейшина Филар, эксперт в строительстве и в деле добычи, узнал, что Орки Утуку недавно обнаружили забытую хризолитовую шахту.",
     "rewards": [
-      "Adena NG",
-      "Chrysolite Ore NG = 5 адены/шт",
-      "Hidden Ore Map NG = 500 адены/шт",
-      "Бонус за 10+ предметов: 2 000 адены",
-      "Первое прохождение: Soulshot: No Grade NG ×2 000, Lesser Healing Potion NG ×100"
+      {
+        "n": "Adena",
+        "g": "NG",
+        "ic": "etc_adena_i00.png"
+      },
+      {
+        "n": "Chrysolite Ore",
+        "g": "NG",
+        "ic": "etc_plate_blue_i00.png",
+        "q": "= 5 адены/шт"
+      },
+      {
+        "n": "Hidden Ore Map",
+        "g": "NG",
+        "ic": "etc_recipe_blue_i00.png",
+        "q": "= 500 адены/шт"
+      },
+      {
+        "t": "Бонус за 10+ предметов: 2 000 адены"
+      },
+      {
+        "t": "Первое прохождение:"
+      },
+      {
+        "n": "Soulshot: No Grade",
+        "g": "NG",
+        "ic": "etc_spirit_bullet_white_i00.png",
+        "q": "×2 000"
+      },
+      {
+        "n": "Lesser Healing Potion",
+        "g": "NG",
+        "ic": "etc_lesser_potion_red_i00.png",
+        "q": "×100"
+      }
     ],
     "steps": [
       "Поговорите с Гильдия Серой Колонны Филар.",
@@ -415,8 +837,40 @@
     "url": "/il-ru/quests/2-what-women-want",
     "intro": "Аруен, юноша из Эльфийской Деревни, любит Магистра Гринис всем сердцем, но кто знает, ответит ли она ему взаимностью…",
     "rewards": [
-      "На выбор «To forget about her»: Exp NG ×3 000, SP NG ×300",
-      "На выбор «That Greenis may like him»: Mystic's Earring NG, Haste Potion NG, Adena NG ×500"
+      {
+        "t": "На выбор «To forget about her»:"
+      },
+      {
+        "n": "Exp",
+        "g": "NG",
+        "ic": "etc_exp_point_i00.png",
+        "q": "×3 000"
+      },
+      {
+        "n": "SP",
+        "g": "NG",
+        "ic": "etc_sp_point_i00.png",
+        "q": "×300"
+      },
+      {
+        "t": "На выбор «That Greenis may like him»:"
+      },
+      {
+        "n": "Mystic's Earring",
+        "g": "NG",
+        "ic": "accessary_mage_earing_i00.png"
+      },
+      {
+        "n": "Haste Potion",
+        "g": "NG",
+        "ic": "etc_potion_green_i00.png"
+      },
+      {
+        "n": "Adena",
+        "g": "NG",
+        "ic": "etc_adena_i00.png",
+        "q": "×500"
+      }
     ],
     "steps": [
       "Поговорите с Аруен. Он даст вам Письмо Аруена.",
@@ -440,10 +894,49 @@
     "url": "/il-ru/quests/3-will-the-seal-be-broken",
     "intro": "По вине людей Иерарх Митраэль проклят на века! Помогите Тетрарху Таллоту снять проклятие, сковавшее Митраэля.",
     "rewards": [
-      "Exp NG ×25 000",
-      "SP NG ×2 500",
-      "Случайно: Stockings of Magic NG / Hard Leather Gaiters NG / Bronze Gaiters NG",
-      "Случайно (не гарантировано): Scroll: Enchant Armor (D) NG / Scroll: Enchant Weapon (D) NG"
+      {
+        "n": "Exp",
+        "g": "NG",
+        "ic": "etc_exp_point_i00.png",
+        "q": "×25 000"
+      },
+      {
+        "n": "SP",
+        "g": "NG",
+        "ic": "etc_sp_point_i00.png",
+        "q": "×2 500"
+      },
+      {
+        "t": "Случайно (одно гарантировано):"
+      },
+      {
+        "n": "Stockings of Magic",
+        "g": "NG",
+        "ic": "armor_t58_l_i00.png"
+      },
+      {
+        "n": "Hard Leather Gaiters",
+        "g": "NG",
+        "ic": "armor_t30_l_i00.png"
+      },
+      {
+        "n": "Bronze Gaiters",
+        "g": "NG",
+        "ic": "armor_t34_l_i00.png"
+      },
+      {
+        "t": "Случайно (не гарантировано):"
+      },
+      {
+        "n": "Scroll: Enchant Armor (D-Grade)",
+        "g": "NG",
+        "ic": "etc_scroll_of_enchant_armor_i01.png"
+      },
+      {
+        "n": "Scroll: Enchant Weapon (D-Grade)",
+        "g": "NG",
+        "ic": "etc_scroll_of_enchant_weapon_i01.png"
+      }
     ],
     "steps": [
       "Поговорите с Тетрарх Таллот.",
@@ -466,8 +959,17 @@
     "url": "/il-ru/quests/165-shilens-hunt",
     "intro": "Скоро начнется Темная месса в честь богини Шилен. Готовьтесь к славной охоте! Берите луки и стрелы и принесите дары Матери Бездны!",
     "rewards": [
-      "Adena NG",
-      "Dark Bezoar NG = 5 адены/шт"
+      {
+        "n": "Adena",
+        "g": "NG",
+        "ic": "etc_adena_i00.png"
+      },
+      {
+        "n": "Dark Bezoar",
+        "g": "NG",
+        "ic": "etc_bead_gold_i00.png",
+        "q": "= 5 адены/шт"
+      }
     ],
     "steps": [
       "Поговорите с Часовой Нельсия.",
@@ -488,9 +990,24 @@
     "url": "/il-ru/quests/5-miners-favor",
     "intro": "Члены Гильдии Серой Колонны усердно работают в Руднике Возрождения. Шахтер Больтер обеспокоен тем, что некому сходить в деревню за необходимыми материалами.",
     "rewards": [
-      "Exp NG ×1 500",
-      "SP NG ×150",
-      "Adena NG ×700"
+      {
+        "n": "Exp",
+        "g": "NG",
+        "ic": "etc_exp_point_i00.png",
+        "q": "×1 500"
+      },
+      {
+        "n": "SP",
+        "g": "NG",
+        "ic": "etc_sp_point_i00.png",
+        "q": "×150"
+      },
+      {
+        "n": "Adena",
+        "g": "NG",
+        "ic": "etc_adena_i00.png",
+        "q": "×700"
+      }
     ],
     "steps": [
       "Поговорите с Шахтер Больтер. Он даст вам Вонючие Носки Больтера и Список Больтера.",
@@ -514,7 +1031,11 @@
     "url": "/il-ru/quests/4-long-live-the-paagrio-lord",
     "intro": "Правитель Орков Кекеи, Лорд Паагрио, заболел! Старейшины решили, что каждое племя должно преподнести лорду подарок во имя его скорейшего выздоровления.",
     "rewards": [
-      "Club NG"
+      {
+        "n": "Club",
+        "g": "NG",
+        "ic": "weapon_club_i00.png"
+      }
     ],
     "steps": [
       "Поговорите с Центурион Накушин. Вы должны поговорить с 6 вождями племен и получить подарок от каждого.",
