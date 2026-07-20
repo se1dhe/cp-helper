@@ -175,6 +175,29 @@ body {
 .changelog-date { font-size: 0.72rem; color: var(--text-muted); flex-shrink: 0; }
 .changelog-body { font-size: 0.8rem; color: var(--text-secondary); white-space: pre-wrap; line-height: 1.45; margin: 0; }
 
+/* ===== QUEST MODAL (прохождение квеста) ===== */
+.quest-modal-card { max-width: 620px; width: 94%; max-height: 85vh; display: flex; flex-direction: column; }
+.quest-modal-card .modal-head h3 { display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap; }
+.quest-modal-lvl { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 0.72rem; color: var(--primary); border: 1px solid var(--border); border-radius: 6px; padding: 1px 6px; }
+.quest-modal-body { overflow-y: auto; display: flex; flex-direction: column; gap: 0.9rem; padding: 0.25rem 0.15rem; }
+.quest-modal-intro { margin: 0; font-size: 0.85rem; line-height: 1.5; color: var(--text-secondary); font-style: italic; }
+.quest-modal-row { display: flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; color: var(--text-primary); }
+.quest-modal-row svg { color: var(--text-muted); flex-shrink: 0; }
+.quest-modal-section { display: flex; flex-direction: column; gap: 0.4rem; }
+.quest-modal-section-h { display: flex; align-items: center; gap: 0.4rem; font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-muted); }
+.quest-modal-rewards { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.quest-modal-rewards-text { margin: 0; font-size: 0.82rem; color: var(--text-secondary); }
+.quest-modal-link { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 8px; padding: 3px 9px; font-size: 0.78rem; color: var(--text-secondary); cursor: pointer; transition: color 0.15s ease, border-color 0.15s ease; }
+.quest-modal-link:hover { color: var(--primary); border-color: var(--primary); }
+.quest-modal-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.55rem; counter-reset: none; }
+.quest-modal-step { border: 1px solid var(--border); border-left: 3px solid var(--primary); border-radius: 10px; padding: 0.6rem 0.8rem; background: rgba(255,255,255,0.02); display: flex; flex-direction: column; gap: 0.25rem; }
+.quest-modal-step-title { font-weight: 600; font-size: 0.82rem; color: var(--text-primary); }
+.quest-modal-step-text { font-size: 0.8rem; line-height: 1.5; color: var(--text-secondary); }
+.quest-modal-nodetails { margin: 0; font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; }
+.quest-modal-foot { display: flex; justify-content: flex-end; margin-top: 1rem; padding-top: 0.85rem; border-top: 1px solid var(--border); }
+.quest-modal-wiki-btn { display: inline-flex; align-items: center; gap: 0.4rem; background: var(--primary); color: #fff; border: none; border-radius: 8px; padding: 0.5rem 0.9rem; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: filter 0.15s ease; }
+.quest-modal-wiki-btn:hover { filter: brightness(1.1); }
+
 /* ===== CRAFT STASH (закладки на крафт) ===== */
 .stash-list { display: flex; flex-direction: column; gap: 0.6rem; }
 .stash-row { padding: 0.75rem 0.9rem; }

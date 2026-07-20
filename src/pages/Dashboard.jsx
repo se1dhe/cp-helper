@@ -16,9 +16,9 @@ import { useAuth } from '../context/AuthContext';
 import { useLang } from '../context/LanguageContext';
 import { L2_CLASSES } from '../utils/classes';
 import { ClassIcon } from '../components/ClassIcon';
-import { getUniversalQuests, getRaceQuestsForClass, getRaceLabel, getRaceForClass, isQuestHiddenForMember, questWikiUrl } from '../data/quests';
-import { openExternal } from '../utils/openExternal';
-import { ExternalLink } from 'lucide-react';
+import { getUniversalQuests, getRaceQuestsForClass, getRaceLabel, getRaceForClass, isQuestHiddenForMember } from '../data/quests';
+import { ScrollText } from 'lucide-react';
+import { useQuestModal } from '../context/QuestModalContext';
 
 const getClassDetails = (name) => L2_CLASSES.find(c => c.name === name) || { type: 'unknown', color: '#888' };
 
@@ -41,6 +41,7 @@ const DEFAULT_TASKS = [
 export const Dashboard = () => {
   const { currentUser, userNickname, isPL, isOfficer } = useAuth();
   const { t } = useLang();
+  const { openQuest } = useQuestModal();
   const [roster, setRoster] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState('');
@@ -437,8 +438,8 @@ export const Dashboard = () => {
                           : <ChevronRight size={14} className="quest-card-chevron" />
                         }
                       </button>
-                      <button className="quest-card-wiki" onClick={(e) => { e.stopPropagation(); openExternal(questWikiUrl(q.name)); }} title={t('quest.walkthrough')}>
-                        <ExternalLink size={13} />
+                      <button className="quest-card-wiki" onClick={(e) => { e.stopPropagation(); openQuest(q); }} title={t('quest.details')}>
+                        <ScrollText size={13} />
                       </button>
                     </div>
                     {isExpanded && (

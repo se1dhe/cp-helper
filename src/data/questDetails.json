@@ -1,0 +1,286 @@
+{
+  "Bonds of Slavery": {
+    "name": "Bonds of Slavery",
+    "level": "6 ~ 11",
+    "url": "/lu4/quest/265-bonds-of-slavery",
+    "intro": "Our former slaves, the Imps, managed to escape while we were distracted by the war. It's time we teach those ungrateful wretches that no one escapes the Dark Elves!",
+    "startNpc": { "name": "Kristin Sentry (Kristin)", "href": "/lu4/npc/30357-kristin" },
+    "rewards": [{ "name": "Flexible Reward NG", "href": "/lu4/item/15630-flexible-reward" }],
+    "steps": [
+      { "title": "1: Imp Shackle", "text": "Go to the Dark Elven Forest and take an imp shackle to Sentry Kristin. Hunt - Imps and Imp Elders." }
+    ]
+  },
+  "Cure for Fever Disease": {
+    "name": "Cure for Fever Disease",
+    "level": "15 ~ 21",
+    "url": "/lu4/quest/151-cure-for-fever-disease",
+    "intro": "The students of Einhovant's School of Magic have come down with a mysterious fever. Their teacher, Elias, is quite concerned.",
+    "startNpc": { "name": "Elias (Elias)", "href": "/lu4/npc/30050-elias" },
+    "rewards": [
+      { "name": "Exp NG (20 000 шт.)", "href": "/lu4/item/15623-exp" },
+      { "name": "SP NG (2 000 шт.)", "href": "/lu4/item/15624-sp" },
+      { "name": "Bone Shield NG", "href": "/lu4/item/625-bone-shield" }
+    ],
+    "steps": [
+      { "title": "1: Spider's Poison Sac", "text": "Priest Yohanes needs the poison sacs of many spiders, and you are asked to bring them to him. The Poison Sacs is very rare! Hunt to - Blade Spider, Giant Spider, Talon Spider." },
+      { "title": "2: Creation of the Cure for the Fever", "text": "You have obtained the poison sacs of giant spiders. Take them immediately to Priest Yohanes and ask him to make the medicine!" },
+      { "title": "3: Treatment of the Fever", "text": "Priest Yohanes made fever medicine with the poison sacs you collected for him. Take the medicine for the students of the School of Wizardry to Master Elias immediately!" }
+    ]
+  },
+  "Deliver Goods": {
+    "name": "Deliver Goods",
+    "level": "2 ~ 7",
+    "url": "/lu4/quest/153-deliver-goods",
+    "intro": "Cargo that was presumed lost in a recent shipwreck has been recovered. Help Guard Arnold deliver the cargo to its recipients.",
+    "startNpc": { "name": "Arnold Guard (Arnold)", "href": "/lu4/npc/30041-arnold" },
+    "rewards": [
+      { "name": "Exp NG (2 000 шт.)", "href": "/lu4/item/15623-exp" },
+      { "name": "SP NG (200 шт.)", "href": "/lu4/item/15624-sp" },
+      { "name": "Ring of Knowledge NG (2 шт.)", "href": "/lu4/item/875-ring-of-knowledge" }
+    ],
+    "steps": [
+      { "title": "1: Deliver Goods", "text": "Guard Arnold, who has been working on the recovery of several recent shipwrecks, asks you to deliver some salvaged goods. Deliver the wooden box to Trader Jackson in the weapons shop. Deliver the bolts of cloth to Trader Silvia at the grocery store, and deliver the clay jar to Warehouse Keeper Rant." },
+      { "title": "2: Delivery Report", "text": "You have delivered the salvaged goods. Report to Guard Arnold." }
+    ]
+  },
+  "Dragon Fangs": {
+    "name": "Dragon Fangs",
+    "level": "19 ~ 29",
+    "url": "/lu4/quest/38-dragon-fangs",
+    "intro": "The primitive tribe of Langk Lizardmen in the southern part of Gludio Territory have been using a spell unknown to even the Mystics of the Ivory Tower.",
+    "startNpc": { "name": "Luis Guard (Luis)", "href": "/lu4/npc/30386-luis" },
+    "rewards": [
+      { "name": "Exp NG (350 000 шт.)", "href": "/lu4/item/15623-exp" },
+      { "name": "SP NG (35 000 шт.)", "href": "/lu4/item/15624-sp" },
+      { "name": "Random Reward NG", "href": "/lu4/item/15629-random-reward" }
+    ],
+    "steps": [
+      { "title": "1: Wipe out the Raiders!", "text": "The guards of Giran have asked you to destroy the lizardmen that are disturbing the peace. Monsters to Hunt - Langk Lizardman Sentinel, Langk Lizardman Scout, Langk Lizardman Lieutenant, Langk Lizardman Warrior" },
+      { "title": "2: Return to Guard Luis", "text": "You've defeated the Langk Lizardmen that have been threatening the southern coast road. Return to Guard Luis of Gludin Village." },
+      { "title": "3: Mysterious Tooth", "text": "You discover a strange tooth among the warriors' effects. Ask Magister Iris about it." },
+      { "title": "4: Towards Magister Rohmer", "text": "Magister Iris was able to identify the tooth as coming from a dragon, but is unable to control it. She suggests that you ask Magister Rohmer in the Town of Gludio." },
+      { "title": "5: Exposed Secret", "text": "An expert in the sorcery of Lizardmen, Magister Rohmer has important reference data and asks you to deliver it to Magister Iris at once." },
+      { "title": "6: Find the Tooth", "text": "Magister Iris asks you to steal 50 teeth from the Lizardmen. Monsters to be hunted - Langk Lizardman Shaman, Langk Lizardman Leader." },
+      { "title": "7: Duty Fulfilled", "text": "You've collected the 50 dragon's teeth that Magister Iris asked for. Take them to her." }
+    ]
+  },
+  "Find Sir Windawood": {
+    "name": "Find Sir Windawood",
+    "level": "3 ~ 6",
+    "url": "/lu4/quest/155-find-sir-windawood",
+    "intro": "An important letter has arrived for Sir Colin Windawood, the Consul of Talking Island. Sir Windawood, more likely to be found out on a stroll than in his office, hasn't seen it. Find Sir Windawood and deliver the letter to him.",
+    "startNpc": { "name": "Abellos Guard (Abellos)", "href": "/lu4/npc/30042-abellos" },
+    "rewards": [
+      { "name": "Exp NG (1 000 шт.)", "href": "/lu4/item/15623-exp" },
+      { "name": "SP NG (100 шт.)", "href": "/lu4/item/15624-sp" },
+      { "name": "Haste Potion NG", "href": "/lu4/item/734-haste-potion" },
+      { "name": "Alacrity Potion NG", "href": "/lu4/item/735-alacrity-potion" }
+    ],
+    "steps": [
+      { "title": "1: Find Sir Windawood", "text": "Guard Abellos tells you that an urgent message has arrived from Gludio Castle for Sir Collin Windawood, the Consul of Talking Island. He asks you to deliver the message to the Consul near the Obelisk of Victory." }
+    ]
+  },
+  "Forgotten Truth": {
+    "name": "Forgotten Truth",
+    "level": "10 ~ 15",
+    "url": "/lu4/quest/106-forgotten-truth",
+    "intro": "The infamous Orc Brigand has stolen Kaysha's Revelations! Retrieve this vital document to secure the future of all Dark Elves!",
+    "startNpc": { "name": "Thifiell Tetrarch (Thifiell)", "href": "/lu4/npc/30358-thifiell" },
+    "rewards": [
+      { "name": "Lesser Healing Potion NG (100 шт.)", "href": "/lu4/item/1060-lesser-healing-potion" },
+      { "name": "Eldritch Dagger NG", "href": "/lu4/item/989-eldritch-dagger" },
+      { "name": "Apprentice's Spellbook NG", "href": "/lu4/item/99-apprentices-spellbook" },
+      { "name": "Question Mark NG", "href": "/lu4/item/15625-question-mark" }
+    ],
+    "steps": [
+      { "title": "1: Kaysha's Revelations", "text": "Dark Elven Tetrarch Thifiell asked Abyssal Celebrant Kartia to translate an ancient manuscript. He now asks you to retrieve the translated copy of 'Kaysha's Revelations'. You must be very discreet." },
+      { "title": "2: In Search of the Stolen Revelations", "text": "You hear that 'Kaysha's Revelations' was stolen by Tumran Orcs! Kill the Tumran Orc brigands that were last seen camping near the Altar of Rites, and recover the original copy of 'Kaysha's Revelations' and a clay tablet." },
+      { "title": "3: Return to Abyssal Celebrant Kartia", "text": "You have recovered the ancient scroll and clay tablet. Abyssal Celebrant Kartia is waiting for you." },
+      { "title": "4: Translation of the Completed Revelations", "text": "The translation of 'Kaysha's Revelations' is complete. Tetrarch Thifiell is waiting for you." }
+    ]
+  },
+  "Fruit of the Mother Tree": {
+    "name": "Fruit of the Mother Tree",
+    "level": "3 ~ 7",
+    "url": "/lu4/quest/161-fruit-of-the-mother-tree",
+    "intro": "Elves owe their long lifespans to their consumption of the fruit of the Mother Tree. The caretakers of the tree are quite concerned about the recent decline in production of fruit.",
+    "startNpc": { "name": "Andellia (Andellia)", "href": "/lu4/npc/30362-andellia" },
+    "rewards": [
+      { "name": "Exp NG (1 500 шт.)", "href": "/lu4/item/15623-exp" },
+      { "name": "SP NG (150 шт.)", "href": "/lu4/item/15624-sp" },
+      { "name": "Adena NG (500 шт.)", "href": "/lu4/item/57-adena" },
+      { "name": "Lesser Healing Potion NG (5 шт.)", "href": "/lu4/item/1060-lesser-healing-potion" }
+    ],
+    "steps": [
+      { "title": "1: Fruit of the Mother Tree", "text": "Andellia and her sisters care for the Mother Trees. You received a letter informing you that the Mother Tree near Iris Lake, maintained by their younger sister Thalia, has borne fruit. Since Andellia and her sisters cannot leave the Mother Trees untended, they ask you to visit Thalia and bring back the fruit of the Mother Tree." },
+      { "title": "2: The One and Only Fruit", "text": "Thalia gives you the fruit of the Mother Tree that was harvested some time ago. This was the only fruit she harvested this year. She asks you to carefully take it to her sister Andellia." }
+    ]
+  },
+  "Invaders of the Holy Land": {
+    "name": "Invaders of the Holy Land",
+    "level": "6 ~ 14",
+    "url": "/lu4/quest/273-invaders-of-the-holy-land",
+    "intro": "Imps are invading the Immortal Plateau, the ancestral Orcish homeland! Those impetus and foolish imps don't stand a chance against us! In the sacred name of Pa'agrio, the Lord of Flame! Arise, Orc warriors! Drive this scourge from our land!",
+    "startNpc": { "name": "Varkees Atuba Chief (Varkees)", "href": "/lu4/npc/30566-varkees" },
+    "rewards": [{ "name": "Flexible Reward NG", "href": "/lu4/item/15630-flexible-reward" }],
+    "steps": [
+      { "title": "1: Rakeclaw Imp", "text": "Atuba Chief Varkees reports that rakeclaw imps have invaded the Immortal Plateau. Hunt in the Valley of Heroes - Rakeclaw Imps and Rakeclaw Imp Hunters. On the northern Immortal Plateau, hunt - Rakeclaw Imp Chieftains." }
+    ]
+  },
+  "Jumble, Tumble, Diamond Fuss": {
+    "name": "Jumble, Tumble, Diamond Fuss",
+    "level": "10 ~ 14",
+    "url": "/lu4/quest/108-jumble-tumble-diamond-fuss",
+    "intro": "The Star Diamond is one of only 12 on the entire continent! The Dwarves are planning a Jumble, Tumble, Diamond Fuss!",
+    "startNpc": { "name": "Gouph Collector (Gouph)", "href": "/lu4/npc/30523-gouph" },
+    "rewards": [
+      { "name": "Silversmith Hammer NG", "href": "/lu4/item/1511-silversmith-hammer" },
+      { "name": "Lesser Healing Potion NG (100 шт.)", "href": "/lu4/item/1060-lesser-healing-potion" },
+      { "name": "Soulshot: No Grade for Beginners NG (5 000 шт.)", "href": "/lu4/item/5789-soulshot-no-grade-for-beginners" }
+    ],
+    "steps": [
+      { "title": "1: In Search of a Star Diamond!", "text": "Collector Gouph of the Bronze Key Guild has purchased a rare star diamond from Trader Reep of the Silver Scales Guild. It is one of only twelve on the continent! Three days have past since the agreed-upon delivery date and Gouph is becoming impatient. He asks you to go to Trader Reep, retrieve the star diamond and bring it to him." },
+      { "title": "2: Carrier Torocco", "text": "Trader Reep informs you that he gave the star diamond to Carrier Torocco to deliver to Gouph. Find Torocco and ask him about the diamond." },
+      { "title": "3: Booze can make you lose!", "text": "Torocco got drunk with Miner Maron last night and passed out. When he awoke, his weapons, armor, money and even the star diamond had been stolen! Find Maron and ask him what happened." },
+      { "title": "4: Gambling can make you a loser, too!", "text": "Carrier Torocco is usually quite trustworthy, but.when he starts drinking he inevitably starts gambling. He got drunk last night and lost everything he had in a dice game with Blacksmith Brunon. Could this mean that Blacksmith Brunon has the star diamond?" },
+      { "title": "5: Brunon's Request", "text": "Indeed, Blacksmith Brunon won the star diamond in a dice game! He tells you that he will give it to you if you recover the aquamarine and chrysoberyl that were stolen by a goblin brigand lieutenant." },
+      { "title": "6: Return to Blacksmith Brunon", "text": "You have recovered the aquamarines and chrysoberyls that Blacksmith Brunon lost. Take them to him." },
+      { "title": "7: Gem Box", "text": "Brunon gives you the gem box he says he won in a dice game. Take it to Gouph." },
+      { "title": "8: Useless Coal", "text": "The gem box doesn't contain the star diamond, only a strange looking piece of coal! Return to Blacksmith Brunon and demand an explanation!" },
+      { "title": "9: A Chest of Mistaken Identity", "text": "The piece of coal once belonged to Warehouse Freightman Murdoc. Take the letter from Brunon to Murdoc and exchange it for the gem box that contains the star diamond." },
+      { "title": "10: The Diamond Is Gone!", "text": "The star diamond was eaten by a bat that Warehouse Keeper Airy keeps as a pet! The bat escaped out of an open window! Go quickly and speak with Airy!" },
+      { "title": "11: Who keeps a bat as a pet, anyway?", "text": "Warehouse Keeper Airy asks you to find her pet, a blade bat. Kill the bat and get the diamond." },
+      { "title": "12: Small Sacrifice, Great Reward", "text": "You finally recover the star diamond. Pray for the soul of the poor bat then take the star diamond to Collector Gouph." }
+    ]
+  },
+  "Letters of Love": {
+    "name": "Letters of Love",
+    "level": "2 ~ 5",
+    "url": "/lu4/quest/1-letters-of-love",
+    "intro": "Darin, a young man on Talking Island, carries a torch for Gatekeeper Roxxy, who doesn't return his affections. Darin is not so easily dissuaded, however.",
+    "startNpc": { "name": "Darin (Darin)", "href": "/lu4/npc/30048-darin" },
+    "rewards": [{ "name": "Necklace of Knowledge NG", "href": "/lu4/item/906-necklace-of-knowledge" }],
+    "steps": [
+      { "title": "1: Delivery of Love Letters", "text": "Darin of Talking Island Village has fallen in love with Gatekeeper Roxxy. He is too shy to express his feelings and asks you to deliver his love letter to her." },
+      { "title": "2: Roxxy's Kerchief", "text": "Roxxy reads Darin's letter and tells you that she admires him as well. She asks you to deliver her kerchief to him. Take Roxxy's kerchief to Darin in the village square." },
+      { "title": "3: Baulro's Magic Potion", "text": "Darin is overjoyed to learn that Roxxy returns his admiration, and says he wants to ask her for a date. He asks you to go and get a love potion promised to him by Magister Baulro at the temple." },
+      { "title": "4: Water that Brings Out Courage", "text": "Magister Baulro admits that he deceived Darin about the potion in order to bolster his courage. He gives you a medicine bottle filled with tap water. Take it to Darin in the village square." }
+    ]
+  },
+  "Mass of Darkness": {
+    "name": "Mass of Darkness",
+    "level": "2 ~ 5",
+    "url": "/lu4/quest/166-mass-of-darkness",
+    "intro": "The Mass of Darkness is performed in honor of Shilen, the mother of all Dark Elves. Let's all work together to make this the best festival ever!",
+    "startNpc": { "name": "Undrias Abyssal Celebrant (Undrias)", "href": "/lu4/npc/30130-undrias" },
+    "rewards": [
+      { "name": "Exp NG (500 шт.)", "href": "/lu4/item/15623-exp" },
+      { "name": "SP NG (100 шт.)", "href": "/lu4/item/15624-sp" },
+      { "name": "Adena NG (250 шт.)", "href": "/lu4/item/57-adena" }
+    ],
+    "steps": [
+      { "title": "1: Items Needed for the Mass of Darkness.", "text": "Abyssal Celebrant Undrias is busily preparing for the ceremony of Shilen and Gran Kain. He asks you to go to the village and obtain several items that he will need for the Mass of Darkness. He asks for the following: a ceremonial dagger from Trader Iria in the Weapons Shop, dreviant wine from Warehouse Keeper Dorankus, and Garmiel's scripture from Master Trudy of the Elder Council." },
+      { "title": "2: Return to Abyssal Celebrant Undrias", "text": "You've obtained the ceremonial dagger, the dreviant wine and Garmiel's scripture that are needed for the Mass. Take them to Abyssal Celebrant Undrias." }
+    ]
+  },
+  "Orc Hunting": {
+    "name": "Orc Hunting",
+    "level": "6 ~ 16",
+    "url": "/lu4/quest/260-orc-hunting",
+    "intro": "Kaboo Orcs from the Misty Mountains have begun invading the Elven Forest. They've even infiltrated the village under the very eyes of the guards! All brave Elves who can help are asked to report to Sentinel Rayen!",
+    "startNpc": { "name": "Rayen Sentinel (Rayen)", "href": "/lu4/npc/30221-rayen" },
+    "rewards": [{ "name": "Flexible Reward NG", "href": "/lu4/item/15630-flexible-reward" }],
+    "steps": [
+      { "title": "1: Hunt for Kaboo Orcs", "text": "Sentinel Rayen is recruiting warriors to fight the orcs. Hunt near the Elven Village - Kaboo Orc, Kaboo Orc Archer and Kaboo Orc Grunt. Hunt in the Elven Forest - Kaboo Orc Fighter Leader, Kaboo Orc Fighter Lieutenant and Kaboo Orc Fighter." }
+    ]
+  },
+  "Spirit of Mirrors": {
+    "name": "Spirit of Mirrors",
+    "level": "10 ~ 15",
+    "url": "/lu4/quest/104-spirit-of-mirrors",
+    "intro": "Three Spirits of Mirror have escaped from Magister Gallint's laboratory on Talking Island! Capture and seal these spirits!",
+    "startNpc": { "name": "Gallint Grand Magister (Gallint)", "href": "/lu4/npc/30017-gallint" },
+    "rewards": [
+      { "name": "Lesser Healing Potion NG (100 шт.)", "href": "/lu4/item/1060-lesser-healing-potion" },
+      { "name": "Wand of Adept NG", "href": "/lu4/item/747-wand-of-adept" },
+      { "name": "Question Mark NG", "href": "/lu4/item/15625-question-mark" }
+    ],
+    "steps": [
+      { "title": "1: Escaped Spirits", "text": "The spirits of mirrors that Grand Magister Gallint was studying have escaped! Hit each one of them with Gallint's oak wand to seal them. Seal all three and return to Gallint. The guards in the village can tell you where to find the spirits. Monsters that need to be sealed by Gallint's Oak Wand - 3 spirits of mirrors." },
+      { "title": "2: Location of the Spirits", "text": "The spirits of mirrors that Grand Magister Gallint was studying have escaped! Hit each one of them with Gallint's oak wand to seal them. Seal all three and return to Gallint. You will find one of them on the western shore of the island, another near the bridge west of Einhovant's School of Wizardry and the third can be found near the Obelisk of Victory. Monsters that need to be sealed by Gallint's Oak Wand - 3 spirits of mirrors." },
+      { "title": "3: Return to Grand Magister Gallint", "text": "You have sealed all three of the spirits of mirrors with Gallint's oak wand! Return to Grand Magister Gallint." }
+    ]
+  },
+  "Sword of Solidarity": {
+    "name": "Sword of Solidarity",
+    "level": "9 ~ 16",
+    "url": "/lu4/quest/101-sword-of-solidarity",
+    "intro": "The Sword of Solidarity has long symbolized the friendship between Elves and Humans. The disappearance of the sword has coincided with the deterioration of that friendship. Grand Master Roien is seeking a warrior to restore the sword to its place of honor.",
+    "startNpc": { "name": "Roien Grand Master (Roien)", "href": "/lu4/npc/30008-roien" },
+    "rewards": [
+      { "name": "Lesser Healing Potion NG (100 шт.)", "href": "/lu4/item/1060-lesser-healing-potion" },
+      { "name": "Sword of Solidarity NG", "href": "/lu4/item/738-sword-of-solidarity" },
+      { "name": "Flexible Reward NG", "href": "/lu4/item/15630-flexible-reward" }
+    ],
+    "steps": [
+      { "title": "1: Broken Sword", "text": "Grand Master Roien of Cedric's Training Hall wants to restore the sword of solidarity. He explains that the sword was made long ago to symbolize the friendship between Elves and Humans. He mentions that Blacksmith Altran is also very interested in restoring this relic. He asks you to take the letter containing the results of his investigation of the relic to Altran in the Blacksmith Shop." },
+      { "title": "2: Broken Sword Blade Piece", "text": "Blacksmith Altran explains that if he is to restore the Sword of Solidarity to its original condition, he must have the two pieces of the blade. He asks you to go the Elven Ruins and obtain the broken sword blade pieces from the Orcs there. Hunt Tunath Orc Warriors and Tunath Orc Marksmen." },
+      { "title": "3: Return to Blacksmith Altran", "text": "Take the broken sword blade pieces to Blacksmith Altran." },
+      { "title": "4: Last Parts", "text": "While Blacksmith Altran joins the sword blade pieces together, go to Cedric's Training Hall and obtain the broken sword handle from Grand Master Roien." },
+      { "title": "5: Sword of Solidarity", "text": "Take the broken sword handle to Blacksmith Altran so he can restore the sword of solidarity to its original condition." }
+    ]
+  },
+  "The Guard is Busy": {
+    "name": "The Guard is Busy",
+    "level": "6 ~ 16",
+    "url": "/lu4/quest/257-the-guard-is-busy",
+    "intro": "Talking Island's immigration policy has been relaxed in order to give refuge to those who have fled the violence of the Gracian War. But it's still quite a dangerous place!",
+    "startNpc": { "name": "Gilbert Captain (Gilbert)", "href": "/lu4/npc/30039-gilbert" },
+    "rewards": [{ "name": "Flexible Reward NG", "href": "/lu4/item/15630-flexible-reward" }],
+    "steps": [
+      { "title": "1: War with the Primitive Tribe", "text": "Captain Gilbert asks you to eliminate the Orcs and werewolves. Hunt near the Obelisk of Victory - Orcs, Orc Archers, Orc Fighters, Orc Lieutenants, Orc Fighter Leaders, Werewolves, Werewolf Hunters and Werewolf Chieftains." }
+    ]
+  },
+  "The Hidden Veins": {
+    "name": "The Hidden Veins",
+    "level": "6 ~ 15",
+    "url": "/lu4/quest/293-the-hidden-veins",
+    "intro": "Elder Filaur, an expert in the construction and mining business, has learned that Otuk Orcs have recently discovered a long-lost chrysolite mine...",
+    "startNpc": { "name": "Filaur Gray Pillar Member (Filaur)", "href": "/lu4/npc/30535-filaur" },
+    "rewards": [{ "name": "Flexible Reward NG", "href": "/lu4/item/15630-flexible-reward" }],
+    "steps": [
+      { "title": "1: Chrysolite", "text": "Elder Filaur asks you defeat the Utuku Orcs and bring the Chrysolite Ore they possess . Also collect the four pieces of the map that reveals the location of the vein, and take them to Maphr Priestess Chichirin who will put them together for you. Then, take the map to Elder Filaur to claim a great reward. Hunt in the Frozen Valley - Utuku Orcs, and Utuku Orc Grunts. Hunt in the Western Mining Zone - Utuku Orc Archers." }
+    ]
+  },
+  "What Women Want": {
+    "name": "What Women Want",
+    "level": "2 ~ 5",
+    "url": "/lu4/quest/2-what-women-want",
+    "intro": "Arujian, a young man in the Elven Village, adores Magister Greenis with all his heart, but no one knows if Greenis returns his affections.",
+    "startNpc": { "name": "Arujien (Arujien)", "href": "/lu4/npc/30223-arujien" },
+    "rewards": [{ "name": "Question Mark NG", "href": "/lu4/item/15625-question-mark" }],
+    "steps": [
+      { "title": "1: Arujien's Letter", "text": "Arujien confesses to you that he has pined for Magister Greenis for a long time. He asks you to find out if Greenis returns his affection. Meet with her younger sister, Gatekeeper Mirabel, and show her Arujien's letter." },
+      { "title": "2: Uncle Herbiel", "text": "Gatekeeper Mirabel says that she doesn't get involved in her sister's affairs. She suggests that you ask Trader Herbiel. You will find him in a magic shop. Show him Arujien's Letter." },
+      { "title": "3: Uncle's Advice", "text": "Trader Herbiel thinks that Magister Greenis likes Arujien. Go back to Arujien and give him the good news." },
+      { "title": "4: Feelings that Have Turned into a Poem", "text": "Arujien says that he's written a book of poetry for Greenis. Take Arujien's poetry book to Magister Greenis." },
+      { "title": "5: Letter of Refusal", "text": "Magister Greenis informs you that she loves another. Take Greenis' letter of refusal to Arujian." }
+    ]
+  },
+  "Will the Seal be Broken?": {
+    "name": "Will the Seal be Broken?",
+    "level": "16 ~ 26",
+    "url": "/lu4/quest/3-will-the-seal-be-broken",
+    "intro": "The Human has betrayed the secret that's kept Hierarch Mitraell sealed for centuries! Help Tettrarch Talloth break the seal that binds Mitraell!",
+    "startNpc": { "name": "Talloth Tetrarch (Talloth)", "href": "/lu4/npc/30141-talloth" },
+    "rewards": [
+      { "name": "Exp NG (25 000 шт.)", "href": "/lu4/item/15623-exp" },
+      { "name": "SP NG (2 500 шт.)", "href": "/lu4/item/15624-sp" },
+      { "name": "Random Reward NG", "href": "/lu4/item/15629-random-reward" }
+    ],
+    "steps": [
+      { "title": "1: Preparation for a Ritual", "text": "Dark Elven Tetrarch Talloth is continuing in the studies of the dark arts in order to break the seal that binds Mitraell, the leader of the Dark Elves. He asks that you to go to the school of the Dark Arts and bring him an Omen Beast's eye, a Taint Stone and Succubus Blood which are all needed to break the Seal. This being the first stage among three stages that binds the great leader. Monsters to be hunted - Omen Beast, Tainted Zombies, Stink Zombies, Lesser Succubi, Lesser Succubus Turen and Lesser Succubus Tilfos" },
+      { "title": "2: Return to Tetrarch Talloth", "text": "You have collected all the ingredients required for a spell. Return to Hierarch Talloth." }
+    ]
+  }
+}

@@ -1,14 +1,14 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { User, Coins, Medal, Map as MapIcon, Flame, CheckCircle2, Circle, ExternalLink } from 'lucide-react';
+import { User, Coins, Medal, Map as MapIcon, Flame, CheckCircle2, Circle, ScrollText } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useLang } from '../context/LanguageContext';
 import { subscribeToTransactions } from '../services/treasuryService';
 import { subscribeToQuestData } from '../services/questService';
 import { subscribeToQuestLog } from '../services/questLogService';
 import { subscribeToMinContributions } from '../services/memberService';
-import { getUniversalQuests, getRaceQuestsForClass, isQuestHiddenForMember, questWikiUrl } from '../data/quests';
+import { getUniversalQuests, getRaceQuestsForClass, isQuestHiddenForMember } from '../data/quests';
+import { useQuestModal } from '../context/QuestModalContext';
 import { LU4_PHASES, getActivePhaseId } from '../data/lu4Roadmap';
-import { openExternal } from '../utils/openExternal';
 import { L2_CLASSES } from '../utils/classes';
 import { ClassIcon } from '../components/ClassIcon';
 
@@ -19,6 +19,7 @@ const dayKey = (d) => d.toISOString().slice(0, 10);
 export const Profile = () => {
   const { currentUser, userNickname, userClass, userLevel, userRole, userAvatar } = useAuth();
   const { t } = useLang();
+  const { openQuest } = useQuestModal();
   const [transactions, setTransactions] = useState([]);
   const [questData, setQuestData] = useState(null);
   const [questLog, setQuestLog] = useState({});
@@ -129,7 +130,7 @@ export const Profile = () => {
                 {q.done ? <CheckCircle2 size={15} color="var(--success)" /> : <Circle size={15} color="var(--text-muted)" />}
                 <span className="prof-quest-name">{q.name}</span>
                 <span className="prof-quest-lvl">LVL {q.lvl}</span>
-                <button className="prof-quest-wiki" onClick={() => openExternal(questWikiUrl(q.name))} title={t('quest.walkthrough')}><ExternalLink size={12} /></button>
+                <button className="prof-quest-wiki" onClick={() => openQuest(q)} title={t('quest.details')}><ScrollText size={12} /></button>
               </div>
             ))}
           </div>

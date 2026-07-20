@@ -2,6 +2,7 @@ import React from 'react';
 import { HashRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { LanguageProvider } from './context/LanguageContext';
+import { QuestModalProvider } from './context/QuestModalContext';
 import { Layout } from './components/Layout';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { DesktopIntegration } from './components/DesktopIntegration';
@@ -24,6 +25,7 @@ function App() {
     <ErrorBoundary>
     <LanguageProvider>
       <AuthProvider>
+        <QuestModalProvider>
         <DesktopIntegration />
         <div className="app-shell">
           <Titlebar />
@@ -48,6 +50,7 @@ function App() {
             </HashRouter>
           </div>
         </div>
+        </QuestModalProvider>
       </AuthProvider>
     </LanguageProvider>
     </ErrorBoundary>

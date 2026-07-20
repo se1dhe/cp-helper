@@ -14,7 +14,7 @@ import { subscribeToRoster } from '../services/rosterService';
 import { addTask } from '../services/taskService';
 import { getCountdown } from '../utils/countdown';
 import { LU4_PHASES, LU4_MECHANICS, LU4_CHARACTERS, LU4_TENTH, LU4_CRAFT, LU4_START_STEPS, LU4_RACE_ROUTES, PHASE_LEVEL_STEPS, allTaskIds, packLevel, getActivePhaseId } from '../data/lu4Roadmap';
-import { questWikiUrl } from '../data/quests';
+import { useQuestModal } from '../context/QuestModalContext';
 import { Hammer, Package, ListChecks, Flag, Download, ExternalLink } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { openExternal } from '../utils/openExternal';
@@ -24,6 +24,7 @@ const EXPANDED_KEY = 'roadmapExpanded';
 export const Roadmap = () => {
   const { isPL, isOfficer } = useAuth();
   const { t } = useLang();
+  const { openQuest } = useQuestModal();
   const [progress, setProgress] = useState({});
   const [launchDate, setLaunchDateState] = useState('');
   const [roster, setRoster] = useState([]);
@@ -331,7 +332,7 @@ export const Roadmap = () => {
                             <span className="rm-quest-meta">{q.npc} · {q.lvl}</span>
                           </div>
                           <span className="rm-quest-reward">{q.reward}</span>
-                          <button className="rc-wiki" onClick={() => openExternal(questWikiUrl(q.name))} title={t('quest.walkthrough')}><ExternalLink size={11} /></button>
+                          <button className="rc-wiki" onClick={() => openQuest(q)} title={t('quest.details')}><ScrollText size={11} /></button>
                         </div>
                       ))}
                     </div>

@@ -1,3 +1,5 @@
+import QUEST_DETAILS from './questDetails.json';
+
 const parseSortLevel = (lvl) => {
   const match = String(lvl ?? '').match(/^(\d+)/);
   return match ? parseInt(match[1], 10) : 999;
@@ -46,3 +48,11 @@ export const questWikiUrl = (name) => {
   const query = encodeURIComponent(name || '').replace(/%20/g, '+');
   return `https://masterwork.wiki/lu4/search/result?Search%5Bquery%5D=${query}&Search%5Bsearch_type%5D=4`;
 };
+
+// Полное прохождение квеста, спарсенное с masterwork.wiki (см. src/data/questDetails.json).
+// Возвращает объект { name, level, url, intro, startNpc, rewards[], steps[] } или null.
+export const getQuestDetails = (name) => QUEST_DETAILS[name] || null;
+
+// Абсолютная ссылка на страницу вики из относительного href ('/lu4/quest/...').
+export const wikiAbsUrl = (href) =>
+  href ? `https://masterwork.wiki${href}` : null;
