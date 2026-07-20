@@ -51,7 +51,10 @@ export const QuestModal = ({ quest, onClose }) => {
 
           {(d?.rewards?.length || quest.reward) && (
             <div className="quest-modal-section">
-              <div className="quest-modal-section-h"><Medal size={13} /> {t('quest.rewards')} <span className="quest-modal-src">Lu4</span></div>
+              <div className="quest-modal-section-h">
+                <Medal size={13} /> {t('quest.rewards')} <span className="quest-modal-src">Lu4</span>
+                {d?.lu4Changes && <span className="quest-modal-changes">· {d.lu4Changes}</span>}
+              </div>
               {d?.rewards?.length ? (
                 <ul className="quest-modal-rewards quest-modal-rewards--list">
                   {d.rewards.map((r, i) => <li key={i} className="quest-modal-reward">{r}</li>)}
