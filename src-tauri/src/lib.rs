@@ -39,8 +39,12 @@ fn open_url(url: String) {
 
 fn focus_main(app: &tauri::AppHandle) {
     if let Some(window) = app.get_webview_window("main") {
-        let _ = window.show();
+        // Порядок важен: сначала снимаем «минимизировано», потом показываем.
+        // Иначе показываем ещё свёрнутое окно и следом проигрывается лишняя
+        // анимация «свернуть → развернуть», которая на Windows пинает
+        // полноэкранный игровой клиент (exclusive fullscreen мигает).
         let _ = window.unminimize();
+        let _ = window.show();
         let _ = window.set_focus();
     }
 }
@@ -62,7 +66,12 @@ pub fn run() {
         .on_window_event(|window, event| {
             if let tauri::WindowEvent::Resized(_) = event {
                 if window.is_minimized().unwrap_or(false) {
+                    // Прячем в трей и тут же сбрасываем состояние «свёрнуто»:
+                    // окно остаётся спрятанным, но при следующем show() покажется
+                    // сразу развёрнутым — без анимации «свернуть/развернуть»,
+                    // из-за которой мигает полноэкранный клиент игры.
                     let _ = window.hide();
+                    let _ = window.unminimize();
                 }
             }
         })

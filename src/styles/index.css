@@ -176,7 +176,7 @@ body {
 .changelog-body { font-size: 0.8rem; color: var(--text-secondary); white-space: pre-wrap; line-height: 1.45; margin: 0; }
 
 /* ===== QUEST MODAL (прохождение квеста) ===== */
-.quest-modal-card { max-width: 780px; width: 96%; max-height: 88vh; display: flex; flex-direction: column; }
+.modal-card.quest-modal-card { max-width: 820px; width: 96%; max-height: 88vh; display: flex; flex-direction: column; }
 .quest-modal-card .modal-head h3 { display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap; }
 .quest-modal-lvl { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 0.72rem; color: var(--primary); border: 1px solid var(--border); border-radius: 6px; padding: 1px 6px; }
 .quest-modal-body { overflow-y: auto; display: flex; flex-direction: column; gap: 0.75rem; padding: 0.25rem 0.15rem; }
@@ -368,11 +368,19 @@ body {
 
 .sidebar-nav {
   flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   padding: 1.25rem 0.875rem;
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-hover) transparent;
 }
+.sidebar-nav::-webkit-scrollbar { width: 6px; }
+.sidebar-nav::-webkit-scrollbar-thumb { background: var(--border-hover); border-radius: 3px; }
+.sidebar-nav::-webkit-scrollbar-track { background: transparent; }
 
 .sidebar-link {
   display: flex;
